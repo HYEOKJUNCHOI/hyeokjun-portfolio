@@ -367,7 +367,7 @@ function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
           <button className="modalNav modalNavNext" onClick={onNext} type="button" aria-label="다음 사진 보기">
             &gt;
           </button>
-          <div className="screenshotDialog">
+          <div className={['screenshotDialog', isLegacyFrame ? 'legacyModal' : ''].filter(Boolean).join(' ')}>
             <button className="modalClose" onClick={onClose} type="button">닫기</button>
             <div className="modalMedia">
               <div className={[
@@ -383,11 +383,13 @@ function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
                 )}
               </div>
             </div>
-            <div className="modalCaption">
-              <p className="eyebrow">{project.label}</p>
-              <h4>{screenshot.title}</h4>
-              <p>{screenshot.caption}</p>
-            </div>
+            {isLegacyFrame ? null : (
+              <div className="modalCaption">
+                <p className="eyebrow">{project.label}</p>
+                <h4>{screenshot.title}</h4>
+                <p>{screenshot.caption}</p>
+              </div>
+            )}
           </div>
         </div>
         <p className="modalHintCapsule">키보드 ← · → 로도 이동할 수 있습니다.</p>
