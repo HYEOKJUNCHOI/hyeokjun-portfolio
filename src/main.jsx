@@ -298,11 +298,13 @@ function ScreenshotGallery({ project, selectedScreenshot, setSelectedScreenshot 
       <div className="screenshotGrid">
         {project.screenshots.map(([title, caption, src], index) => {
           const item = { title, caption, src, index };
+          const isLegacyFrame = index === 0 || index === project.screenshots.length - 1;
           return (
             <button
               className={[
                 'screenshotSlot',
                 src ? 'hasImage' : '',
+                isLegacyFrame ? 'legacyFrame' : '',
               ].filter(Boolean).join(' ')}
               key={`${project.id}-${title}`}
               onClick={() => setSelectedScreenshot(item)}
@@ -329,7 +331,8 @@ function ScreenshotGallery({ project, selectedScreenshot, setSelectedScreenshot 
 }
 
 function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
-  const shouldFillFrame = Boolean(screenshot.src);
+  const shouldFillFrame = screenshot.index > 0 && screenshot.index < 5;
+  const isLegacyFrame = screenshot.index === 0 || screenshot.index === project.screenshots.length - 1;
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -371,6 +374,7 @@ function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
                 'modalPreview',
                 screenshot.src ? 'hasImage' : '',
                 shouldFillFrame ? 'fillFrame' : '',
+                isLegacyFrame ? 'legacyFrame' : '',
               ].filter(Boolean).join(' ')}>
                 {screenshot.src ? (
                   <img alt={`${project.label} ${screenshot.title}`} src={screenshot.src} />

@@ -590,6 +590,11 @@ h1 span {
   border-radius: 10px;
 }
 
+.screenshotSlot.hasImage.legacyFrame img {
+  object-fit: contain;
+  background: #07101d;
+}
+
 .modalPreview.hasImage img {
   object-fit: contain;
   background: #07101d;
@@ -597,6 +602,10 @@ h1 span {
 
 .modalPreview.hasImage.fillFrame img {
   object-fit: cover;
+}
+
+.modalPreview.hasImage.legacyFrame img {
+  object-fit: contain;
 }
 
 .screenshotSlot strong {
