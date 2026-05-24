@@ -383,13 +383,11 @@ function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
                 )}
               </div>
             </div>
-            {isLegacyFrame ? null : (
-              <div className="modalCaption">
-                <p className="eyebrow">{project.label}</p>
-                <h4>{screenshot.title}</h4>
-                <p>{screenshot.caption}</p>
-              </div>
-            )}
+            <div className="modalCaption">
+              <p className="eyebrow">{project.label}</p>
+              <h4>{screenshot.title}</h4>
+              <p>{screenshot.caption}</p>
+            </div>
           </div>
         </div>
         <p className="modalHintCapsule">키보드 ← · → 로도 이동할 수 있습니다.</p>
