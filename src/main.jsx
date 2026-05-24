@@ -238,11 +238,11 @@ function App() {
     solvesRepeatedWork: true,
     buildsDemoFirst: true
   },
-  projects: 5,
+  projects: 4,
   hireable: function () {
     return this.observesUserFlow
       && this.solvesRepeatedWork
-      && this.projects >= 5;
+      && this.projects >= 4;
   }
 };`}</pre>
         </aside>
