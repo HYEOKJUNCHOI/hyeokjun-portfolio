@@ -276,8 +276,7 @@ h1 span {
 }
 
 .aboutSection,
-.workSection,
-.contactSection {
+.workSection {
   padding: 48px 0 0;
 }
 
@@ -309,8 +308,7 @@ h1 span {
 }
 
 .aboutGrid,
-.projectGrid,
-.contactGrid {
+.projectGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
@@ -319,22 +317,19 @@ h1 span {
 .infoCard,
 .letterPanel,
 .projectCard,
-.detailPanel,
-.contactGrid article {
+.detailPanel {
   border: 1px solid rgba(117, 150, 201, 0.16);
   background: rgba(12, 20, 34, 0.78);
   box-shadow: 0 22px 80px rgba(0, 0, 0, 0.2);
 }
 
-.infoCard,
-.contactGrid article {
+.infoCard {
   min-height: 150px;
   padding: 20px;
   border-radius: 12px;
 }
 
-.infoCard span,
-.contactGrid span {
+.infoCard span {
   display: block;
   margin-bottom: 12px;
   color: #55d7c7;
@@ -342,15 +337,13 @@ h1 span {
   font-weight: 900;
 }
 
-.infoCard strong,
-.contactGrid strong {
+.infoCard strong {
   display: block;
   margin-bottom: 10px;
   font-size: 20px;
 }
 
 .infoCard p,
-.contactGrid p,
 .letterPanel p,
 .detailBody p,
 .featureList p,
@@ -384,7 +377,7 @@ h1 span {
   padding: 8px;
   border: 1px solid rgba(67, 222, 211, 0.2);
   border-radius: 12px;
-  background: rgba(7, 13, 24, 0.82);
+  background: #07101d;
   backdrop-filter: blur(16px);
 }
 
@@ -421,7 +414,7 @@ h1 span {
 
 .projectCard strong {
   min-width: 0;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 .projectCard em {
@@ -473,24 +466,25 @@ h1 span {
   line-height: 1.62;
 }
 
-.stackList {
+.projectOpenActions {
   display: flex;
-  flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 8px;
+  align-items: start;
 }
 
-.stackList span {
+.projectOpenActions a {
   display: inline-flex;
   align-items: center;
-  min-height: 32px;
-  padding: 0 11px;
-  border: 1px solid rgba(67, 222, 211, 0.25);
-  border-radius: 999px;
-  background: rgba(67, 222, 211, 0.09);
-  color: #eaf7ff;
-  font-size: 12px;
-  font-weight: 850;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgba(67, 222, 211, 0.42);
+  border-radius: 10px;
+  background: rgba(67, 222, 211, 0.12);
+  color: #f5fbff;
+  font-size: 13px;
+  font-weight: 950;
+  text-decoration: none;
 }
 
 .detailBody,
@@ -502,6 +496,281 @@ h1 span {
 
 .detailBody {
   margin-top: 18px;
+}
+
+.screenshotPanel {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid rgba(67, 222, 211, 0.18);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(67, 222, 211, 0.07), transparent 44%),
+    rgba(5, 12, 22, 0.66);
+}
+
+.screenshotHead {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.screenshotHead h4 {
+  margin: 0;
+  color: #f4f9ff;
+  font-size: 20px;
+}
+
+.screenshotHead > span {
+  flex: 0 0 auto;
+  min-height: 30px;
+  padding: 7px 10px;
+  border: 1px solid rgba(67, 222, 211, 0.26);
+  border-radius: 999px;
+  background: rgba(67, 222, 211, 0.08);
+  color: #d8fff7;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.screenshotGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.screenshotSlot {
+  display: grid;
+  grid-template-rows: 150px auto minmax(44px, auto);
+  gap: 9px;
+  min-width: 0;
+  min-height: 244px;
+  padding: 11px;
+  border: 1px solid rgba(155, 178, 210, 0.15);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.045);
+  cursor: pointer;
+  text-align: left;
+}
+
+.screenshotSlot:hover {
+  border-color: rgba(67, 222, 211, 0.48);
+  background: rgba(18, 34, 56, 0.78);
+}
+
+.screenshotSlot img,
+.modalPreview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.screenshotPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  border: 1px dashed rgba(126, 231, 220, 0.35);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, rgba(67, 222, 211, 0.12), transparent 52%),
+    rgba(4, 10, 18, 0.52);
+  color: #7fe7dc;
+  font-size: 28px;
+  font-weight: 950;
+}
+
+.screenshotSlot.hasImage {
+  overflow: hidden;
+}
+
+.screenshotSlot.hasImage img {
+  border-radius: 10px;
+}
+
+.modalPreview.hasImage img {
+  object-fit: contain;
+  background: #07101d;
+}
+
+.modalPreview.hasImage.fillFrame img {
+  object-fit: cover;
+}
+
+.screenshotSlot strong {
+  min-width: 0;
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.screenshotSlot p,
+.screenshotNote {
+  margin: 0;
+  color: #b8c9de;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.screenshotNote {
+  margin-top: 12px;
+}
+
+.screenshotModal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.screenshotBackdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.72);
+  cursor: pointer;
+}
+
+.screenshotModalStack {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: min(1280px, calc(100% - 120px));
+}
+
+.screenshotModalShell {
+  position: relative;
+  width: 100%;
+}
+
+.screenshotDialog {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+  gap: 18px;
+  width: 100%;
+  max-height: min(820px, calc(100vh - 88px));
+  padding: 18px;
+  border: 1px solid rgba(67, 222, 211, 0.28);
+  border-radius: 16px;
+  background: #07101d;
+  box-shadow: 0 30px 120px rgba(0, 0, 0, 0.5);
+}
+
+.modalMedia {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+}
+
+.modalNav {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 58px;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 1px solid rgba(126, 231, 220, 0.34);
+  border-radius: 10px;
+  background: rgba(5, 12, 22, 0.84);
+  color: #f6fbff;
+  cursor: pointer;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.38);
+}
+
+.modalNav:hover {
+  border-color: rgba(67, 222, 211, 0.78);
+  background: rgba(18, 34, 56, 0.94);
+}
+
+.modalNavPrevious {
+  left: -58px;
+}
+
+.modalNavNext {
+  right: -58px;
+}
+
+.modalClose {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(155, 178, 210, 0.2);
+  border-radius: 9px;
+  background: rgba(12, 22, 38, 0.9);
+  color: #f6fbff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.modalPreview {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: min(620px, calc(100vh - 190px));
+  overflow: hidden;
+  border: 1px dashed rgba(126, 231, 220, 0.32);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(67, 222, 211, 0.1), transparent 54%),
+    rgba(4, 10, 18, 0.64);
+}
+
+.modalPreview span {
+  color: #7fe7dc;
+  font-size: 58px;
+  font-weight: 950;
+}
+
+.modalCaption {
+  align-self: end;
+  padding: 54px 8px 8px;
+}
+
+.modalCaption h4 {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: 24px;
+}
+
+.modalCaption p:not(.eyebrow) {
+  margin: 0;
+  color: #b8c9de;
+  line-height: 1.6;
+}
+
+.modalHintCapsule {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 11px 12px;
+  border: 1px solid rgba(126, 231, 220, 0.18);
+  border-radius: 999px;
+  background: rgba(7, 16, 29, 0.92);
+  color: #d8fff7;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.28);
 }
 
 .detailBody section,
@@ -582,9 +851,9 @@ h1 span {
 .liveFrameHead {
   display: flex;
   align-items: end;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 14px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .liveFrameHead h4 {
@@ -1084,8 +1353,8 @@ h1 span {
 }
 
 .browserViewport {
-  height: calc(100vh - 238px);
-  min-height: 540px;
+  height: calc(100vh - 168px);
+  min-height: 610px;
   overflow: hidden;
   background: #ffffff;
 }
@@ -1182,10 +1451,6 @@ h1 span {
   font-weight: 850;
 }
 
-.contactGrid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 @media (max-width: 1040px) {
   .heroSection,
   .detailHead {
@@ -1197,10 +1462,10 @@ h1 span {
   }
 
   .projectGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .stackList {
+  .projectOpenActions {
     justify-content: flex-start;
   }
 }
@@ -1251,11 +1516,12 @@ h1 span {
   .aboutGrid,
   .detailBody,
   .detailGrid,
-  .contactGrid,
   .playgroundGrid,
   .scheduleButtons,
   .choiceRow,
-  .statGrid {
+  .statGrid,
+  .screenshotGrid,
+  .screenshotDialog {
     grid-template-columns: 1fr;
   }
 
@@ -1345,9 +1611,66 @@ h1 span {
   .detailBody section,
   .featureList,
   .demoTable,
-  .playgroundPanel {
+  .playgroundPanel,
+  .screenshotPanel {
     min-height: auto;
     padding: 14px;
+  }
+
+  .screenshotSlot {
+    grid-template-rows: 132px auto minmax(40px, auto);
+    min-height: 222px;
+  }
+
+  .screenshotPlaceholder {
+    min-height: 132px;
+  }
+
+  .screenshotModal {
+    padding: 12px;
+  }
+
+  .screenshotModalStack {
+    width: min(100%, calc(100vw - 88px));
+    max-height: calc(100vh - 24px);
+  }
+
+  .screenshotDialog {
+    max-height: calc(100vh - 78px);
+    padding: 14px;
+    overflow: auto;
+  }
+
+  .modalNav {
+    width: 38px;
+    height: 50px;
+    font-size: 23px;
+  }
+
+  .modalNavPrevious {
+    left: -44px;
+  }
+
+  .modalNavNext {
+    right: -44px;
+  }
+
+  .modalMedia {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .modalPreview {
+    min-height: 280px;
+  }
+
+  .modalCaption {
+    padding-top: 0;
+  }
+
+  .modalHintCapsule {
+    max-width: calc(100vw - 24px);
+    padding: 10px 12px;
+    font-size: 12px;
   }
 
   .playgroundPanel {

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
@@ -10,8 +10,7 @@ const projectDetails = [
     label: 'CareDoc',
     type: 'Welfare Docs',
     demoOrigin: mainDeployOrigin,
-    demoPath: '/clones/caredoc/?portfolio=1&v=20260524-0928',
-    demoLabel: 'CareDoc 실제 클론',
+    demoPath: '/clones/caredoc/index.html?portfolio=1&v=20260525-0025',
     title: '복지시설 서류 작성 흐름을 줄이는 문서 도구',
     summary: '이용자 정보를 한 번 입력하면 문서, 문구, 가족관계도, PDF 출력까지 이어지게 만든 업무형 앱입니다.',
     stack: ['React', 'PDF', 'SVG', '업무 자동화'],
@@ -23,6 +22,14 @@ const projectDetails = [
       ['문서 흐름', '회의록, 모니터링, 지원계획서 자동 반영'],
       ['출력', '가족관계도 SVG + PDF 준비 완료'],
     ],
+    screenshots: [
+      ['실제로 사용하던 워드 서류 화면', '일본 장애인복지시설에서 실제로 사용하던 서류 화면입니다. 직원 평균연령은 50대 후반이며, 이 서류는 연령과 관계없이 다루기 어려울 만큼 입력 항목과 문서 구조가 복잡했습니다. 같은 정보를 여러 문서에 반복 작성해야 해 업무 부담이 컸습니다.', '/project-shots/caredoc/01.jpg'],
+      ['웹으로 옮긴 워드와 엑셀 파일들', '복잡한 워드와 엑셀 파일에서 반복 입력하던 내용을 추려 일괄 적용되도록 만들었습니다. 직원이 순서에 따라 입력하면 서류가 완성되도록 4개 파일의 업무 흐름을 웹으로 재구성했습니다.', '/project-shots/caredoc/02.jpg'],
+      ['반복 입력을 줄인 키보드 단축키', '문서 반복 입력을 줄인 뒤에도 업무 흐름상 비슷한 문장을 자주 입력하는 문제가 남아 있었습니다. 이를 발견하고 고령의 직원도 쉽게 사용할 수 있도록 키보드 단축키 기능을 추가했습니다.', '/project-shots/caredoc/03.jpg'],
+      ['서류 작성 과정을 단순화한 화면', '처음에는 기능을 많이 붙였지만, 실제 사용자의 연령대와 업무 환경을 고려해 과도한 기능보다 단순한 흐름과 접근성을 우선했습니다. 필요한 순서대로 따라가면 작성이 끝나도록 구성했습니다.', '/project-shots/caredoc/04.jpg'],
+      ['자동 SVG로 그려지는 제노그램', '문제의 제노그램, 즉 가족관계도는 실제 워드에서 도형을 이용해 직접 만들어야 했습니다. 웹에서는 가족관계만 입력하면 자동 SVG 렌더링으로 관계도가 그려지도록 만들었습니다.', '/project-shots/caredoc/05.jpg'],
+      ['출력 전 최종 확인 및 PDF 준비', '입력된 정보와 작성된 문서를 출력 가능한 형태로 정리하는 단계입니다. 복잡한 워드 작업을 웹앱 안에서 마무리하고, 제출용 문서로 이어질 수 있게 만든 결과 화면입니다.', '/project-shots/caredoc/06.jpg'],
+    ],
   },
   {
     id: 'fixchecker',
@@ -30,7 +37,6 @@ const projectDetails = [
     type: 'AI Workflow',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/subtitle-fix-checker/',
-    demoLabel: 'Subtitle Fix Checker 실제 클론',
     title: '자막 검수 판단을 AI 수정 지시서로 바꾸는 도구',
     summary: '자막을 보며 틀린 구간만 체크하고, JSON 작업지시서로 후속 AI 수정까지 이어지게 만든 앱입니다.',
     stack: ['React', 'JSON', '검수 플로우', 'AI Workflow'],
@@ -42,6 +48,14 @@ const projectDetails = [
       ['00:06.8', '문장 호흡이 김 -> 두 문장으로 분리'],
       ['출력', 'errors.json 작업지시서 생성'],
     ],
+    screenshots: [
+      ['영상 입력', '검수할 영상을 올리거나 확인하는 화면'],
+      ['구간 체크', '오류 시간과 내용을 행 단위로 기록하는 화면'],
+      ['수정 요청', '어떻게 바꿀지 지시를 적는 화면'],
+      ['JSON 출력', 'AI가 읽을 작업지시서를 생성하는 화면'],
+      ['오류 목록', '선택된 오류를 한 번에 검토하는 화면'],
+      ['결과 확인', '후속 수정에 넘길 내용을 확인하는 화면'],
+    ],
   },
   {
     id: 'lucid',
@@ -49,7 +63,6 @@ const projectDetails = [
     type: 'Learning Admin',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/lucid/',
-    demoLabel: 'Lucid 관리자 데모',
     title: '관리자 화면까지 바로 보여주는 학습 운영 서비스',
     summary: '로그인이 필요한 원본 흐름은 보호하고, 쇼케이스에서는 관리자 데모 세션으로 핵심 화면을 보여줍니다.',
     stack: ['React', 'Admin UI', 'Demo Session', 'Data Table'],
@@ -61,6 +74,14 @@ const projectDetails = [
       ['리포트', '출석률 94% / 과제 제출 18건'],
       ['데이터', '학생 명단과 수업 데이터 미리 로드'],
     ],
+    screenshots: [
+      ['관리자 홈', '학습 운영 상태를 처음 확인하는 화면'],
+      ['학생 관리', '학생 목록과 상태를 관리하는 화면'],
+      ['수업 리포트', '출석률과 과제 현황을 보는 화면'],
+      ['과제 상태', '제출/미제출 흐름을 확인하는 화면'],
+      ['알림 관리', '운영자가 확인할 알림을 모아보는 화면'],
+      ['데모 세션', '로그인 없이 관리자 화면을 체험하는 화면'],
+    ],
   },
   {
     id: 'reallife',
@@ -68,7 +89,6 @@ const projectDetails = [
     type: 'Simulation Game',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/reallife/',
-    demoLabel: 'RealLife 실제 클론',
     title: '로그인 없이 바로 플레이하는 생활 시뮬레이션 게임',
     summary: '선택지, 상태 변화, 결과 흐름이 즉시 보이는 게임형 프로젝트입니다.',
     stack: ['React', 'Game UI', 'State Flow', 'UX'],
@@ -80,96 +100,16 @@ const projectDetails = [
       ['2턴', '자격증 공부 / 집중도 +12 / 시간 -3'],
       ['결과', '생활비와 성장 선택지를 비교'],
     ],
+    screenshots: [
+      ['시작 화면', '게임 진입 전 분위기와 목표를 보여주는 화면'],
+      ['캐릭터 선택', '플레이할 캐릭터를 고르는 화면'],
+      ['상태판', '체력, 현금, 집중도 등 현재 상태를 보는 화면'],
+      ['이벤트 카드', '턴마다 등장하는 선택지를 확인하는 화면'],
+      ['결과 반영', '선택 후 수치 변화가 표시되는 화면'],
+      ['엔딩 흐름', '누적 선택 결과를 확인하는 화면'],
+    ],
   },
 ];
-
-const mobileShowcases = {
-  caredoc: {
-    headline: '입력 한 번으로 문서와 PDF까지',
-    benefit: '이용자 기본정보를 넣으면 문서, 가족관계도, 출력 흐름까지 이어지는 업무형 모바일 장면입니다.',
-    sceneLabel: '문서 작성 흐름',
-    proof: '3개 문서 자동 반영',
-    steps: [
-      ['01', '기본정보 입력', '이름, 등급, 담당자 정보를 한 화면에서 정리'],
-      ['02', '문서 반영 확인', '회의록과 지원계획서에 같은 정보 자동 연결'],
-      ['03', '미리보기 출력', '가족관계도와 PDF 출력 상태까지 확인'],
-    ],
-    screen: {
-      type: 'caredoc',
-      user: '야마다 하나코',
-      fields: [
-        ['요양등급', '3등급'],
-        ['담당자', '사토 켄'],
-        ['작성상태', '미리보기 준비'],
-      ],
-      docs: ['기본정보', '회의록', '지원계획서'],
-      action: 'PDF 출력 준비 완료',
-    },
-  },
-  fixchecker: {
-    headline: '검수 판단을 AI 수정 지시서로 변환',
-    benefit: '영상 확인, 오류 체크, JSON 출력까지 모바일에서도 흐름이 바로 보이도록 재구성합니다.',
-    sceneLabel: '검수 플로우',
-    proof: '오류 2건 선택됨',
-    steps: [
-      ['01', '영상 확인', '문제가 보이는 구간을 먼저 확인'],
-      ['02', '오류 체크', '시간, 문제, 수정 요청을 카드로 정리'],
-      ['03', 'JSON 출력', '후속 AI가 읽을 작업지시서 생성'],
-    ],
-    screen: {
-      type: 'fixchecker',
-      videoTime: '00:03.2',
-      errors: [
-        ['00:03.2', '표현이 딱딱함', '자연스럽게 수정'],
-        ['00:06.8', '문장 호흡이 김', '두 문장으로 분리'],
-      ],
-      json: '{ errors: 2, ready: true }',
-    },
-  },
-  lucid: {
-    headline: '학습 운영 상태를 카드로 빠르게 파악',
-    benefit: '관리자 테이블 전체가 아니라 학생, 수업, 과제 상태의 핵심 지표만 모바일에 맞게 보여줍니다.',
-    sceneLabel: '관리자 요약',
-    proof: '출석률 94%',
-    steps: [
-      ['01', '학생 현황', '출석과 과제 상태를 숫자로 먼저 확인'],
-      ['02', '수업 리포트', '운영자가 봐야 할 수업 흐름을 요약'],
-      ['03', '과제 상태', '지연된 과제와 확인 대상을 바로 표시'],
-    ],
-    screen: {
-      type: 'lucid',
-      kpis: [
-        ['출석률', '94%'],
-        ['과제', '18건'],
-        ['알림', '3건'],
-      ],
-      report: '이번 주 과제 제출률 상승, 지연 학생 2명 확인 필요',
-      tasks: ['React 과제 확인', '상담 필요 학생 표시', '수업 리포트 전송'],
-    },
-  },
-  reallife: {
-    headline: '상태 변화가 바로 보이는 모바일 게임 흐름',
-    benefit: '큰 게임판을 줄이지 않고 상태바, 이벤트, 선택 버튼, 결과 변화를 모바일 게임 화면처럼 보여줍니다.',
-    sceneLabel: '턴 선택 화면',
-    proof: '현금 +70,000',
-    steps: [
-      ['01', '상태 확인', '체력, 현금, 집중도를 상단에서 확인'],
-      ['02', '이벤트 선택', '현재 턴의 상황과 선택지를 카드로 표시'],
-      ['03', '결과 반영', '선택 후 수치 변화가 즉시 보임'],
-    ],
-    screen: {
-      type: 'reallife',
-      stats: [
-        ['체력', '72'],
-        ['현금', '120K'],
-        ['집중', '48'],
-      ],
-      event: '주말 단기 알바 제안이 들어왔습니다.',
-      choices: ['수락하기', '공부하기', '휴식하기'],
-      result: '체력 -8 / 현금 +70,000',
-    },
-  },
-};
 
 const introCards = [
   ['경력', '총 8년 8개월', '고객 응대와 현장 불편 관찰 경험'],
@@ -198,7 +138,6 @@ function App() {
           <a href="#top">처음</a>
           <a href="#about">소개</a>
           <a href="#works">작품</a>
-          <a href="#contact">연락</a>
         </nav>
 
         <div className="heroCopy">
@@ -215,7 +154,6 @@ function App() {
           </p>
           <div className="heroActions">
             <a href="#works">작품 보기</a>
-            <a href="#contact">연락하기</a>
           </div>
         </div>
 
@@ -242,7 +180,7 @@ function App() {
   hireable: function () {
     return this.observesUserFlow
       && this.solvesRepeatedWork
-      && this.projects >= 4;
+      && this.projects >= 5;
   }
 };`}</pre>
         </aside>
@@ -297,35 +235,30 @@ function App() {
 
         <ProjectDetail project={activeProject} refTarget={detailRef} />
       </section>
-
-      <section className="contactSection" id="contact">
-        <div className="sectionTitle">
-          <p className="eyebrow">Contact</p>
-          <h2>연락처 탭</h2>
-        </div>
-        <div className="contactGrid">
-          <article>
-            <span>제출용</span>
-            <strong>사람인 이력서와 함께 제출</strong>
-            <p>이력서, 자기소개서, 프로젝트 상세, 배포 링크를 한 사이트에서 확인할 수 있게 구성합니다.</p>
-          </article>
-          <article>
-            <span>핵심 스택</span>
-            <strong>React / Spring Boot / Firebase / MySQL / AI Workflow</strong>
-            <p>각 작품 상세에서 어떤 문제를 어떤 방식으로 해결했는지 연결해서 보여줍니다.</p>
-          </article>
-        </div>
-      </section>
     </main>
   );
 }
 
 function ProjectDetail({ project, refTarget }) {
+  const [selectedScreenshot, setSelectedScreenshot] = useState(null);
+  const moveScreenshot = (direction) => {
+    if (!selectedScreenshot) return;
+
+    const total = project.screenshots.length;
+    const nextIndex = (selectedScreenshot.index + direction + total) % total;
+    const [title, caption, src] = project.screenshots[nextIndex];
+
+    setSelectedScreenshot({ title, caption, src, index: nextIndex });
+  };
+
   return (
     <article className="detailPanel showcaseStage" ref={refTarget}>
-      <MobileShowcase project={project} />
-      <ProjectLiveFrame project={project} />
       <DetailSummary project={project} />
+      <ScreenshotGallery
+        project={project}
+        selectedScreenshot={selectedScreenshot}
+        setSelectedScreenshot={setSelectedScreenshot}
+      />
 
       <div className="detailBody compactDetailBody">
         <section>
@@ -337,192 +270,128 @@ function ProjectDetail({ project, refTarget }) {
           <p>{project.solution}</p>
         </section>
       </div>
-
-      <div className="detailGrid">
-        <div className="featureList">
-          {project.detail.map((item) => (
-            <p key={item}>{item}</p>
-          ))}
-        </div>
-        <div className="demoTable">
-          {project.demo.map(([label, value]) => (
-            <div className="demoRow" key={label}>
-              <strong>{label}</strong>
-              <span>{value}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {['fixchecker', 'reallife'].includes(project.id) && (
-        <DemoPlayground projectId={project.id} />
-      )}
+      {selectedScreenshot ? (
+        <ScreenshotModal
+          project={project}
+          screenshot={selectedScreenshot}
+          onClose={() => setSelectedScreenshot(null)}
+          onNext={() => moveScreenshot(1)}
+          onPrevious={() => moveScreenshot(-1)}
+        />
+      ) : null}
     </article>
   );
 }
 
-function MobileShowcase({ project }) {
-  const demoUrl = `${project.demoOrigin}${project.demoPath}`;
-  const mobile = mobileShowcases[project.id];
+function ScreenshotGallery({ project, selectedScreenshot, setSelectedScreenshot }) {
+  const hasImages = project.screenshots.some(([, , src]) => src);
 
   return (
-    <section className={`mobileShowcase mobileShowcase-${project.id}`} data-mobile-showcase>
-      <div className="mobileShowcaseHeader">
+    <section className="screenshotPanel" aria-label={`${project.label} 주요 화면`}>
+      <div className="screenshotHead">
         <div>
-          <p className="eyebrow">{mobile.sceneLabel}</p>
-          <h4>{project.label}</h4>
+          <p className="eyebrow">Screen Preview</p>
+          <h4>주요 화면 6장</h4>
         </div>
-        <span>{mobile.proof}</span>
+        <span>{hasImages ? '이미지 6장 적용' : '이미지 준비중'}</span>
       </div>
-      <p className="mobileHeadline">{mobile.headline}</p>
-      <p className="mobileBenefit">{mobile.benefit}</p>
-
-      <div className="phoneMock" aria-label={`${project.label} 모바일 쇼케이스 화면`}>
-        <div className="phoneStatus">
-          <span>9:41</span>
-          <strong>{project.label}</strong>
-          <span>100%</span>
-        </div>
-        <MobileScreen screen={mobile.screen} />
-      </div>
-
-      <div className="mobileSteps" aria-label={`${project.label} 모바일 사용자 여정`}>
-        {mobile.steps.map(([number, title, body]) => (
-          <div className="mobileStep" key={number}>
-            <span>{number}</span>
-            <div>
+      <div className="screenshotGrid">
+        {project.screenshots.map(([title, caption, src], index) => {
+          const item = { title, caption, src, index };
+          return (
+            <button
+              className={src ? 'screenshotSlot hasImage' : 'screenshotSlot'}
+              key={`${project.id}-${title}`}
+              onClick={() => setSelectedScreenshot(item)}
+              type="button"
+            >
+              {src ? (
+                <img alt={`${project.label} ${title}`} src={src} />
+              ) : (
+                <span className="screenshotPlaceholder">{String(index + 1).padStart(2, '0')}</span>
+              )}
               <strong>{title}</strong>
-              <p>{body}</p>
-            </div>
-          </div>
-        ))}
+              <p>{caption}</p>
+            </button>
+          );
+        })}
       </div>
-
-      <a className="mobileDemoButton" href={demoUrl} target="_blank" rel="noreferrer">
-        클론 화면 열기
-      </a>
+      {selectedScreenshot ? null : (
+        <p className="screenshotNote">
+          방문자는 등록할 수 없고, 스크린샷은 코드에 포함된 이미지만 표시됩니다.
+        </p>
+      )}
     </section>
   );
 }
 
-function MobileScreen({ screen }) {
-  if (screen.type === 'caredoc') {
-    return (
-      <div className="mobileScreen caredocScreen">
-        <div className="screenTitle">
-          <span>이용자 기본정보</span>
-          <strong>{screen.user}</strong>
-        </div>
-        <div className="mobileFieldList">
-          {screen.fields.map(([label, value]) => (
-            <div className="mobileField" key={label}>
-              <span>{label}</span>
-              <strong>{value}</strong>
-            </div>
-          ))}
-        </div>
-        <div className="docChipRow">
-          {screen.docs.map((doc) => <span key={doc}>{doc}</span>)}
-        </div>
-        <div className="mobileActionCard">{screen.action}</div>
-      </div>
-    );
-  }
+function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
+  const shouldFillFrame = screenshot.index > 0 && screenshot.index < 5;
 
-  if (screen.type === 'fixchecker') {
-    return (
-      <div className="mobileScreen fixScreen">
-        <div className="videoCard">
-          <span>{screen.videoTime}</span>
-          <strong>영상 구간 확인</strong>
-        </div>
-        <div className="mobileErrorCards">
-          {screen.errors.map(([time, issue, request]) => (
-            <div key={time}>
-              <span>{time}</span>
-              <strong>{issue}</strong>
-              <p>{request}</p>
-            </div>
-          ))}
-        </div>
-        <pre>{screen.json}</pre>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        onPrevious();
+      }
 
-  if (screen.type === 'lucid') {
-    return (
-      <div className="mobileScreen lucidScreen">
-        <div className="kpiGrid">
-          {screen.kpis.map(([label, value]) => (
-            <div key={label}>
-              <span>{label}</span>
-              <strong>{value}</strong>
-            </div>
-          ))}
-        </div>
-        <div className="reportCard">{screen.report}</div>
-        <div className="taskList">
-          {screen.tasks.map((task) => <span key={task}>{task}</span>)}
-        </div>
-      </div>
-    );
-  }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        onNext();
+      }
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose, onNext, onPrevious]);
 
   return (
-    <div className="mobileScreen reallifeScreen">
-      <div className="lifeStatRow">
-        {screen.stats.map(([label, value]) => (
-          <div key={label}>
-            <span>{label}</span>
-            <strong>{value}</strong>
+    <div className="screenshotModal" role="dialog" aria-modal="true" aria-label={`${screenshot.title} 크게 보기`}>
+      <button className="screenshotBackdrop" onClick={onClose} type="button" aria-label="닫기" />
+      <div className="screenshotModalStack">
+        <div className="screenshotModalShell">
+          <button className="modalNav modalNavPrevious" onClick={onPrevious} type="button" aria-label="이전 사진 보기">
+            &lt;
+          </button>
+          <button className="modalNav modalNavNext" onClick={onNext} type="button" aria-label="다음 사진 보기">
+            &gt;
+          </button>
+          <div className="screenshotDialog">
+            <button className="modalClose" onClick={onClose} type="button">닫기</button>
+            <div className="modalMedia">
+              <div className={[
+                'modalPreview',
+                screenshot.src ? 'hasImage' : '',
+                shouldFillFrame ? 'fillFrame' : '',
+              ].filter(Boolean).join(' ')}>
+                {screenshot.src ? (
+                  <img alt={`${project.label} ${screenshot.title}`} src={screenshot.src} />
+                ) : (
+                  <span>{String(screenshot.index + 1).padStart(2, '0')}</span>
+                )}
+              </div>
+            </div>
+            <div className="modalCaption">
+              <p className="eyebrow">{project.label}</p>
+              <h4>{screenshot.title}</h4>
+              <p>{screenshot.caption}</p>
+            </div>
           </div>
-        ))}
+        </div>
+        <p className="modalHintCapsule">키보드 ← · → 로도 이동할 수 있습니다.</p>
       </div>
-      <div className="eventCard">
-        <span>현재 이벤트</span>
-        <strong>{screen.event}</strong>
-      </div>
-      <div className="choiceStack">
-        {screen.choices.map((choice) => <button key={choice} type="button">{choice}</button>)}
-      </div>
-      <div className="resultPill">{screen.result}</div>
     </div>
   );
 }
 
-function ProjectLiveFrame({ project }) {
+function DetailSummary({ project }) {
   const demoUrl = `${project.demoOrigin}${project.demoPath}`;
 
-  return (
-    <section className="liveFramePanel">
-      <div className="liveFrameHead">
-        <div>
-          <p className="eyebrow">Live Preview</p>
-          <h4>{project.demoLabel}</h4>
-        </div>
-        <a href={demoUrl} target="_blank" rel="noreferrer">새 창</a>
-      </div>
-      <div className="browserFrame" aria-label={`${project.label} 실제 클론 미리보기`}>
-        <div className="browserFrameBar">
-          <span className="windowDot redDot" />
-          <span className="windowDot yellowDot" />
-          <span className="windowDot greenDot" />
-          <strong>{project.label}</strong>
-          <em>{demoUrl}</em>
-        </div>
-        <div className="browserViewport">
-          <iframe
-            src={demoUrl}
-            title={`${project.label} 실제 클론`}
-          />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function DetailSummary({ project }) {
   return (
     <div className="detailHead">
       <div>
@@ -530,105 +399,12 @@ function DetailSummary({ project }) {
         <h3>{project.title}</h3>
         <p>{project.summary}</p>
       </div>
-      <div className="stackList">
-        {project.stack.map((item) => (
-          <span key={item}>{item}</span>
-        ))}
+      <div className="projectOpenActions">
+        <a href={demoUrl} target="_blank" rel="noreferrer">
+          새 창으로 열기
+        </a>
       </div>
     </div>
-  );
-}
-
-function DemoPlayground({ projectId }) {
-  const [checkedErrors, setCheckedErrors] = useState(['tone']);
-  const [lifeStats, setLifeStats] = useState({ turn: 1, hp: 72, cash: 120000, focus: 48, log: '오늘 할 일을 선택해보세요.' });
-
-  const errorItems = [
-    { id: 'tone', time: '00:03.2', from: '표현이 딱딱함', to: '고객 응대 톤으로 자연스럽게 수정' },
-    { id: 'breath', time: '00:06.8', from: '문장 호흡이 김', to: '두 문장으로 분리' },
-    { id: 'term', time: '00:08.4', from: '용어가 불명확함', to: '서비스 화면 기준 용어로 통일' },
-  ];
-
-  const selectedErrors = errorItems.filter((item) => checkedErrors.includes(item.id));
-
-  const playLife = (type) => {
-    const next = {
-      work: { hp: -8, cash: 70000, focus: -4, log: '알바를 수락했습니다. 현금은 늘었지만 체력이 줄었습니다.' },
-      study: { hp: -5, cash: 0, focus: 12, log: '자격증 공부를 했습니다. 집중도가 올라갔습니다.' },
-      rest: { hp: 14, cash: -12000, focus: 5, log: '휴식을 선택했습니다. 컨디션을 회복했습니다.' },
-    }[type];
-
-    setLifeStats((stats) => ({
-      turn: stats.turn + 1,
-      hp: Math.max(0, Math.min(100, stats.hp + next.hp)),
-      cash: Math.max(0, stats.cash + next.cash),
-      focus: Math.max(0, Math.min(100, stats.focus + next.focus)),
-      log: next.log,
-    }));
-  };
-
-  if (projectId === 'fixchecker') {
-    return (
-      <section className="playgroundPanel">
-        <div className="playgroundHead">
-          <p className="eyebrow">Flow Check</p>
-          <h4>자막 오류 체크 후 JSON 생성</h4>
-        </div>
-        <div className="errorList">
-          {errorItems.map((item) => (
-            <label key={item.id}>
-              <input
-                checked={checkedErrors.includes(item.id)}
-                onChange={(event) => {
-                  setCheckedErrors((current) => (
-                    event.target.checked
-                      ? [...current, item.id]
-                      : current.filter((id) => id !== item.id)
-                  ));
-                }}
-                type="checkbox"
-              />
-              <span>{item.time}</span>
-              {item.from}
-            </label>
-          ))}
-        </div>
-        <pre className="jsonPreview">{JSON.stringify({ errors: selectedErrors.map(({ time, from, to }) => ({ time, issue: from, request: to })) }, null, 2)}</pre>
-      </section>
-    );
-  }
-
-  if (projectId === 'reallife') {
-    return (
-      <section className="playgroundPanel">
-        <div className="playgroundHead">
-          <p className="eyebrow">Flow Check</p>
-          <h4>선택지에 따른 상태 변화</h4>
-        </div>
-        <div className="statGrid">
-          <span>턴 {lifeStats.turn}</span>
-          <span>체력 {lifeStats.hp}</span>
-          <span>현금 {lifeStats.cash.toLocaleString()}원</span>
-          <span>집중도 {lifeStats.focus}</span>
-        </div>
-        <div className="choiceRow">
-          <button onClick={() => playLife('work')} type="button">알바 수락</button>
-          <button onClick={() => playLife('study')} type="button">자격증 공부</button>
-          <button onClick={() => playLife('rest')} type="button">휴식</button>
-        </div>
-        <p className="resultText">{lifeStats.log}</p>
-      </section>
-    );
-  }
-
-  return (
-    <section className="playgroundPanel lockedDemo">
-      <div className="playgroundHead">
-        <p className="eyebrow">Protected Flow</p>
-        <h4>로그인이 필요한 프로젝트</h4>
-      </div>
-      <p>이 프로젝트는 로그인/관리자 권한 흐름이 있어, 원본 인증을 건드리지 않는 별도 보호 흐름으로 분리합니다.</p>
-    </section>
   );
 }
 
