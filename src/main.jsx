@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-const mainDeployOrigin = 'https://hyeokjun-portfolio-theta.vercel.app';
+const mainDeployOrigin = '';
 
 const projectDetails = [
   {
