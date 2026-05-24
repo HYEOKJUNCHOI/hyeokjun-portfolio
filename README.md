@@ -4,7 +4,7 @@
 
 ## 원본 보호 원칙
 
-- `caredoc`, `Unitime`, `Lucid`, `RealLife`, `subtitle-fix-checker` 원본 repo는 직접 수정하지 않습니다.
+- `caredoc`, `Lucid`, `RealLife`, `subtitle-fix-checker` 원본 repo는 직접 수정하지 않습니다.
 - 로그인 제거, 자동 진입, 데모 데이터 삽입은 이 쇼케이스 앱 또는 별도 복제본 안에서만 처리합니다.
 - 원본 서비스의 운영 로그인/인증 흐름은 보존합니다.
 - `source-clones/`는 원본 작업트리의 쇼케이스용 스냅샷입니다.

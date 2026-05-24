@@ -32,34 +32,15 @@ const projectDetails = [
     demoPath: '/clones/subtitle-fix-checker/',
     demoLabel: 'Subtitle Fix Checker 실제 클론',
     title: '자막 검수 판단을 AI 수정 지시서로 바꾸는 도구',
-    summary: '영상 자막을 보며 틀린 구간만 체크하고, JSON 작업지시서로 후속 AI 수정까지 이어지게 만든 앱입니다.',
-    stack: ['React', 'JSON', 'Video Demo', 'AI Workflow'],
+    summary: '자막을 보며 틀린 구간만 체크하고, JSON 작업지시서로 후속 AI 수정까지 이어지게 만든 앱입니다.',
+    stack: ['React', 'JSON', '검수 플로우', 'AI Workflow'],
     problem: '자막 검수는 사람이 판단한 내용이 흩어지면 후속 수정 지시로 다시 정리하는 시간이 듭니다.',
     solution: '오류 구간, 시간, 원문, 수정 요청을 구조화해서 AI가 바로 읽을 수 있는 JSON으로 출력합니다.',
-    detail: ['10초 데모 영상 삽입 가능', '오류 구간과 수정 요청을 행 단위로 기록', 'JSON 작업지시서 생성', '로그인 없이 바로 체험'],
+    detail: ['오류 구간과 수정 요청을 행 단위로 기록', '검수 판단을 JSON 작업지시서로 변환', '후속 AI 수정 요청에 바로 연결', '로그인 없이 흐름 확인'],
     demo: [
       ['00:03.2', '표현이 딱딱함 -> 자연스럽게 수정'],
       ['00:06.8', '문장 호흡이 김 -> 두 문장으로 분리'],
       ['출력', 'errors.json 작업지시서 생성'],
-    ],
-  },
-  {
-    id: 'unitime',
-    label: 'Unitime',
-    type: 'Schedule Ops',
-    demoOrigin: mainDeployOrigin,
-    demoPath: '/clones/unitime/',
-    demoLabel: 'Unitime 실제 클론',
-    title: '팀 일정과 교육 일정을 한눈에 보는 운영 캘린더',
-    summary: '반복 일정과 참여자를 월간 화면에서 빠르게 확인하는 일정 관리 서비스입니다.',
-    stack: ['React', 'Calendar UI', 'Firebase', '운영 관리'],
-    problem: '교육 일정, 팀 일정, 참여자 상태가 흩어져 있으면 운영자가 매번 다시 확인해야 합니다.',
-    solution: '월간 캘린더, 카테고리, 참여자, 메모를 한 화면에 모아 일정 흐름을 빠르게 파악하도록 구성했습니다.',
-    detail: ['월간 일정 흐름 확인', '카테고리별 일정 구분', '참여자/메모 기반 운영 정보 정리', '데모 데이터로 로그인 없이 확인'],
-    demo: [
-      ['오늘', '09:30 부산 교육센터 오리엔테이션'],
-      ['이번 주', 'RAG 실습, 팀 프로젝트, 코드 리뷰'],
-      ['메모', '제출 전 참석자 명단 재확인'],
     ],
   },
   {
@@ -143,27 +124,6 @@ const mobileShowcases = {
         ['00:06.8', '문장 호흡이 김', '두 문장으로 분리'],
       ],
       json: '{ errors: 2, ready: true }',
-    },
-  },
-  unitime: {
-    headline: '오늘 해야 할 일부터 보이는 일정 운영',
-    benefit: '월간 캘린더 전체 대신 오늘 일정, 이번 주 흐름, 상세 메모를 모바일 카드로 보여줍니다.',
-    sceneLabel: '일정 운영 화면',
-    proof: '오늘 일정 3건',
-    steps: [
-      ['01', '오늘 일정 확인', '지금 처리할 일정을 첫 카드로 표시'],
-      ['02', '이번 주 흐름', '교육, 실습, 리뷰 일정을 세로 리스트로 확인'],
-      ['03', '상세 메모', '운영자가 놓치면 안 되는 준비물을 기록'],
-    ],
-    screen: {
-      type: 'unitime',
-      today: ['09:30', '부산 교육센터 오리엔테이션', '참석자 명단 확인'],
-      week: [
-        ['월', 'RAG 실습'],
-        ['수', '팀 프로젝트'],
-        ['금', '코드 리뷰'],
-      ],
-      memo: '제출 전 참석자 명단과 자료 링크 재확인',
     },
   },
   lucid: {
@@ -394,7 +354,7 @@ function ProjectDetail({ project, refTarget }) {
         </div>
       </div>
 
-      {['unitime', 'fixchecker', 'reallife'].includes(project.id) && (
+      {['fixchecker', 'reallife'].includes(project.id) && (
         <DemoPlayground projectId={project.id} />
       )}
     </article>
@@ -439,7 +399,7 @@ function MobileShowcase({ project }) {
       </div>
 
       <a className="mobileDemoButton" href={demoUrl} target="_blank" rel="noreferrer">
-        실제 데모 열기
+        클론 화면 열기
       </a>
     </section>
   );
@@ -465,27 +425,6 @@ function MobileScreen({ screen }) {
           {screen.docs.map((doc) => <span key={doc}>{doc}</span>)}
         </div>
         <div className="mobileActionCard">{screen.action}</div>
-      </div>
-    );
-  }
-
-  if (screen.type === 'unitime') {
-    return (
-      <div className="mobileScreen unitimeScreen">
-        <div className="todayCard">
-          <span>{screen.today[0]}</span>
-          <strong>{screen.today[1]}</strong>
-          <p>{screen.today[2]}</p>
-        </div>
-        <div className="weekList">
-          {screen.week.map(([day, title]) => (
-            <div key={day}>
-              <span>{day}</span>
-              <strong>{title}</strong>
-            </div>
-          ))}
-        </div>
-        <div className="memoCard">{screen.memo}</div>
       </div>
     );
   }
@@ -601,15 +540,8 @@ function DetailSummary({ project }) {
 }
 
 function DemoPlayground({ projectId }) {
-  const [selectedEvent, setSelectedEvent] = useState('orientation');
   const [checkedErrors, setCheckedErrors] = useState(['tone']);
   const [lifeStats, setLifeStats] = useState({ turn: 1, hp: 72, cash: 120000, focus: 48, log: '오늘 할 일을 선택해보세요.' });
-
-  const scheduleMap = {
-    orientation: ['09:30', '부산 교육센터 오리엔테이션', '참석자 명단 확인 후 안내 메시지 발송'],
-    rag: ['13:00', 'RAG 실습', '실습 자료와 API 키 준비 상태 점검'],
-    review: ['16:30', '팀 프로젝트 코드 리뷰', 'PR별 피드백과 다음 작업자 기록'],
-  };
 
   const errorItems = [
     { id: 'tone', time: '00:03.2', from: '표현이 딱딱함', to: '고객 응대 톤으로 자연스럽게 수정' },
@@ -635,36 +567,11 @@ function DemoPlayground({ projectId }) {
     }));
   };
 
-  if (projectId === 'unitime') {
-    const event = scheduleMap[selectedEvent];
-
-    return (
-      <section className="playgroundPanel">
-        <div className="playgroundHead">
-          <p className="eyebrow">Live Demo</p>
-          <h4>일정 클릭 미리보기</h4>
-        </div>
-        <div className="scheduleButtons">
-          {Object.entries(scheduleMap).map(([id, item]) => (
-            <button className={selectedEvent === id ? 'active' : ''} key={id} onClick={() => setSelectedEvent(id)} type="button">
-              <span>{item[0]}</span>
-              {item[1]}
-            </button>
-          ))}
-        </div>
-        <div className="previewDoc">
-          <strong>{event[0]} · {event[1]}</strong>
-          <p>{event[2]}</p>
-        </div>
-      </section>
-    );
-  }
-
   if (projectId === 'fixchecker') {
     return (
       <section className="playgroundPanel">
         <div className="playgroundHead">
-          <p className="eyebrow">Live Demo</p>
+          <p className="eyebrow">Flow Check</p>
           <h4>자막 오류 체크 후 JSON 생성</h4>
         </div>
         <div className="errorList">
@@ -695,7 +602,7 @@ function DemoPlayground({ projectId }) {
     return (
       <section className="playgroundPanel">
         <div className="playgroundHead">
-          <p className="eyebrow">Live Demo</p>
+          <p className="eyebrow">Flow Check</p>
           <h4>선택지에 따른 상태 변화</h4>
         </div>
         <div className="statGrid">
@@ -717,10 +624,10 @@ function DemoPlayground({ projectId }) {
   return (
     <section className="playgroundPanel lockedDemo">
       <div className="playgroundHead">
-        <p className="eyebrow">Demo Later</p>
+        <p className="eyebrow">Protected Flow</p>
         <h4>로그인이 필요한 프로젝트</h4>
       </div>
-      <p>이 프로젝트는 로그인/관리자 권한 흐름이 있어, 원본 인증을 건드리지 않는 별도 데모 세션으로 나중에 분리합니다.</p>
+      <p>이 프로젝트는 로그인/관리자 권한 흐름이 있어, 원본 인증을 건드리지 않는 별도 보호 흐름으로 분리합니다.</p>
     </section>
   );
 }
