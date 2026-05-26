@@ -12,10 +12,10 @@ const projectDetails = [
     type: '복지 서류 도구',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/caredoc/index.html?portfolio=1&v=20260525-0025',
-    title: '복지시설 서류 작성 흐름을 줄이는 문서 도구',
+    title: '복지시설 서류 작성을 웹에서 이어지게 만든 도구',
     summary: lines([
-      '엑셀·워드 중심의 반복 서류 업무를',
-      '브라우저 업무 흐름으로 전환해본 프로젝트입니다.',
+      '한 번 입력한 정보가 여러 문서와 출력물까지 이어지도록',
+      '복지시설의 서류 작성 과정을 웹 화면으로 정리했습니다.',
     ]),
     stack: ['React', 'PDF', 'SVG', '엑셀·워드 웹화'],
     problem: lines([
@@ -62,70 +62,70 @@ const projectDetails = [
   {
     id: 'fixchecker',
     label: 'Subtitle Fix Checker',
-    type: 'AI 수정 흐름',
+    type: '자막 검수 보조 도구',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/subtitle-fix-checker/',
-    title: '자막 검수 판단을 AI 수정 지시서로 바꾸는 도구',
+    title: '사람이 표시한 자막 문제를 작업지시서로 정리하는 도구',
     summary: lines([
-      '검수자가 웹에서 하자 스티커를 붙이듯 문제 구간을 표시하고,',
-      'JSON 주문서로 AI 수정까지 이어지게 만든 도구입니다.',
+      '영상과 SRT를 함께 보며 문제가 있는 cue를 표시하고,',
+      '후속 AI와 수정자가 읽을 수 있는 JSON 작업지시서로 내보냅니다.',
     ]),
-    stack: ['React', 'JSON', 'AI 수정 연계', 'CapCut Draft'],
+    stack: ['React', 'SRT', 'JSON', 'Markdown', 'CapCut'],
     problem: lines([
-      '자막 검수는 사람이 판단한 내용이 흩어지면',
-      '후속 수정 지시로 다시 정리하는 시간이 듭니다.',
+      '자막 문제는 사람이 영상을 보며 판단해야 하지만,',
+      '그 판단을 후속 수정자가 바로 읽을 수 있는 형태로 옮기는 과정이 번거로웠습니다.',
     ]),
     solution: lines([
-      '오류 구간과 수정 요청을 JSON 주문서로 만들고,',
-      'AI가 CapCut 드래프트 파일을 수정하는 흐름까지 연결했습니다.',
+      '드래그 앤 드롭으로 영상과 SRT를 불러오고,',
+      'Tab과 단축키로 문제 cue를 잡은 뒤 요청사항과 JSON으로 정리하도록 만들었습니다.',
     ]),
-    detail: ['웹에서 자막 오류 구간과 수정 요청을 표시', '검수 판단을 JSON 주문서로 변환', 'AI에게 재전달해 CapCut 드래프트 수정 흐름으로 연결', '사용자의 반복 손작업을 줄이는 구조 실험'],
+    detail: ['영상과 SRT를 함께 불러오는 검수 화면', 'Tab/단축키로 문제 cue 기록', '수정모드에서 표현과 요청사항 확정', '미저장 항목 경고 후 JSON 작업지시서 저장'],
     demo: [
-      ['00:03.2', '표현이 딱딱함 -> 자연스럽게 수정'],
-      ['00:06.8', '문장 호흡이 김 -> 두 문장으로 분리'],
-      ['출력', '오류 목록 작업지시서 생성'],
+      ['Tab', '현재 cue 기록 + 영상 일시정지'],
+      ['Q/W/A/S/D', '한국어·일본어 오류, 빠름·느림, 자막컷팅 표시'],
+      ['저장', '요청사항과 cue 정보를 JSON으로 내보내기'],
     ],
     screenshots: [
-      ['영상 입력', '검수할 영상을 올리거나 확인하는 화면', '/project-shots/fixchecker/01.png'],
-      ['구간 체크', '오류 시간과 내용을 행 단위로 기록하는 화면', '/project-shots/fixchecker/02.png'],
-      ['수정 요청', '어떻게 바꿀지 지시를 적는 화면', '/project-shots/fixchecker/03.png'],
-      ['JSON 출력', 'AI가 읽을 작업지시서를 생성하는 화면', '/project-shots/fixchecker/04.png'],
-      ['오류 목록', '선택된 오류를 한 번에 검토하는 화면', '/project-shots/fixchecker/05.png'],
-      ['결과 확인', '후속 수정에 넘길 내용을 확인하는 화면', '/project-shots/fixchecker/06.png'],
+      ['파일 불러오기', '영상과 SRT를 드래그 앤 드롭으로 함께 넣는 시작 화면', '/project-shots/fixchecker/01.jpg'],
+      ['검수카드 목록', '문제가 있는 cue와 요청사항을 카드 단위로 확인하는 화면', '/project-shots/fixchecker/02.jpg'],
+      ['수정모드 진입', '선택한 cue에서 Enter로 수정할 항목을 여는 화면', '/project-shots/fixchecker/03.jpg'],
+      ['직접수정 모드', '표현을 바로 고치거나 후속 AI에게 줄 요청사항을 적는 화면', '/project-shots/fixchecker/04.jpg'],
+      ['큐 저장', '수정한 cue를 저장하고 작업 완료 상태를 확인하는 화면', '/project-shots/fixchecker/05.jpg'],
+      ['미저장 경고', '내보내기 전에 저장되지 않은 검수카드를 알려주는 화면', '/project-shots/fixchecker/06.jpg'],
     ],
   },
   {
     id: 'lucid',
     label: 'Lucid',
-    type: 'AI 학습 도구',
+    type: '부트캠프 학습 플랫폼',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/lucid/',
-    title: 'AI API와 GitHub 자료를 연결한 학습 도구',
+    title: '강사 코드와 AI 튜터를 한 화면에 모은 학습 플랫폼',
     summary: lines([
-      'AI API로 문제 출제와 정답 체크를 처리하고,',
-      'GitHub 자료를 불러와 복습 흐름으로 연결한 학습 서비스입니다.',
+      '강사의 GitHub 코드를 불러와 Monaco Editor에서 확인하고,',
+      'AI 튜터·퀴즈·메모·학습 기록을 같은 흐름에서 다룹니다.',
     ]),
-    stack: ['React', 'LangChain', 'AI API', 'GitHub API', 'Monaco Editor'],
+    stack: ['React', 'Firebase', 'Gemini', 'GitHub API', 'Monaco Editor'],
     problem: lines([
-      '수업 자료와 복습 문제가 흩어져 있으면',
-      '학습자가 필요한 자료를 다시 찾고 문제로 확인하는 과정이 번거롭습니다.',
+      '부트캠프 학습자는 코드 확인, 질문, 퀴즈, 메모를 여러 도구로 오가며 처리합니다.',
+      '강사도 학생이 어디에서 막히는지 한 화면에서 보기 어렵습니다.',
     ]),
     solution: lines([
-      '강사의 GitHub 자료를 불러오고,',
-      'AI API로 문제 출제, 정답 체크, 학습자료 출력을 연결했습니다.',
+      '강사 레포지토리의 코드를 학습 화면에 불러오고,',
+      'AI 튜터와 난이도별 코드 생성, 퀴즈, 메모, XP·스트릭 기록을 연결했습니다.',
     ]),
-    detail: ['LangChain과 AI API를 활용한 문제 출제', 'Monaco Editor를 활용한 코드/자료 확인 화면', '정답 체크와 학습자료 출력 흐름 구현', 'GitHub API로 강사 자료를 불러오는 복습 기능'],
+    detail: ['GitHub 코드 불러오기와 Monaco Editor 코드 열람', 'Gemini 기반 튜터 채팅과 코드 생성', '퀴즈·용어 사전·메모/PDF 학습 보조', 'Firebase 기반 XP, 스트릭, 학생 현황 관리'],
     demo: [
-      ['에디터', 'Monaco Editor로 코드와 자료 확인'],
-      ['AI', '문제 출제 / 정답 체크 / 학습자료 출력'],
-      ['자료', '강사 GitHub 자료 불러오기'],
+      ['코드', '강사 GitHub 자료를 Monaco Editor로 확인'],
+      ['튜터', '코드 맥락을 바탕으로 질문과 설명 연결'],
+      ['기록', '퀴즈, 메모, XP와 스트릭으로 학습 상태 저장'],
     ],
     screenshots: [
-      ['학습 홈', '복습할 수업 자료와 학습 흐름을 확인하는 화면', '/project-shots/lucid/01.jpg'],
-      ['코드 에디터', 'Monaco Editor로 코드와 학습 자료를 확인하는 화면', '/project-shots/lucid/02.jpg'],
-      ['문제 출제', 'AI API를 활용해 학습 내용 기반 문제를 만드는 화면', '/project-shots/lucid/03.jpg'],
-      ['정답 체크', '사용자 답안을 확인하고 피드백하는 화면', '/project-shots/lucid/04.jpg'],
-      ['학습자료 출력', '복습에 필요한 자료를 다시 정리해 출력하는 화면', '/project-shots/lucid/05.jpg'],
+      ['학습 홈', '레벨, XP, 스트릭과 일일 퀘스트를 확인하는 화면', '/project-shots/lucid/01.jpg'],
+      ['코드 에디터', '강사 GitHub 코드를 Monaco Editor로 확인하는 화면', '/project-shots/lucid/02.jpg'],
+      ['AI 튜터', '코드 맥락을 바탕으로 질문하고 설명을 받는 화면', '/project-shots/lucid/03.jpg'],
+      ['문제 풀이', '학습 내용 기반 퀴즈와 피드백을 확인하는 화면', '/project-shots/lucid/04.jpg'],
+      ['학습 메모', '마크다운 메모와 PDF 출력으로 복습 자료를 정리하는 화면', '/project-shots/lucid/05.jpg'],
       ['데모 세션', '로그인 없이 핵심 학습 흐름을 확인하는 화면', '/project-shots/lucid/06.jpg'],
     ],
   },
@@ -215,26 +215,26 @@ const experienceItems = [
       '2025년 9월부터 2026년 2월까지',
       '풀스택 개발 교육을 이수하며 웹 개발의 기본 구조를 익혔습니다.',
       '수료 이후에는 에이전트 코딩 방식을 익혀,',
-      '실제 프로젝트 구현에 활용하고 있습니다.',
+      '개인 프로젝트의 기획과 구현에 활용하고 있습니다.',
     ]),
   },
 ];
 
 const resumeIntro = lines([
-  '저는 반복되는 불편함을 그냥 넘기지 못하는 편입니다. 같은 작업을 여러 번 반복하는 상황에서 손을 더 빠르게 움직이기보다, 먼저 이 과정을 줄일 방법을 고민했습니다. 좌표 기반 매크로로 여러 단계의 작업을 원키로 줄여본 경험도 그때 시작됐고, 이후 개발을 배우며 이 관심을 웹앱 제작으로 이어가고 있습니다.',
+  '고객과 가까운 자리에서 일하며 같은 불편이 여러 번 반복되는 순간을 자주 봤습니다. 그 경험은 기능을 많이 넣기보다 사용자가 어디에서 멈추는지 먼저 찾는 습관으로 이어졌습니다.',
   '',
-  '고객응대 업무를 8년 이상 경험하며 사용자가 실제로 어디에서 불편을 느끼고, 업무자가 어떤 확인과 입력을 반복하는지 가까이서 봐왔습니다. RAG·AI 기반 풀스택 개발자 양성과정에서는 Java, Spring Boot, React, MySQL, Python을 학습했고, 팀 프로젝트에서는 레시피 추천 서비스의 데이터 정규화 문제를 맡았습니다.',
+  'RAG·AI 기반 풀스택 개발자 양성과정에서는 Java, Spring Boot, React, MySQL, Python을 학습했습니다. 팀 프로젝트에서는 레시피 추천 서비스의 데이터 정규화 문제를 맡으며, 기능이 동작해도 사용자가 헷갈리면 좋은 흐름이 아니라는 점을 배웠습니다.',
   '',
-  '교육 이후에는 실제 업무의 반복 지점을 줄이는 프로젝트를 만들고 있습니다. CareDoc은 일본 복지시설의 서류 작성 과정에서 반복 입력, 가족관계도 작성, PDF 출력 과정을 하나의 웹 흐름으로 정리한 프로젝트입니다. Subtitle Fix Checker는 자막 검수 중 사람이 판단한 오류를 JSON 작업지시서로 정리해 AI 후속 수정에 연결하는 도구입니다.',
+  '교육 이후에는 CareDoc과 Subtitle Fix Checker처럼 작은 업무 병목을 웹 도구로 바꿔보는 프로젝트를 이어가고 있습니다. CareDoc은 복지시설 서류 작성을, Subtitle Fix Checker는 자막 검수 판단을 후속 작업자가 읽기 쉬운 형태로 정리하는 데 초점을 맞췄습니다.',
   '',
-  '저는 Claude Code와 Codex 같은 AI 도구를 단순 코드 생성용이 아니라, 문제를 기능 단위로 나누고 반복 작업을 줄이는 방식으로 활용하고 있습니다. 입사 후에도 사내 업무 병목을 관찰하고, AI와 웹 기술로 실제로 도움이 되는 자동화 도구를 만드는 개발자가 되고 싶습니다.',
+  'AI 도구는 코드를 대신 쓰게 하는 수단보다, 문제를 나누고 작업 순서를 잡는 파트너로 사용하려고 합니다. 앞으로도 사용자가 왜 불편한지부터 확인하고, 바로 쓸 수 있는 작은 개선을 끝까지 완성하는 개발자가 되고 싶습니다.',
 ]);
 
 const profileFacts = [
   ['이름', '최혁준'],
-  ['방향', 'AI 개발 도구를 활용해 실제 문제를 구현하는 개발자'],
+  ['방향', '반복되는 불편을 찾아 작업 부담을 줄이는 웹 도구를 만듭니다'],
   ['학습', 'Java · Spring Boot · React · MySQL · Python'],
-  ['도구', 'Claude Code · Codex · Gemini · OpenClaw'],
+  ['도구', 'React · Firebase · Vercel · Gemini · GitHub API'],
   ['경험', lines([
     '고객 응대 8년 이상',
     '일본 워킹홀리데이 1년 · 유학원 6개월',
@@ -328,9 +328,8 @@ function App() {
             <span>최혁준입니다.</span>
           </h1>
           <p className="heroLead">
-            <span>풀스택 개발 교육으로 웹 개발의 기본 구조를 익힌 뒤,</span>
-            <span>AI 개발 도구를 활용해</span>
-            <span>실제 현장의 문제를 구현 가능한 서비스로 옮기고 있습니다.</span>
+            <span>고객을 마주하며 본 작은 불편을 놓치지 않고,</span>
+            <span>반복되는 작업을 줄이는 웹 도구로 옮기고 있습니다.</span>
           </p>
           <div className="heroActions">
             <a href="#works">작품 보기</a>
@@ -348,7 +347,7 @@ function App() {
             <code>
               <span className="codeLine"><span className="token keyword">const</span> <span className="token variable">프로필</span> <span className="token operator">=</span> {'{'}</span>
               <span className="codeLine">  <span className="token property">이름</span>: <span className="token string">'최혁준'</span>,</span>
-              <span className="codeLine">  <span className="token property">목표</span>: <span className="token string">'AI를 활용해 실제 문제를 구현하는 개발자'</span>,</span>
+              <span className="codeLine">  <span className="token property">목표</span>: <span className="token string">'작업 부담을 줄이는 웹 도구를 만드는 개발자'</span>,</span>
               <span className="codeLine">  <span className="token property">학습기술</span>: [</span>
               <span className="codeLine">    <span className="token string">'React'</span>, <span className="token string">'Spring Boot'</span>, <span className="token string">'Java'</span>,</span>
               <span className="codeLine">    <span className="token string">'MySQL'</span>, <span className="token string">'Firebase'</span></span>
@@ -373,11 +372,11 @@ function App() {
       <section className="aboutSection" id="career">
         <div className="sectionTitle">
           <p className="eyebrow">경력 및 연수·교육 이수</p>
-          <h2>현장에서 마주한 불편함을 개발로 풀어가고 있습니다</h2>
+          <h2>불편을 발견하고, 쓸 수 있는 형태로 정리합니다</h2>
           <p>{lines([
-            '고객을 응대하며 배운 니즈 파악과 풀스택 개발 교육에서 익힌 기본 구조를 바탕으로,',
-            'Claude Code와 Codex 같은 AI 개발 도구를 활용해',
-            '실제 프로젝트를 직접 구현하며 개발 경험을 쌓고 있습니다.',
+            '고객 응대 경험으로 사람들이 어디서 막히는지 관찰했고,',
+            '풀스택 개발 교육 이후에는 그 감각을 문서 작성, 자막 검수, 학습 보조 프로젝트로 옮기고 있습니다.',
+            'AI 도구는 범위를 정하고 실행 순서를 잡는 보조 도구로 사용합니다.',
           ])}</p>
         </div>
         <div className="experienceGrid">
@@ -396,7 +395,7 @@ function App() {
       <section className="introSection" id="self-intro">
         <div className="sectionTitle">
           <p className="eyebrow">자기소개</p>
-          <h2>작은 불편을 실제 흐름으로 바꾸는 개발자</h2>
+          <h2>작은 불편을 작업 가능한 단위로 나누는 개발자</h2>
         </div>
 
         <div className="introPage">
@@ -427,8 +426,8 @@ function App() {
       <section className="workSection" id="works">
         <div className="sectionTitle">
           <p className="eyebrow">주요 작업</p>
-          <h2>포트폴리오 작품</h2>
-          <p>메인은 가볍게 보여주고, 관심 있는 작품을 클릭하면 상세 설명과 데모 데이터가 열립니다.</p>
+          <h2>작업 부담을 줄이는 프로젝트</h2>
+          <p>문서 작성, 자막 검수, 코딩 학습처럼 사용자가 자주 멈추는 과정을 작게 나눠 구현한 작업들입니다.</p>
         </div>
 
         <div className="projectGrid" aria-label="프로젝트 네비게이터">
