@@ -13,8 +13,6 @@ const viewports = [
   { name: '768', width: 768, height: 1024 },
 ];
 
-const projects = ['caredoc', 'fixchecker', 'unitime', 'lucid', 'reallife'];
-
 const failures = [];
 
 function recordFailure(viewport, project, message) {
@@ -35,11 +33,15 @@ for (const viewport of viewports) {
   });
 
   await page.goto(baseUrl, { waitUntil: 'networkidle' });
-  await page.locator('a[href="#works"]').click();
+  await page.locator('.heroNav').getByRole('link', { name: '쇼케이스' }).click();
   await page.waitForTimeout(250);
 
+  const projects = await page.locator('[data-project-id]').evaluateAll((elements) => (
+    elements.map((element) => element.getAttribute('data-project-id')).filter(Boolean)
+  ));
+
   for (const project of projects) {
-    await page.locator(`[data-project-id="${project}"]`).click();
+    await page.locator(`[data-project-id="${project}"]`).first().click();
     await page.waitForTimeout(250);
 
     const audit = await page.evaluate(() => {

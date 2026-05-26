@@ -22,6 +22,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
+  overflow-x: hidden;
   background:
     linear-gradient(180deg, #080b13 0%, #070a12 34%, #0a111d 100%);
   word-break: keep-all;
@@ -243,7 +244,7 @@ button {
 }
 
 .heroNav a {
-  min-height: 28px;
+  min-height: 44px;
   min-width: 52px;
   padding: 0 14px;
   border-radius: 999px;
@@ -325,7 +326,7 @@ h1 span {
 
 .heroActions a {
   min-width: 112px;
-  min-height: 42px;
+  min-height: 44px;
   padding: 0 18px;
   border: 1px solid rgba(114, 138, 176, 0.36);
   border-radius: 9px;
@@ -442,6 +443,10 @@ h1 span {
 .introSection,
 .workSection {
   padding: 48px 0 0;
+}
+
+.backgroundSection {
+  opacity: 0.92;
 }
 
 .eyebrow {
@@ -732,17 +737,68 @@ h1 span {
   white-space: pre-line;
 }
 
+.badgeList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 840px;
+  margin-top: 16px;
+}
+
+.badgeList span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 11px;
+  border: 1px solid rgba(67, 222, 211, 0.28);
+  border-radius: 999px;
+  background: rgba(67, 222, 211, 0.08);
+  color: #d8fff7;
+  font-size: 12px;
+  font-weight: 900;
+}
+
 .detailBody,
 .detailGrid,
-.projectBrief {
+.projectBrief,
+.reflectionGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
 .detailBody,
-.projectBrief {
+.projectBrief,
+.reflectionGrid {
   margin-top: 18px;
+}
+
+.reflectionGrid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.reflectionCard {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid rgba(155, 178, 210, 0.14);
+  border-radius: 12px;
+  background: rgba(4, 10, 18, 0.36);
+}
+
+.reflectionCard span {
+  display: block;
+  margin-bottom: 10px;
+  color: #55d7c7;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.reflectionCard p {
+  margin: 0;
+  color: #c4d3e6;
+  font-size: 13.5px;
+  font-weight: 690;
+  line-height: 1.58;
 }
 
 .briefCard {
@@ -1792,6 +1848,10 @@ h1 span {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .reflectionGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
 }
 
 @media (max-width: 760px) {
@@ -1828,6 +1888,10 @@ h1 span {
     font-size: 15px;
   }
 
+  .heroActions a {
+    width: 100%;
+  }
+
   .codePanel {
     min-height: 340px;
   }
@@ -1844,6 +1908,7 @@ h1 span {
   .detailGrid,
   .letterGrid,
   .projectBrief,
+  .reflectionGrid,
   .playgroundGrid,
   .scheduleButtons,
   .choiceRow,
@@ -1861,8 +1926,10 @@ h1 span {
     position: static;
     display: flex;
     gap: 10px;
-    margin: 0 -12px;
-    padding: 8px 12px 10px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 8px 0 10px;
     overflow-x: auto;
     scroll-snap-type: x proximity;
     border-right: 0;
@@ -1948,6 +2015,7 @@ h1 span {
   .featureList,
   .demoTable,
   .briefCard,
+  .reflectionCard,
   .playgroundPanel,
   .screenshotPanel {
     min-height: auto;

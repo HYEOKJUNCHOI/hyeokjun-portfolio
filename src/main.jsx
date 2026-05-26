@@ -9,15 +9,21 @@ const projectDetails = [
   {
     id: 'caredoc',
     label: 'CareDoc',
-    type: '복지 서류 도구',
+    type: '현실 업무 흐름 개선',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/caredoc/index.html?portfolio=1&v=20260525-0025',
-    title: '복지시설 서류 작성을 웹에서 이어지게 만든 도구',
+    title: '반복되는 복지 서류 작성을 하나의 흐름으로 묶은 도구',
     summary: lines([
-      '한 번 입력한 정보가 여러 문서와 출력물까지 이어지도록',
-      '복지시설의 서류 작성 과정을 웹 화면으로 정리했습니다.',
+      '같은 정보를 여러 번 적는 현장 업무를 관찰하고,',
+      '입력부터 가족관계도와 PDF 출력까지 이어지는 화면으로 검증했습니다.',
     ]),
+    badges: ['업무 흐름 개선', '문서 자동화', 'SVG 렌더링', 'PDF 출력'],
     stack: ['React', 'PDF', 'SVG', '엑셀·워드 웹화'],
+    intent: '현장에서 같은 정보를 여러 문서에 다시 적는 과정을 줄일 수 있는지 확인하고 싶었습니다.',
+    experiment: '엑셀·워드 서류를 그대로 따라 만들기보다, 사용자가 입력하는 순서와 출력물이 필요한 순간을 먼저 나눴습니다.',
+    outcome: '이용자 정보 입력, 가족관계도 자동 생성, 제출용 PDF 확인까지 하나의 브라우저 흐름으로 연결했습니다.',
+    learning: '기능을 많이 넣는 것보다 사용자가 멈추는 지점을 줄이는 흐름 설계가 더 중요하다는 기준을 얻었습니다.',
+    next: '다음에는 실제 작성 시간을 기준으로 입력 단계와 자동 반영 범위를 더 엄격하게 줄여볼 수 있습니다.',
     problem: lines([
       '일본 복지시설 서류 업무에서 같은 정보를 여러 번 적고,',
       '가족관계도를 워드 도형으로 직접 그리는 반복 작업이 있었습니다.',
@@ -62,15 +68,21 @@ const projectDetails = [
   {
     id: 'fixchecker',
     label: 'Subtitle Fix Checker',
-    type: '자막 검수 보조 도구',
+    type: 'AI 작업 단위 구조화',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/subtitle-fix-checker/',
     title: '사람이 표시한 자막 문제를 작업지시서로 정리하는 도구',
     summary: lines([
-      '영상과 SRT를 함께 보며 문제가 있는 cue를 표시하고,',
-      '후속 AI와 수정자가 읽을 수 있는 JSON 작업지시서로 내보냅니다.',
+      '사람이 영상을 보며 판단한 자막 문제를',
+      '후속 AI와 수정자가 바로 읽을 수 있는 작업지시서로 바꿉니다.',
     ]),
+    badges: ['Human-in-the-loop', 'SRT 검수', 'JSON 지시서', '단축키 흐름'],
     stack: ['React', 'SRT', 'JSON', 'Markdown', 'CapCut'],
+    intent: '자막의 어색함은 사람이 판단해야 하지만, 그 판단을 후속 작업으로 넘기는 방식은 더 구조화할 수 있다고 봤습니다.',
+    experiment: '영상과 SRT를 동시에 보며 cue를 표시하고, 오류 유형과 요청사항을 AI가 처리하기 쉬운 JSON 단위로 정리했습니다.',
+    outcome: 'Tab과 단축키로 문제 cue를 모으고, 저장 전 미완료 항목을 확인한 뒤 작업지시서로 내보내는 흐름을 만들었습니다.',
+    learning: 'AI에게 맡기기 전 사람이 한 판단을 어떤 단위로 쪼개 전달할지가 결과 품질을 좌우한다는 점을 배웠습니다.',
+    next: '다음에는 수정 결과를 다시 불러와 원본 판단과 비교하는 검수 루프까지 설계해보고 싶습니다.',
     problem: lines([
       '자막 문제는 사람이 영상을 보며 판단해야 하지만,',
       '그 판단을 후속 수정자가 바로 읽을 수 있는 형태로 옮기는 과정이 번거로웠습니다.',
@@ -98,56 +110,30 @@ const projectDetails = [
     ],
   },
   {
-    id: 'lucid',
-    label: 'Lucid',
-    type: '부트캠프 학습 플랫폼',
-    demoOrigin: mainDeployOrigin,
-    demoPath: '/clones/lucid/',
-    title: '강사 코드와 AI 튜터를 한 화면에 모은 학습 플랫폼',
-    summary: lines([
-      '강사의 GitHub 코드를 불러와 Monaco Editor에서 확인하고,',
-      'AI 튜터·퀴즈·메모·학습 기록을 같은 흐름에서 다룹니다.',
-    ]),
-    stack: ['React', 'Firebase', 'Gemini', 'GitHub API', 'Monaco Editor'],
-    problem: lines([
-      '부트캠프 학습자는 코드 확인, 질문, 퀴즈, 메모를 여러 도구로 오가며 처리합니다.',
-      '강사도 학생이 어디에서 막히는지 한 화면에서 보기 어렵습니다.',
-    ]),
-    solution: lines([
-      '강사 레포지토리의 코드를 학습 화면에 불러오고,',
-      'AI 튜터와 난이도별 코드 생성, 퀴즈, 메모, XP·스트릭 기록을 연결했습니다.',
-    ]),
-    detail: ['GitHub 코드 불러오기와 Monaco Editor 코드 열람', 'Gemini 기반 튜터 채팅과 코드 생성', '퀴즈·용어 사전·메모/PDF 학습 보조', 'Firebase 기반 XP, 스트릭, 학생 현황 관리'],
-    demo: [
-      ['코드', '강사 GitHub 자료를 Monaco Editor로 확인'],
-      ['튜터', '코드 맥락을 바탕으로 질문과 설명 연결'],
-      ['기록', '퀴즈, 메모, XP와 스트릭으로 학습 상태 저장'],
-    ],
-    screenshots: [
-      ['홈화면', '학생의 공부를 독려하기 위한 스트릭 기능과 원두 채굴 기능이 있습니다.', '/project-shots/lucid/01.jpg'],
-      ['마스터노트', '코드를 생성해서 튜터봇에게 자유롭게 질문할 수 있습니다.', '/project-shots/lucid/02.jpg'],
-      ['강사의 GitHub 불러오기', '등록된 강사의 GitHub에 접근해 수업 내용을 불러옵니다.', '/project-shots/lucid/03.jpg'],
-      ['코드노트에 불러오기', 'GitHub API로 강의 내용에 접근해 선택한 챕터를 불러올 수 있습니다.', '/project-shots/lucid/04.jpg'],
-      ['모르는 단어 바로 체크', '사전 API가 연결되어 있어 더블클릭으로 기술용어와 영어단어를 확인합니다.', '/project-shots/lucid/05.jpg'],
-      ['문제 풀이', '복습한 코드를 토대로 퀴즈를 풀어봅니다.', '/project-shots/lucid/06.jpg'],
-    ],
-  },
-  {
     id: 'reallife',
     label: 'RealLife',
-    type: '생활 시뮬레이션',
+    type: 'AI 게임 UI 실험',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/reallife/',
-    title: '로그인 없이 바로 플레이하는 생활 시뮬레이션 게임',
-    summary: '게임을 만들며 시각적 UI와 룰 기반 상태 흐름을 실습한 프로젝트입니다.',
+    title: '상상한 게임 룰과 분위기를 AI와 화면으로 옮긴 실험',
+    summary: lines([
+      '게임을 나만의 룰로 다시 만들 수 있을지,',
+      'AI에게 분위기와 규칙을 설명해 어느 정도 화면으로 검증할 수 있을지 실험했습니다.',
+    ]),
+    badges: ['AI 실험', '게임 룰 설계', '분위기 UI', '반복 조정'],
     stack: ['React', '게임 화면', '상태 흐름', 'AI 기반 확장'],
+    intent: '완성형 서비스보다, 상상한 룰과 분위기를 AI에게 설명하고 실제 플레이 화면으로 바꿔볼 수 있는지가 궁금했습니다.',
+    experiment: '턴 진행, 정산, 대출, 매입 같은 규칙을 화면 상태와 연출 단위로 나누고 결과를 보며 다시 조정했습니다.',
+    outcome: '권리증, 통행료, 차례 안내, 정산 연출처럼 게임의 분위기가 드러나는 장면을 실제 UI로 구현했습니다.',
+    learning: 'AI가 바로 좋은 결과를 내는 것이 아니라, 원하는 감정과 규칙을 얼마나 구체적으로 나누어 전달하는지가 중요했습니다.',
+    next: '다음에는 룰 밸런스와 플레이 피드백을 기록해 더 일관된 게임 루프로 다듬는 기준을 세워보고 싶습니다.',
     problem: lines([
-      '게임형 프로젝트는 설명보다 직접 선택하고',
-      '결과를 보는 편이 구현력을 더 빠르게 전달합니다.',
+      '상상한 게임은 말로 설명하면 모호해지고,',
+      'AI에게 맡길 때도 분위기와 룰을 분리하지 않으면 결과가 흔들렸습니다.',
     ]),
     solution: lines([
-      '룰과 UI를 분리해 구성하고,',
-      '이후 AI에게 다른 규칙을 지시해도 비슷한 방식으로 확장할 수 있게 실험했습니다.',
+      '룰, 상태 변화, 사회자 멘트, 화면 연출을 나눠 지시하고,',
+      '결과 화면을 보며 다시 조정하는 방식으로 실험했습니다.',
     ]),
     detail: ['캐릭터 선택과 턴 진행', '체력/현금/집중도 변화', '시각적인 게임 UI 구성 실습', 'AI에게 룰을 지시해 다른 스타일 게임으로 확장 가능성 확인'],
     demo: [
@@ -170,6 +156,47 @@ const projectDetails = [
         '대출 이후에는 매 턴 이자를 지급해야 하므로',
         '현금 흐름 확인이 중요합니다.',
       ]), '/project-shots/reallife/06.jpg'],
+    ],
+  },
+  {
+    id: 'lucid',
+    label: 'Lucid',
+    type: '공모전 학습 시스템',
+    demoOrigin: mainDeployOrigin,
+    demoPath: '/clones/lucid/',
+    title: '콘텐츠를 바꾸면 다른 학습 주제로 확장되는 AI 학습 플랫폼',
+    summary: lines([
+      '공모전 출품작으로 만든 학습 시스템입니다.',
+      '코딩 학습에 머물지 않고 일본어 등 다른 콘텐츠로 바꿔 확장할 수 있는 구조를 목표로 했습니다.',
+    ]),
+    badges: ['공모전 출품작', 'AI API', 'LLM 채팅', '콘텐츠 확장 구조'],
+    stack: ['React', 'Firebase', 'Gemini', 'GitHub API', 'Monaco Editor'],
+    intent: '학습자가 자료 확인, 질문, 퀴즈, 메모를 오가는 흐름을 하나의 학습 시스템으로 묶어보고 싶었습니다.',
+    experiment: '강사 코드와 AI 튜터를 연결하되, 콘텐츠를 교체하면 코딩 외 주제에도 적용할 수 있는 구조를 의식했습니다.',
+    outcome: 'GitHub 코드 불러오기, LLM 채팅, 퀴즈, 용어 확인, 메모와 학습 기록을 한 화면 흐름으로 구현했습니다.',
+    learning: 'AI 기능 자체보다 어떤 학습 콘텐츠를 넣어도 흐름이 유지되는 구조가 확장성의 핵심이라는 점을 배웠습니다.',
+    next: '다음에는 코딩 자료 외 일본어 학습 콘텐츠를 실제로 넣어 범용 학습 구조인지 검증해보고 싶습니다.',
+    problem: lines([
+      '부트캠프 학습자는 코드 확인, 질문, 퀴즈, 메모를 여러 도구로 오가며 처리합니다.',
+      '주제가 바뀌어도 학습 흐름을 재사용할 수 있는 구조가 필요했습니다.',
+    ]),
+    solution: lines([
+      '강사 레포지토리의 코드를 학습 화면에 불러오고,',
+      'AI 튜터와 퀴즈, 메모, XP·스트릭 기록을 콘텐츠 교체 가능한 흐름으로 연결했습니다.',
+    ]),
+    detail: ['GitHub 코드 불러오기와 Monaco Editor 코드 열람', 'Gemini 기반 튜터 채팅과 코드 생성', '퀴즈·용어 사전·메모/PDF 학습 보조', 'Firebase 기반 XP, 스트릭, 학생 현황 관리'],
+    demo: [
+      ['코드', '강사 GitHub 자료를 Monaco Editor로 확인'],
+      ['튜터', '코드 맥락을 바탕으로 질문과 설명 연결'],
+      ['기록', '퀴즈, 메모, XP와 스트릭으로 학습 상태 저장'],
+    ],
+    screenshots: [
+      ['홈화면', '학생의 공부를 독려하기 위한 스트릭 기능과 원두 채굴 기능이 있습니다.', '/project-shots/lucid/01.jpg'],
+      ['마스터노트', '코드를 생성해서 튜터봇에게 자유롭게 질문할 수 있습니다.', '/project-shots/lucid/02.jpg'],
+      ['강사의 GitHub 불러오기', '등록된 강사의 GitHub에 접근해 수업 내용을 불러옵니다.', '/project-shots/lucid/03.jpg'],
+      ['코드노트에 불러오기', 'GitHub API로 강의 내용에 접근해 선택한 챕터를 불러올 수 있습니다.', '/project-shots/lucid/04.jpg'],
+      ['모르는 단어 바로 체크', '사전 API가 연결되어 있어 더블클릭으로 기술용어와 영어단어를 확인합니다.', '/project-shots/lucid/05.jpg'],
+      ['문제 풀이', '복습한 코드를 토대로 퀴즈를 풀어봅니다.', '/project-shots/lucid/06.jpg'],
     ],
   },
 ];
@@ -251,12 +278,14 @@ function App() {
   const [activeAnchor, setActiveAnchor] = useState('top');
   const detailRef = useRef(null);
   const sideIndexItems = [
-    { id: 'career', label: '경력·연수·이수', group: true },
+    { id: 'works', label: '쇼케이스', group: true },
+    { id: 'project-context', label: '문제의식' },
+    { id: 'project-screens', label: '결과 화면' },
+    { id: 'career', label: '배경', group: true },
     { id: 'career-crm', label: 'CRM 경력' },
     { id: 'career-japan', label: '일본 연수' },
     { id: 'career-education', label: '교육 이수' },
-    { id: 'self-intro', label: '자기소개', group: true },
-    { id: 'works', label: '포트폴리오', group: true },
+    { id: 'self-intro', label: '소개', group: true },
   ];
   const activeProject = useMemo(
     () => projectDetails.find((project) => project.id === activeId),
@@ -319,23 +348,24 @@ function App() {
       <section className="heroSection" id="top">
         <nav className="heroNav" aria-label="포트폴리오 섹션">
           <a href="#top">처음</a>
-          <a href="#career">경력</a>
+          <a href="#works">쇼케이스</a>
+          <a href="#career">배경</a>
           <a href="#self-intro">소개</a>
-          <a href="#works">작품</a>
         </nav>
 
         <div className="heroCopy">
           <h1>
-            안녕하세요
+            AI 도구로 문제를 구조화하고
             <br />
-            <span>최혁준입니다.</span>
+            <span>결과물로 검증합니다.</span>
           </h1>
           <p className="heroLead">
-            <span>고객을 마주하며 본 작은 불편을 놓치지 않고,</span>
-            <span>반복되는 작업을 줄이는 웹 도구로 옮기고 있습니다.</span>
+            <span>학력보다 실행력과 실험 결과로 보여주고 싶은 신입 개발자 최혁준입니다.</span>
+            <span>작은 문제의식을 프로젝트로 만들고, 화면과 흐름으로 검증합니다.</span>
           </p>
           <div className="heroActions">
-            <a href="#works">작품 보기</a>
+            <a href="#works">프로젝트 먼저 보기</a>
+            <a href="#career">배경 보기</a>
           </div>
         </div>
 
@@ -350,7 +380,7 @@ function App() {
             <code>
               <span className="codeLine"><span className="token keyword">const</span> <span className="token variable">프로필</span> <span className="token operator">=</span> {'{'}</span>
               <span className="codeLine">  <span className="token property">이름</span>: <span className="token string">'최혁준'</span>,</span>
-              <span className="codeLine">  <span className="token property">목표</span>: <span className="token string">'작업 부담을 줄이는 웹 도구를 만드는 개발자'</span>,</span>
+              <span className="codeLine">  <span className="token property">포지션</span>: <span className="token string">'AI 도구로 문제를 구조화하는 신입 개발자'</span>,</span>
               <span className="codeLine">  <span className="token property">학습기술</span>: [</span>
               <span className="codeLine">    <span className="token string">'React'</span>, <span className="token string">'Spring Boot'</span>, <span className="token string">'Java'</span>,</span>
               <span className="codeLine">    <span className="token string">'MySQL'</span>, <span className="token string">'Firebase'</span></span>
@@ -359,11 +389,11 @@ function App() {
               <span className="codeLine">    <span className="token string">'Claude Code'</span>, <span className="token string">'Codex'</span>, <span className="token string">'Gemini'</span>,</span>
               <span className="codeLine">    <span className="token string">'Antigravity'</span></span>
               <span className="codeLine">  ],</span>
-              <span className="codeLine">  <span className="token property">작업환경</span>: [<span className="token string">'OpenClaw'</span>, <span className="token string">'Hermes'</span>],</span>
+              <span className="codeLine">  <span className="token property">작업방식</span>: [<span className="token string">'문제 정의'</span>, <span className="token string">'AI 협업'</span>, <span className="token string">'결과 검증'</span>],</span>
               <span className="codeLine">  <span className="token property">배포도구</span>: [<span className="token string">'Vercel'</span>],</span>
               <span className="codeLine">  <span className="token property">강점</span>: {'{'}</span>
-              <span className="codeLine">    <span className="token property">사용자흐름관찰</span>: <span className="token boolean">true</span>, <span className="token property">반복업무개선</span>: <span className="token boolean">true</span>,</span>
-              <span className="codeLine">    <span className="token property">실제데모구현</span>: <span className="token boolean">true</span></span>
+              <span className="codeLine">    <span className="token property">문제구조화</span>: <span className="token boolean">true</span>, <span className="token property">흐름설계</span>: <span className="token boolean">true</span>,</span>
+              <span className="codeLine">    <span className="token property">실험결과물</span>: <span className="token boolean">true</span></span>
               <span className="codeLine">  {'}'},</span>
               <span className="codeLine">  <span className="token property">포트폴리오프로젝트</span>: <span className="token number">4</span></span>
               <span className="codeLine">{'}'};</span>
@@ -372,14 +402,39 @@ function App() {
         </aside>
       </section>
 
-      <section className="aboutSection" id="career">
+      <section className="workSection" id="works">
         <div className="sectionTitle">
-          <p className="eyebrow">경력 및 연수·교육 이수</p>
-          <h2>불편을 발견하고, 쓸 수 있는 형태로 정리합니다</h2>
+          <p className="eyebrow">Project Showcase</p>
+          <h2>무엇을 만들었고, 어떤 기준이 생겼는지 보여주는 작업들</h2>
+          <p>기술 스택보다 먼저 문제의식, 실험 방식, 결과물, 다음 기준이 보이도록 정리했습니다.</p>
+        </div>
+
+        <div className="projectGrid" aria-label="프로젝트 네비게이터">
+          {projectDetails.map((project) => (
+            <button
+              className={project.id === activeId ? 'projectCard active' : 'projectCard'}
+              data-project-id={project.id}
+              key={project.id}
+              onClick={() => selectProject(project.id)}
+              type="button"
+            >
+              <span>{project.type}</span>
+              <strong>{project.navLabel || project.label}</strong>
+              <em>{project.id === activeId ? '열림' : '보기'}</em>
+            </button>
+          ))}
+        </div>
+
+        <ProjectDetail project={activeProject} refTarget={detailRef} />
+      </section>
+
+      <section className="aboutSection backgroundSection" id="career">
+        <div className="sectionTitle">
+          <p className="eyebrow">Background</p>
+          <h2>프로젝트 뒤에 있는 경험</h2>
           <p>{lines([
-            '고객 응대 경험으로 사람들이 어디서 막히는지 관찰했고,',
-            '풀스택 개발 교육 이후에는 그 감각을 문서 작성, 자막 검수, 학습 보조 프로젝트로 옮기고 있습니다.',
-            'AI 도구는 범위를 정하고 실행 순서를 잡는 보조 도구로 사용합니다.',
+            '경력과 교육은 앞세우기보다, 프로젝트를 만들게 된 배경으로 배치했습니다.',
+            '고객 응대 경험은 사용자가 멈추는 지점을 보는 감각으로, 개발 교육은 그것을 화면으로 구현하는 기반으로 이어졌습니다.',
           ])}</p>
         </div>
         <div className="experienceGrid">
@@ -395,10 +450,10 @@ function App() {
 
       </section>
 
-      <section className="introSection" id="self-intro">
+      <section className="introSection backgroundSection" id="self-intro">
         <div className="sectionTitle">
-          <p className="eyebrow">자기소개</p>
-          <h2>작은 불편을 작업 가능한 단위로 나누는 개발자</h2>
+          <p className="eyebrow">Profile</p>
+          <h2>문제를 작게 나누고, AI와 함께 결과물로 확인합니다</h2>
         </div>
 
         <div className="introPage">
@@ -426,31 +481,6 @@ function App() {
         </div>
       </section>
 
-      <section className="workSection" id="works">
-        <div className="sectionTitle">
-          <p className="eyebrow">주요 작업</p>
-          <h2>작업 부담을 줄이는 프로젝트</h2>
-          <p>문서 작성, 자막 검수, 코딩 학습처럼 사용자가 자주 멈추는 과정을 작게 나눠 구현한 작업들입니다.</p>
-        </div>
-
-        <div className="projectGrid" aria-label="프로젝트 네비게이터">
-          {projectDetails.map((project) => (
-            <button
-              className={project.id === activeId ? 'projectCard active' : 'projectCard'}
-              data-project-id={project.id}
-              key={project.id}
-              onClick={() => selectProject(project.id)}
-              type="button"
-            >
-              <span>{project.type}</span>
-              <strong>{project.navLabel || project.label}</strong>
-              <em>{project.id === activeId ? '열림' : '이동'}</em>
-            </button>
-          ))}
-        </div>
-
-        <ProjectDetail project={activeProject} refTarget={detailRef} />
-      </section>
     </main>
   );
 }
@@ -471,6 +501,7 @@ function ProjectDetail({ project, refTarget }) {
     <article className="detailPanel showcaseStage" ref={refTarget}>
       <DetailSummary project={project} />
       <ProjectBrief project={project} />
+      <ProjectReflection project={project} />
       <ScreenshotGallery
         project={project}
         selectedScreenshot={selectedScreenshot}
@@ -494,7 +525,7 @@ function ScreenshotGallery({ project, selectedScreenshot, setSelectedScreenshot 
   const hasImages = project.screenshots.some(([, , src]) => src);
 
   return (
-    <section className="screenshotPanel" aria-label={`${project.label} 주요 화면`}>
+    <section className="screenshotPanel" id="project-screens" aria-label={`${project.label} 주요 화면`}>
       <div className="screenshotHead">
         <div>
           <p className="eyebrow">주요 화면</p>
@@ -539,7 +570,7 @@ function ProjectBrief({ project }) {
   ];
 
   return (
-    <section className="projectBrief" aria-label={`${project.label} 문제점과 구현한 것`}>
+    <section className="projectBrief" id="project-context" aria-label={`${project.label} 문제점과 구현한 것`}>
       {briefItems.map(([title, body]) => (
         <article className="briefCard" key={title}>
           <h4>{title}</h4>
@@ -548,6 +579,27 @@ function ProjectBrief({ project }) {
               <li key={item}>{item}</li>
             ))}
           </ul>
+        </article>
+      ))}
+    </section>
+  );
+}
+
+function ProjectReflection({ project }) {
+  const items = [
+    ['왜 만들었나', project.intent],
+    ['어떻게 실험했나', project.experiment],
+    ['결과물', project.outcome],
+    ['배운 점', project.learning],
+    ['다음 기준', project.next],
+  ];
+
+  return (
+    <section className="reflectionGrid" aria-label={`${project.label} 실험 과정과 배운 점`}>
+      {items.map(([title, body]) => (
+        <article className="reflectionCard" key={title}>
+          <span>{title}</span>
+          <p>{body}</p>
         </article>
       ))}
     </section>
@@ -627,6 +679,11 @@ function DetailSummary({ project }) {
         <p className="eyebrow">{project.type}</p>
         <h3>{project.title}</h3>
         <p>{project.summary}</p>
+        <div className="badgeList" aria-label={`${project.label} 핵심 배지`}>
+          {project.badges.map((badge) => (
+            <span key={badge}>{badge}</span>
+          ))}
+        </div>
       </div>
     </div>
   );
