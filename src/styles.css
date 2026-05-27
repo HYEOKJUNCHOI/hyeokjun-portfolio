@@ -209,7 +209,7 @@ img, svg, iframe { max-width: 100%; }
 .heroSection {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(460px, 0.92fr) minmax(520px, 1.08fr);
+  grid-template-columns: minmax(0, 780px);
   gap: clamp(var(--space-8), 5vw, 92px);
   min-height: 570px;
   padding: clamp(88px, 8vw, 116px) clamp(var(--space-8), 5vw, 92px) var(--space-16);
@@ -580,8 +580,8 @@ h1 span {
 
 .letterPanel { margin-top: var(--space-5); padding: clamp(var(--space-6), 4vw, var(--space-12)); border-radius: var(--radius-lg); }
 .resumeText { max-width: 980px; margin: 0; font-size: 16.5px; font-weight: 620; line-height: 1.95; }
-.introPage { display: grid; grid-template-columns: minmax(260px, 330px) minmax(0, 1fr); gap: var(--space-6); align-items: start; }
-.profileCard { position: sticky; top: var(--space-4); min-width: 0; padding: var(--space-5); border-radius: var(--radius-lg); }
+.introPage { display: grid; grid-template-columns: minmax(260px, 420px); gap: var(--space-6); align-items: start; }
+.profileCard { min-width: 0; padding: var(--space-5); border-radius: var(--radius-lg); }
 .profileIntroHeader { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: var(--space-4); align-items: center; }
 .profilePhotoFrame { overflow: hidden; width: 92px; aspect-ratio: 1 / 1; border: 1px solid rgba(40, 219, 195, 0.42); border-radius: 28px; background: rgba(7, 8, 8, 0.62); box-shadow: var(--shadow-teal); }
 .profilePhotoFrame img, .screenshotSlot img, .modalPreview img { display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; object-fit: cover; }

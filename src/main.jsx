@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-import { experienceItems, lines, profileFacts, projectDetails, resumeIntro } from './portfolioData';
+import { experienceItems, lines, profileFacts, projectDetails } from './portfolioData';
 
 function App() {
   const [activeId, setActiveId] = useState(projectDetails[0].id);
@@ -21,7 +21,6 @@ function App() {
     { id: 'career-japan', label: '일본 연수' },
     { id: 'career-education', label: '교육 이수' },
     { id: 'projects', label: 'Projects', group: true },
-    { id: 'books', label: 'Books', group: true },
     { id: 'contact', label: 'Contact', group: true },
   ];
   const activeProject = useMemo(
@@ -99,7 +98,6 @@ function App() {
           <a href="#about">About</a>
           <a href="#experience">Experience</a>
           <a href="#projects">Projects</a>
-          <a href="#books">Books</a>
           <a href="#contact">Contact</a>
         </nav>
         <div className="legacyAnchorFallback" aria-hidden="true">
@@ -110,7 +108,6 @@ function App() {
         </div>
 
         <div className="heroCopy">
-          <p className="welcomePill">Portfolio rebuild 2026</p>
           <h1>
             안녕하세요
             <br />
@@ -118,7 +115,6 @@ function App() {
           </h1>
           <p className="heroLead">
             <span className="identityLine">불편한 반복을 줄이는 개발자</span>
-            <span>고객이 자주 멈추는 지점을 관찰하고 웹 도구로 정리합니다.</span>
           </p>
           <div className="heroActions">
             <a href="#about">소개 읽기</a>
@@ -126,25 +122,6 @@ function App() {
           </div>
         </div>
 
-        <aside className="avatarPanel" aria-label="작업 흐름을 설명하는 개발자 작업대 일러스트" tabIndex={0}>
-          <div className="workspaceAvatar">
-            <img
-              className="workbenchIllustration"
-              src="/generated/hero-workbench.svg"
-              alt="모니터, 브라우저 카드, 체크리스트 노트, 램프, 커피와 책이 놓인 개발자 작업대"
-            />
-            <div className="heroExplainLayer">
-              <span>왜 이 그림인가요?</span>
-              <p>
-                사용자가 반복해서 적는 정보, 확인해야 할 화면, 마지막 출력까지 한 책상 위에서 차례대로 정리한다는 뜻입니다.
-              </p>
-            </div>
-          </div>
-          <div className="avatarCaption">
-            <span>작업 방향</span>
-            <strong>반복되는 설명과 입력을 줄이는 작은 웹 도구</strong>
-          </div>
-        </aside>
       </section>
 
       <section className="aboutSection" id="about">
@@ -180,26 +157,6 @@ function App() {
             </dl>
           </aside>
 
-          <article className="letterPanel aboutSummaryPanel">
-            <div className="aboutKeywordGrid" aria-label="최혁준을 설명하는 핵심 단어">
-              <span>관찰</span>
-              <span>흐름 정리</span>
-              <span>작은 자동화</span>
-              <span>끝까지 검증</span>
-            </div>
-            <p className="summaryLead">
-              반복되는 불편을 발견하면 먼저 사용자가 어떤 순서에서 멈추는지 정리합니다.
-              그 다음 입력, 확인, 출력처럼 작은 단위로 나누어 실제로 눌러볼 수 있는 화면으로 구현합니다.
-            </p>
-            <p className="aboutShortIntro">
-              고객 응대 경험에서 나온 관찰을 바탕으로, 복잡한 설명과 반복 입력을 줄이는 웹 도구를 만들고 있습니다.
-              화려한 기능보다 사용자가 바로 이해하고 다시 사용할 수 있는 흐름을 중요하게 봅니다.
-            </p>
-            <details className="resumeDetails">
-              <summary>자기소개 자세히 보기</summary>
-              <p className="resumeText">{resumeIntro}</p>
-            </details>
-          </article>
         </div>
       </section>
 
@@ -207,7 +164,6 @@ function App() {
         <span className="anchorAlias" id="career" aria-hidden="true" />
         <div className="sectionTitle">
           <p className="eyebrow">Experience / Background</p>
-          <h2>검증된 경험을 넓은 타임라인으로 정리했습니다</h2>
         </div>
         <div className="experienceTimeline">
           {experienceItems.map((item, index) => (
@@ -270,8 +226,6 @@ function App() {
         ) : null}
       </section>
 
-      <BooksSection />
-
       <ContactSection />
     </main>
   );
@@ -299,98 +253,6 @@ const contactLinks = [
     external: true,
   },
 ];
-
-const bookshelfRows = [
-  ['빈 책등', '주제 메모', 'ISBN 자리', '노트 자리', '분류 대기'],
-  ['읽기 후보', '비어 있음', '스캔 준비', '책갈피', '정리 전'],
-];
-
-const bookPrepCards = [
-  ['실제 기록 없음', 'v1에서는 읽은 책, 평점, 저자, 독서 이력을 표시하지 않습니다.'],
-  ['입력 흐름만 준비', 'ISBN-13 입력과 스캔 버튼은 자리만 보여주며 저장이나 검색을 하지 않습니다.'],
-  ['어댑터 메모', '나중에 데이터 구조가 확정되면 연결할 수 있도록 화면 구역만 분리했습니다.'],
-];
-
-function BooksSection() {
-  return (
-    <section className="booksSection" id="books" aria-labelledby="books-heading">
-      <div className="sectionTitle">
-        <p className="eyebrow">Books / Reading Desk</p>
-        <h2 id="books-heading">아직 비어 있지만, 책장을 닮은 준비 공간</h2>
-        <p>{lines([
-          '실제 독서 데이터나 외부 도서 검색은 넣지 않았습니다.',
-          '대신 나중에 ISBN 등록 흐름을 붙일 수 있는 자리와 빈 책장 상태를 완성된 화면처럼 보여줍니다.',
-        ])}</p>
-      </div>
-
-      <div className="booksWorkspace">
-        <article className="bookshelfPanel" aria-label="준비 중인 책장 화면" tabIndex={0}>
-          <div className="bookshelfHeader">
-            <div>
-              <span>현재 상태</span>
-              <strong>책 정보 연결 전</strong>
-            </div>
-            <em>Preparation only</em>
-          </div>
-
-          <div className="shelfRows" role="list" aria-label="비어 있는 책장 슬롯">
-            {bookshelfRows.map((row, rowIndex) => (
-              <div className="shelfRow" role="listitem" key={`shelf-row-${rowIndex}`}>
-                {row.map((label, index) => (
-                  <span
-                    className={['bookSpine', index % 2 === 0 ? 'tallSpine' : '', label.includes('비어') || label.includes('빈') ? 'emptySpine' : ''].filter(Boolean).join(' ')}
-                    key={`${rowIndex}-${label}`}
-                  >
-                    <span>{label}</span>
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-
-          <div className="bookPrepGrid">
-            {bookPrepCards.map(([title, body]) => (
-              <article className="bookPrepCard" key={title}>
-                <strong>{title}</strong>
-                <p>{body}</p>
-              </article>
-            ))}
-          </div>
-        </article>
-
-        <aside className="isbnPrepPanel" aria-labelledby="isbn-prep-title">
-          <span className="prepBadge">비활성 데모</span>
-          <h3 id="isbn-prep-title">ISBN 등록 어댑터 자리</h3>
-          <p>
-            아래 입력 영역은 향후 등록 흐름을 위한 시각적 자리입니다. 지금은 값을 받을 수 없고,
-            검색, 저장, 외부 연동을 실행하지 않습니다.
-          </p>
-
-          <div className="isbnMockForm" aria-describedby="isbn-prep-help">
-            <label htmlFor="isbn-preview-input">ISBN-13 입력 준비</label>
-            <div>
-              <input
-                disabled
-                id="isbn-preview-input"
-                inputMode="numeric"
-                placeholder="978 또는 979로 시작하는 13자리"
-                type="text"
-              />
-              <button disabled type="button">등록 준비중</button>
-            </div>
-            <p id="isbn-prep-help">버튼과 입력칸은 의도적으로 비활성화되어 있습니다.</p>
-          </div>
-
-          <div className="readingDeskVisual" aria-hidden="true">
-            <span className="deskLight" />
-            <span className="deskBook" />
-            <span className="deskCard" />
-          </div>
-        </aside>
-      </div>
-    </section>
-  );
-}
 
 function ContactSection() {
   return (
