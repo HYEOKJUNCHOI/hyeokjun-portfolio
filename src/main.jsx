@@ -21,7 +21,6 @@ function App() {
     { id: 'career-japan', label: '일본 연수' },
     { id: 'career-education', label: '교육 이수' },
     { id: 'projects', label: 'Projects', group: true },
-    { id: 'contact', label: 'Contact', group: true },
   ];
   const activeProject = useMemo(
     () => projectDetails.find((project) => project.id === activeId),
@@ -102,7 +101,6 @@ function App() {
           <a href="#projects"><b>02</b> works</a>
           <a href="#experience"><b>03</b> career</a>
           <a href="#about"><b>04</b> about</a>
-          <a href="#contact"><b>05</b> contact</a>
         </nav>
         <div className="legacyAnchorFallback" aria-hidden="true">
           <a href="#top" tabIndex={-1}>처음</a>
@@ -208,72 +206,7 @@ function App() {
           />
         ) : null}
       </section>
-
-      <ContactSection />
     </main>
-  );
-}
-
-const contactLinks = [
-  {
-    label: 'GitHub',
-    href: 'https://github.com/HYEOKJUNCHOI',
-    note: '프로젝트 코드와 학습 흐름을 확인할 수 있습니다.',
-    meta: 'github.com/HYEOKJUNCHOI',
-    external: true,
-  },
-  {
-    label: 'Email',
-    href: 'mailto:gurwns369@naver.com',
-    note: '협업 제안이나 포트폴리오 관련 연락을 편하게 보내주세요.',
-    meta: 'gurwns369@naver.com',
-  },
-  {
-    label: 'Brunch',
-    href: 'https://brunch.co.kr/@solbin369',
-    note: '생각을 정리하는 글과 작업 기록을 천천히 남깁니다.',
-    meta: 'brunch.co.kr/@solbin369',
-    external: true,
-  },
-];
-
-function ContactSection() {
-  return (
-    <section className="contactSection" id="contact" aria-labelledby="contact-heading">
-      <div className="sectionTitle">
-        <p className="eyebrow">Contact</p>
-        <h2 id="contact-heading">작게라도 실제로 이어지는 협업을 기다립니다</h2>
-        <p>{lines([
-          '반복되는 설명, 입력, 확인 과정을 웹 화면으로 정리하는 일에 관심이 있습니다.',
-          '프로젝트 제안이나 포트폴리오 관련 연락은 아래 경로로 편하게 남겨주세요.',
-        ])}</p>
-      </div>
-
-      <div className="contactBoard" aria-label="연락 가능한 채널">
-        <div className="contactIntroCard">
-          <span>Open to conversation</span>
-          <strong>명확한 문제를 함께 작게 나누고, 눌러볼 수 있는 결과로 옮기는 일을 좋아합니다.</strong>
-          <p>답장은 상황에 따라 천천히 드릴 수 있지만, 보내주신 맥락은 차분히 읽고 확인하겠습니다.</p>
-        </div>
-
-        <div className="contactLinkGrid">
-          {contactLinks.map((link) => (
-            <a
-              className="contactLinkCard"
-              href={link.href}
-              key={link.label}
-              target={link.external ? '_blank' : undefined}
-              rel={link.external ? 'noreferrer' : undefined}
-            >
-              <span>{link.label}</span>
-              <strong>{link.meta}</strong>
-              <p>{link.note}</p>
-              <em>{link.external ? '새 창에서 보기' : '메일 보내기'}</em>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
   );
 }
 
