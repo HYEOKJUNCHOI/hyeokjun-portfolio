@@ -122,7 +122,7 @@ img, svg, iframe { max-width: 100%; }
 
 .pageShell {
   position: relative;
-  width: min(1240px, calc(100% - 48px));
+  width: min(1520px, calc(100% - 64px));
   margin: 0 auto;
   padding: var(--space-8) 0 var(--space-16);
 }
@@ -209,10 +209,10 @@ img, svg, iframe { max-width: 100%; }
 .heroSection {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(430px, 1fr);
-  gap: clamp(var(--space-6), 4vw, var(--space-12));
+  grid-template-columns: minmax(460px, 0.92fr) minmax(520px, 1.08fr);
+  gap: clamp(var(--space-8), 5vw, 92px);
   min-height: 570px;
-  padding: clamp(88px, 9vw, 120px) clamp(var(--space-6), 7vw, 108px) var(--space-16);
+  padding: clamp(88px, 8vw, 116px) clamp(var(--space-8), 5vw, 92px) var(--space-16);
   overflow: hidden;
   border: 1px solid rgba(244, 241, 232, 0.13);
   border-radius: var(--radius-lg);
@@ -1449,7 +1449,7 @@ h1 span {
 }
 
 @media (max-width: 760px) {
-  .pageShell { width: min(100% - 24px, 1240px); padding-top: var(--space-3); }
+  .pageShell { width: min(100% - 24px, 1520px); padding-top: var(--space-3); }
   .heroSection { min-height: auto; padding: 84px var(--space-5) var(--space-8); border-radius: var(--radius-md); }
   .heroNav { width: min(100% - 30px, 390px); justify-content: flex-start; }
   .heroNav a { flex: 0 0 auto; min-width: 48px; padding: 0 var(--space-3); }
@@ -1503,7 +1503,7 @@ h1 span {
 }
 
 @media (max-width: 420px) {
-  .pageShell { width: min(100% - 18px, 1240px); }
+  .pageShell { width: min(100% - 18px, 1520px); }
   .heroSection, .avatarPanel, .detailPanel, .mobileShowcase, .screenshotPanel, .letterPanel, .timelineCard, .infoCard, .profileCard, .briefCard, .bookshelfPanel, .isbnPrepPanel, .bookPrepCard, .contactIntroCard, .contactLinkCard { padding-right: var(--space-3); padding-left: var(--space-3); }
   .heroNav { width: calc(100% - 18px); }
   .heroNav a { min-width: 48px; padding: 0 10px; font-size: 11px; }
