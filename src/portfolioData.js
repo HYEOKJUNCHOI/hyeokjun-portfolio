@@ -1,0 +1,271 @@
+export const mainDeployOrigin = '';
+export const lines = (items) => items.join('\n');
+
+export const projectDetails = [
+  {
+    id: 'caredoc',
+    label: 'CareDoc',
+    type: '복지 서류 도구',
+    demoOrigin: mainDeployOrigin,
+    demoPath: '/clones/caredoc/index.html?portfolio=1&v=20260525-0025',
+    visualKind: 'desk',
+    teaser: '복지시설 서류 입력, 가족관계도, PDF 출력 흐름을 한 화면 순서로 묶은 작업입니다.',
+    title: '복지시설 서류 작성을 한 흐름으로 정리한 웹 도구',
+    summary: lines([
+      '한 번 입력한 이용자 정보가 관련 문서와 출력물까지 이어지도록',
+      '복지시설 서류 작성 과정을 브라우저 화면으로 정리했습니다.',
+    ]),
+    stack: ['React', 'PDF', 'SVG', '엑셀·워드 웹화'],
+    problem: lines([
+      '복지시설 서류 업무에는 같은 정보를 여러 문서에 다시 적고,',
+      '가족관계도를 워드 도형으로 직접 그리는 반복 작업이 있었습니다.',
+    ]),
+    solution: lines([
+      '엑셀과 워드에 흩어져 있던 입력 항목을 화면 순서로 묶고,',
+      '이용자 정보 입력부터 가족관계도와 PDF 출력까지 이어지게 만들었습니다.',
+    ]),
+    learned: lines([
+      '문서 자동화는 새 기능보다 입력 순서와 확인 단계가 먼저 안정되어야 했습니다.',
+      '가족관계도처럼 눈으로 확인해야 하는 결과는 SVG 미리보기와 출력 흐름을 함께 설계해야 했습니다.',
+    ]),
+    checkpoints: ['이용자 정보 입력 흐름', '가족관계도 SVG 렌더링', '제출용 PDF 출력 확인'],
+    detail: ['엑셀·워드 기반 업무를 브라우저 입력 흐름으로 정리', '이용자 정보를 여러 문서 항목에 연결', '가족관계도를 SVG로 렌더링', '확인한 내용을 PDF 출력 흐름으로 연결'],
+    demo: [
+      ['이용자', '야마다 하나코 / 82세 / 요양 3등급'],
+      ['문서 흐름', '회의록, 모니터링, 지원계획서 자동 반영'],
+      ['출력', '가족관계도 SVG + PDF 준비 완료'],
+    ],
+    screenshots: [
+      ['기존 서류 분석', lines([
+        '복잡한 워드 서류에서 반복 입력과',
+        '수기 작성 병목을 확인했습니다.',
+      ]), '/project-shots/caredoc/01.jpg'],
+      ['서류 입력 흐름 재구성', lines([
+        '여러 문서에 흩어진 입력 항목을 정리해',
+        '한 번 입력한 정보가 이어지도록 구성했습니다.',
+      ]), '/project-shots/caredoc/02.jpg'],
+      ['반복 문구 입력 개선', lines([
+        '자주 쓰는 표현을 버튼과 단축키로 선택해',
+        '반복 입력 부담을 줄였습니다.',
+      ]), '/project-shots/caredoc/03.jpg'],
+      ['업무 화면 단순화', lines([
+        '사용자가 순서대로 따라가면 작성이 끝나도록',
+        '입력 흐름을 단순하게 정리했습니다.',
+      ]), '/project-shots/caredoc/04.jpg'],
+      ['가족관계도 자동 렌더링', lines([
+        '워드 도형으로 직접 만들던 가족관계도를',
+        '입력값 기반 SVG로 자동 생성했습니다.',
+      ]), '/project-shots/caredoc/05.jpg'],
+      ['PDF 출력 흐름 구성', lines([
+        '작성 내용을 최종 확인한 뒤',
+        '제출용 PDF로 이어지도록 구성했습니다.',
+      ]), '/project-shots/caredoc/06.jpg'],
+    ],
+  },
+  {
+    id: 'fixchecker',
+    label: 'Subtitle Fix Checker',
+    type: '자막 검수 보조 도구',
+    demoOrigin: mainDeployOrigin,
+    demoPath: '/clones/subtitle-fix-checker/',
+    visualKind: 'browser',
+    teaser: '영상과 SRT를 나란히 확인하고 문제 cue를 작업지시서로 남기는 검수 보조 도구입니다.',
+    title: '자막 검수 판단을 작업지시서로 정리하는 도구',
+    summary: lines([
+      '영상과 SRT를 함께 보며 문제가 있는 cue를 표시하고,',
+      '후속 수정자가 읽을 수 있는 JSON 작업지시서로 내보냅니다.',
+    ]),
+    stack: ['React', 'SRT', 'JSON', 'Markdown', 'CapCut'],
+    problem: lines([
+      '자막 문제는 사람이 영상을 보며 판단해야 하지만,',
+      '그 판단을 후속 수정자가 바로 읽을 수 있는 형태로 옮기는 과정이 번거로웠습니다.',
+    ]),
+    solution: lines([
+      '드래그 앤 드롭으로 영상과 SRT를 불러오고,',
+      'Tab과 단축키로 문제 cue를 잡은 뒤 요청사항과 JSON으로 정리하도록 만들었습니다.',
+    ]),
+    learned: lines([
+      '검수 도구는 자동 판정보다 사람이 판단한 순간을 놓치지 않게 기록하는 흐름이 중요했습니다.',
+      '단축키, 수정모드, 미저장 경고를 분리하니 후속 수정자가 읽을 수 있는 지시서로 정리하기 쉬웠습니다.',
+    ]),
+    checkpoints: ['영상/SRT 드래그 앤 드롭', 'Tab 및 단축키 cue 기록', 'JSON 작업지시서 저장'],
+    detail: ['영상과 SRT를 함께 불러오는 검수 화면', 'Tab/단축키로 문제 cue 기록', '수정모드에서 표현과 요청사항 확정', '미저장 항목 경고 후 JSON 작업지시서 저장'],
+    demo: [
+      ['Tab', '현재 cue 기록 + 영상 일시정지'],
+      ['Q/W/A/S/D', '한국어·일본어 오류, 빠름·느림, 자막컷팅 표시'],
+      ['저장', '요청사항과 cue 정보를 JSON으로 내보내기'],
+    ],
+    screenshots: [
+      ['메인화면', '드래그 앤 드롭으로 영상과 SRT를 직관적으로 넣을 수 있습니다.', '/project-shots/fixchecker/01.jpg'],
+      ['큐 슬롯', 'Tab이나 / 단축키로 영상을 보며 이상한 자막을 골라냅니다.', '/project-shots/fixchecker/02.jpg'],
+      ['수정모드 진입', '선택된 큐에서 Enter를 입력하면 수정모드로 진입됩니다.', '/project-shots/fixchecker/03.jpg'],
+      ['직접수정 모드', '표시한 cue의 표현과 요청사항을 확인하고 바로 고칠 수 있습니다.', '/project-shots/fixchecker/04.jpg'],
+      ['큐 수정', '큐를 입력해 미리 지정된 효과를 넣어달라고 요청할 수 있습니다.', '/project-shots/fixchecker/05.jpg'],
+      ['저장', lines([
+        '작업 주문이 끝난 항목은 저장 상태로 확인합니다.',
+        '수정하지 않은 항목은 저장 시점에 알려줍니다.',
+      ]), '/project-shots/fixchecker/06.jpg'],
+    ],
+  },
+  {
+    id: 'lucid',
+    label: 'Lucid',
+    type: '부트캠프 학습 플랫폼',
+    demoOrigin: mainDeployOrigin,
+    demoPath: '/clones/lucid/',
+    visualKind: 'shelf',
+    teaser: '강의 코드, 질문, 복습, 학습 상태를 오가며 확인할 수 있게 정리한 교육 흐름 플랫폼입니다.',
+    title: '수업 코드와 학습 상태를 한 화면에 모은 학습 플랫폼',
+    summary: lines([
+      '강사의 GitHub 코드 자료를 Monaco Editor에서 확인하고,',
+      '튜터 채팅, 질문, 퀴즈, 메모, 타자 연습, 학습 기록을 같은 흐름에서 다룹니다.',
+    ]),
+    stack: ['React', 'Vite', 'Firebase', 'Vercel', 'GitHub API', 'Monaco Editor'],
+    problem: lines([
+      '부트캠프 학습자는 코드 확인, 질문, 복습, 메모를 여러 도구로 오가며 처리합니다.',
+      '강사와 관리자는 학생이 어디에서 막히고 얼마나 이어서 학습하는지 한눈에 보기 어렵습니다.',
+    ]),
+    solution: lines([
+      '강사 GitHub 자료를 학습 화면에 불러오고,',
+      '튜터 채팅, 질문, 퀴즈, 메모, 타자 연습과 XP·스트릭·LP·원두 기록을 연결했습니다.',
+    ]),
+    learned: lines([
+      '학습 화면은 기능을 많이 넣기보다 코드, 질문, 복습, 상태 확인이 끊기지 않는 순서가 중요했습니다.',
+      '학생과 관리자 화면을 나누어 보니 XP, 스트릭, LP, 원두 같은 기록은 학습 상태를 설명하는 시각적 단서가 됐습니다.',
+    ]),
+    checkpoints: ['GitHub 코드와 Monaco Editor 열람', '튜터 채팅/질문/퀴즈/메모/타자 연습', '학생·관리자 상태와 XP·스트릭·LP·원두 확인'],
+    detail: ['GitHub 코드 불러오기와 Monaco Editor 코드 열람', '튜터 채팅과 질문 흐름 연결', '퀴즈·메모·타자 연습으로 복습 흐름 구성', 'Firebase 기반 학생·관리자 화면과 XP, 스트릭, LP, 원두 기록'],
+    demo: [
+      ['코드', '강사 GitHub 자료를 Monaco Editor로 확인'],
+      ['학습', '튜터 채팅, 질문, 퀴즈, 메모, 타자 연습으로 복습'],
+      ['기록', 'XP, 스트릭, LP와 원두로 학습 상태 확인'],
+    ],
+    screenshots: [
+      ['홈화면', '스트릭과 원두 기록으로 학습 지속 상태를 확인할 수 있습니다.', '/project-shots/lucid/01.jpg'],
+      ['코드 학습 화면', '불러온 코드를 보며 튜터 채팅과 질문 흐름을 함께 사용할 수 있습니다.', '/project-shots/lucid/02.jpg'],
+      ['강사 GitHub 불러오기', '등록된 강사의 GitHub 자료를 수업 흐름에 맞춰 불러옵니다.', '/project-shots/lucid/03.jpg'],
+      ['코드노트에 불러오기', 'GitHub API로 강의 내용에 접근해 선택한 챕터를 불러올 수 있습니다.', '/project-shots/lucid/04.jpg'],
+      ['모르는 단어 바로 체크', '학습 중 모르는 기술용어와 영어단어를 바로 확인할 수 있습니다.', '/project-shots/lucid/05.jpg'],
+      ['문제 풀이', '복습한 코드를 바탕으로 퀴즈를 풀며 이해도를 확인합니다.', '/project-shots/lucid/06.jpg'],
+    ],
+  },
+  {
+    id: 'reallife',
+    label: 'RealLife',
+    type: '생활 시뮬레이션',
+    demoOrigin: mainDeployOrigin,
+    demoPath: '/clones/reallife/',
+    visualKind: 'document',
+    teaser: '턴, 선택, 정산 결과가 화면 위에서 바로 이어지는 생활 시뮬레이션 게임입니다.',
+    title: '선택과 정산 흐름을 보여주는 생활 시뮬레이션 게임',
+    summary: '턴 진행, 자산 변화, 선택 결과를 화면에서 확인하며 상태 흐름을 실습한 프로젝트입니다.',
+    stack: ['React', '게임 화면', '상태 흐름', '룰 기반 진행'],
+    problem: lines([
+      '게임형 프로젝트는 선택, 결과, 정산이 화면에서 분명히 이어져야 합니다.',
+      '사용자가 현재 상태와 다음 선택을 바로 파악할 수 있어야 흐름이 끊기지 않습니다.',
+    ]),
+    solution: lines([
+      '턴 진행과 현금 변화를 분리해 구성하고,',
+      '매입, 통행료, 대출 같은 선택 결과를 화면 연출과 수치 변화로 확인하도록 만들었습니다.',
+    ]),
+    learned: lines([
+      '게임 UI에서는 재미있는 화면보다 사용자가 다음 선택과 현재 자산을 바로 이해하는 것이 먼저였습니다.',
+      '턴 안내, 정산 연출, 대출 조건을 나누어 만들면서 상태 변화가 화면 피드백과 함께 보여야 한다는 점을 확인했습니다.',
+    ]),
+    checkpoints: ['턴 진행 안내', '매입·통행료·대출 선택', '현금과 자산 변화 피드백'],
+    detail: ['턴 진행과 이벤트 안내', '현금과 자산 변화 표시', '매입·통행료·대출 선택 흐름', '게임 UI와 상태 변경 로직 실습'],
+    demo: [
+      ['1턴', '알바 제안 수락 / 체력 -8 / 현금 +70,000'],
+      ['2턴', '자격증 공부 / 집중도 +12 / 시간 -3'],
+      ['결과', '생활비와 성장 선택지를 비교'],
+    ],
+    screenshots: [
+      ['권리증 화면', '임대료와 보유 자산 정보를 직관적으로 보여줍니다.', '/project-shots/reallife/01.jpg'],
+      ['타인의 땅을 밟았을 때', '사회자 멘트와 애니메이션으로 통행료 상황을 보여줍니다.', '/project-shots/reallife/02.jpg'],
+      ['차례 안내', '턴이 넘어오면 차례 안내가 나갑니다.', '/project-shots/reallife/03.jpg'],
+      ['정산 연출', '누가 누구의 땅을 밟았는지 한 화면에서 확인합니다.', '/project-shots/reallife/04.jpg'],
+      ['매입 선택', lines([
+        '부동산 도착 시 매입과 스킵을 선택합니다.',
+        '매입하면 보유 현금이 바로 줄어드는',
+        '정산 액션이 표시됩니다.',
+      ]), '/project-shots/reallife/05.jpg'],
+      ['대출 기능', lines([
+        '조건에 맞으면 담보대출과 신용대출을 선택할 수 있습니다.',
+        '대출 이후에는 매 턴 이자를 지급해야 하므로',
+        '현금 흐름 확인이 중요합니다.',
+      ]), '/project-shots/reallife/06.jpg'],
+    ],
+  },
+];
+
+export const experienceItems = [
+  {
+    id: 'career-crm',
+    label: '통신 CRM 경력',
+    period: '2016.01 ~ 현재',
+    title: lines([
+      '고객이 반복해서 설명하는 불편을',
+      '가까이에서 들은 경험',
+    ]),
+    body: lines([
+      'U+ 이전설치 상담, 고객케어,',
+      '헬로비전 가치제안 업무를 거치며 고객을 응대했습니다.',
+      '해지 의사 고객의 불편을 듣고 유지 제안과 재약정을 안내하며,',
+      '작은 안내 차이가 사용자의 선택과 만족에 영향을 준다는 점을 배웠습니다.',
+    ]),
+  },
+  {
+    id: 'career-japan',
+    label: '일본 해외연수',
+    period: '2018.04 ~ 2019.10',
+    title: lines([
+      '일본 문화와 현장 언어를',
+      '직접 익힌 생활 경험',
+    ]),
+    body: lines([
+      '일본 워킹홀리데이 1년과 유학원 6개월 생활로',
+      '현지 문화와 생활 언어를 경험했습니다.',
+      '현재도 일본어권 가족과 생활하며',
+      '실생활 중심의 일본어 회화 감각을 유지하고 있습니다.',
+      '이 경험은 사용자의 말을 놓치지 않고 정리하는 기반이 됐습니다.',
+    ]),
+  },
+  {
+    id: 'career-education',
+    label: '교육 이수',
+    period: '2025.09 ~ 2026.02',
+    title: lines([
+      '풀스택 개발 교육을 통해',
+      '웹 서비스 흐름을 학습',
+    ]),
+    body: lines([
+      '2025년 9월부터 2026년 2월까지',
+      'Java, Servlet/JSP, Spring Boot, Spring Security, JWT, MyBatis, MySQL을 학습했습니다.',
+      '프론트엔드 영역에서는 HTML/CSS 기초와 React, Vite, Router, Axios, Zustand, React Query를 다뤘습니다.',
+      '교육 이후에는 개인 프로젝트를 통해 문제 정의와 구현 흐름을 연습하고 있습니다.',
+    ]),
+  },
+];
+
+export const resumeIntro = lines([
+  '고객과 가까운 자리에서 일하며 같은 불편이 여러 번 반복되는 순간을 자주 봤습니다. 그 경험은 기능을 많이 넣기보다 사용자가 어디에서 멈추는지 먼저 찾는 습관으로 이어졌습니다.',
+  '',
+  '풀스택 개발 교육에서는 Java, Servlet/JSP, Spring Boot, Spring Security, JWT, MyBatis, MySQL을 학습했고, 프론트엔드에서는 HTML/CSS 기초와 React, Vite, Router, Axios, Zustand, React Query를 다뤘습니다. 팀 프로젝트를 거치며 기능이 동작해도 사용자가 헷갈리면 좋은 흐름이 아니라는 점을 배웠습니다.',
+  '',
+  '교육 이후에는 CareDoc, Subtitle Fix Checker, Lucid처럼 작은 업무 병목을 웹 도구로 바꾸는 프로젝트를 이어가고 있습니다. CareDoc은 복지시설 서류 작성 흐름을, Subtitle Fix Checker는 자막 검수 판단을, Lucid는 수업 코드와 학습 상태 확인 흐름을 정리하는 데 초점을 맞췄습니다.',
+  '',
+  'AI 도구는 문제를 나누고 작업 순서를 점검하는 보조 수단으로 사용합니다. 앞으로도 사용자가 왜 불편한지부터 확인하고, 바로 쓸 수 있는 작은 개선을 끝까지 완성하는 개발자가 되고 싶습니다.',
+]);
+
+export const profileFacts = [
+  ['이름', '최혁준'],
+  ['방향', '불편한 반복을 줄이는 개발자'],
+  ['학습', 'Java · Spring Boot · React · MySQL · HTML/CSS'],
+  ['도구', 'React · Vite · Firebase · Vercel · GitHub API'],
+  ['경험', lines([
+    '고객 응대 8년 이상',
+    '일본 워킹홀리데이 1년 · 유학원 6개월',
+    '일본어권 가족과 생활',
+  ])],
+];
+
