@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-import { experienceItems, lines, profileFacts, projectDetails } from './portfolioData';
+import { experienceItems, lines, projectDetails } from './portfolioData';
 
 function App() {
   const [activeId, setActiveId] = useState(projectDetails[0].id);
@@ -93,12 +93,16 @@ function App() {
 
       <section className="heroSection" id="home">
         <span className="anchorAlias" id="top" aria-hidden="true" />
+        <div className="heroIdentityBadge" aria-label="최혁준 포트폴리오">
+          <span>최</span>
+          <strong>최혁준</strong>
+        </div>
         <nav className="heroNav" aria-label="포트폴리오 섹션">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#experience">Experience</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
+          <a href="#home"><b>01</b> home</a>
+          <a href="#projects"><b>02</b> works</a>
+          <a href="#experience"><b>03</b> career</a>
+          <a href="#about"><b>04</b> about</a>
+          <a href="#contact"><b>05</b> contact</a>
         </nav>
         <div className="legacyAnchorFallback" aria-hidden="true">
           <a href="#top" tabIndex={-1}>처음</a>
@@ -108,13 +112,15 @@ function App() {
         </div>
 
         <div className="heroCopy">
+          <p className="heroKicker">HELLO, MY NAME IS HYEOKJUN</p>
           <h1>
-            안녕하세요
+            I make useful
             <br />
-            <span>최혁준입니다.</span>
+            <span>web tools.</span>
           </h1>
           <p className="heroLead">
             <span className="identityLine">불편한 반복을 줄이는 개발자</span>
+            <span>고객 응대 현장에서 본 작은 불편을 실제로 눌러볼 수 있는 웹 화면으로 옮깁니다.</span>
           </p>
           <div className="heroActions">
             <a href="#about">소개 읽기</a>
@@ -135,29 +141,6 @@ function App() {
           ])}</p>
         </div>
 
-        <div className="introPage">
-          <aside className="profileCard" aria-label="최혁준 기본 정보">
-            <div className="profileIntroHeader">
-              <div className="profilePhotoFrame">
-                <img src="/assets/profile.jpg" alt="최혁준 프로필 사진" />
-              </div>
-              <div className="profileIdentity">
-                <strong>최혁준</strong>
-                <span>Full-stack Web Developer</span>
-              </div>
-            </div>
-
-            <dl className="profileFacts">
-              {profileFacts.map(([label, value]) => (
-                <div key={label}>
-                  <dt>{label}</dt>
-                  <dd>{value}</dd>
-                </div>
-              ))}
-            </dl>
-          </aside>
-
-        </div>
       </section>
 
       <section className="experienceSection" id="experience">
