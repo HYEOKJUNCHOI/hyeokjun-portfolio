@@ -1,8 +1,13 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { createElement, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-import { experienceItems, lines, projectDetails } from './portfolioData';
+import { experienceItems, projectDetails } from './portfolioData';
+
+const portfolioSizeRatio = Number.parseFloat(import.meta.env.VITE_PORTFOLIO_SIZE_RATIO ?? '0.8');
+if (Number.isFinite(portfolioSizeRatio) && portfolioSizeRatio > 0) {
+  document.documentElement.style.setProperty('--portfolio-size-ratio', String(portfolioSizeRatio));
+}
 
 function App() {
   const [activeId, setActiveId] = useState(projectDetails[0].id);
@@ -14,13 +19,13 @@ function App() {
   const detailPanelId = 'project-detail-panel';
   const detailHeadingId = `project-detail-heading-${activeId}`;
   const sideIndexItems = [
-    { id: 'home', label: 'Home', group: true },
-    { id: 'about', label: 'About', group: true },
-    { id: 'experience', label: 'Experience', group: true },
+    { id: 'home', label: '홈', group: true },
+    { id: 'about', label: '소개', group: true },
+    { id: 'experience', label: '경험', group: true },
     { id: 'career-crm', label: 'CRM 경력' },
     { id: 'career-japan', label: '일본 연수' },
     { id: 'career-education', label: '교육 이수' },
-    { id: 'projects', label: 'Projects', group: true },
+    { id: 'projects', label: '작업', group: true },
   ];
   const activeProject = useMemo(
     () => projectDetails.find((project) => project.id === activeId),
@@ -92,15 +97,11 @@ function App() {
 
       <section className="heroSection" id="home">
         <span className="anchorAlias" id="top" aria-hidden="true" />
-        <div className="heroIdentityBadge" aria-label="최혁준 포트폴리오">
-          <span>최</span>
-          <strong>최혁준</strong>
-        </div>
         <nav className="heroNav" aria-label="포트폴리오 섹션">
-          <a href="#home"><b>01</b> home</a>
-          <a href="#projects"><b>02</b> works</a>
-          <a href="#experience"><b>03</b> career</a>
-          <a href="#about"><b>04</b> about</a>
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
         </nav>
         <div className="legacyAnchorFallback" aria-hidden="true">
           <a href="#top" tabIndex={-1}>처음</a>
@@ -110,35 +111,25 @@ function App() {
         </div>
 
         <div className="heroCopy">
-          <p className="heroKicker">HELLO, MY NAME IS HYEOKJUN</p>
           <h1>
-            I make useful
-            <br />
-            <span>web tools.</span>
+            <span className="titleLine titlePlain titleSmall">저는</span>
+            <span className="titleLine heroTitleLineOne"><span className="titlePhrase"><span className="accentOne titleFocus">반복되는 불편함</span><span className="titlePlain titleSmall">을</span></span></span>
+            <span className="titleLine titlePlain titleSmall">그냥</span>
+            <span className="titleLine heroTitleLineTwo titleFocus accentTwo">넘기지 못하는 편입니다.</span>
           </h1>
-          <p className="heroLead">
-            <span className="identityLine">불편한 반복을 줄이는 개발자</span>
-            <span>고객 응대 현장에서 본 작은 불편을 실제로 눌러볼 수 있는 웹 화면으로 옮깁니다.</span>
-          </p>
-          <div className="heroActions">
-            <a href="#about">소개 읽기</a>
-            <a href="#projects">작업 보기</a>
-          </div>
         </div>
 
+        <HeroVisual />
+
+
+        <div className="heroActions">
+          <a href="#about">About Me</a>
+          <a href="#projects">View Project</a>
+        </div>
       </section>
 
       <section className="aboutSection" id="about">
         <span className="anchorAlias" id="self-intro" aria-hidden="true" />
-        <div className="sectionTitle">
-          <p className="eyebrow">About</p>
-          <h2>사용자가 멈추는 지점을 먼저 살피고, 작게 끝까지 구현합니다</h2>
-          <p>{lines([
-            '고객 응대 현장에서 반복되는 설명과 불편을 가까이서 들었습니다.',
-            '풀스택 개발 교육 이후에는 그 관찰을 서류 작성, 자막 검수, 학습 보조 흐름을 정리하는 개인 프로젝트로 옮기고 있습니다.',
-          ])}</p>
-        </div>
-
       </section>
 
       <section className="experienceSection" id="experience">
@@ -147,15 +138,15 @@ function App() {
           <p className="eyebrow">Experience / Background</p>
         </div>
         <div className="experienceTimeline">
-          {experienceItems.map((item, index) => (
+          {experienceItems.map((item) => (
             <article className="timelineCard" id={item.id} key={item.label}>
               <div className="timelineMarker" aria-hidden="true">
-                <span>{String(index + 1).padStart(2, '0')}</span>
+                {item.markerTitle.map((line) => <span key={line}>{line}</span>)}
               </div>
               <div className="timelineContent">
                 <span>{item.label}</span>
-                <strong>{item.period}</strong>
-                <h3>{item.title}</h3>
+                <strong className={item.id === 'career-education' ? 'timelinePeriodLight' : ''}>{item.period}</strong>
+                {item.title ? <h3>{item.title}</h3> : null}
                 <p>{item.body}</p>
               </div>
             </article>
@@ -166,11 +157,8 @@ function App() {
       <section className="workSection" id="projects">
         <span className="anchorAlias" id="works" aria-hidden="true" />
         <div className="sectionTitle">
-          <p className="eyebrow">Projects</p>
-          <h2>반복 작업을 줄이는 프로젝트</h2>
-          <p>서류 작성, 자막 검수, 코딩 학습처럼 사용자가 자주 멈추는 과정을 작게 나누어 구현한 작업들입니다.</p>
+          <p className="eyebrow">Project</p>
         </div>
-
         <div className="projectGrid" aria-label="프로젝트 네비게이터">
           {projectDetails.map((project) => (
             <button
@@ -182,16 +170,13 @@ function App() {
               onClick={(event) => selectProject(project.id, event.currentTarget)}
               type="button"
             >
-              <ProjectTeaserVisual kind={project.visualKind} />
-              <span className="projectType">{project.type}</span>
-              <strong>{project.navLabel || project.label}</strong>
-              <p>{project.teaser}</p>
-              <span className="projectExplanation">
-                <span>살펴볼 지점</span>
-                <strong>{project.checkpoints[0]}</strong>
-                <small>클릭하면 상세 화면과 데모 확인 포인트로 이동합니다.</small>
-              </span>
-              <em>{isDetailOpen && project.id === activeId ? '열림' : '열기'}</em>
+              <ProjectTeaserVisual
+                image={project.showcaseImage}
+                kind={project.visualKind}
+                label={project.label}
+                teaser={project.teaser}
+                type={project.type}
+              />
             </button>
           ))}
         </div>
@@ -206,18 +191,45 @@ function App() {
           />
         ) : null}
       </section>
+
     </main>
   );
 }
 
-function ProjectTeaserVisual({ kind }) {
+function HeroVisual() {
+  return (
+    <aside className="heroVisualCard" aria-label="작업 공간을 보여주는 홈 이미지">
+      <div className="heroVisualFrame hasHeroImage">
+        <img src="/showcase/home.jpg" alt="포트폴리오 홈 쇼케이스 이미지" />
+      </div>
+      <p className="heroLead">
+        <span>손을 더 빠르게 움직이기보다,</span>
+        <span><span className="leadQuestion">“이 과정을 줄일 방법은 없을까?”</span>를 먼저 고민했습니다.</span>
+      </p>
+    </aside>
+  );
+}
+
+
+function ProjectTeaserVisual({ image, kind, label, teaser, type }) {
   return (
     <span className={`projectTeaserVisual ${kind ? `projectVisual-${kind}` : ''}`} aria-hidden="true">
-      <span className="visualFrame">
-        <span />
-        <span />
-        <span />
-        <span />
+      {image ? <img src={image} alt="" /> : (
+        <span className="visualFrame">
+          <span />
+          <span />
+          <span />
+          <span />
+        </span>
+      )}
+      <span className="projectCardChrome">
+        <span className="projectType">{type}</span>
+        <strong>{label}</strong>
+        <em>자세히 보기</em>
+      </span>
+      <small>자세히 보기</small>
+      <span className="projectExplanation" aria-hidden="true">
+        <strong>{teaser}</strong>
       </span>
     </span>
   );
@@ -263,7 +275,6 @@ function ProjectDetail({ detailHeadingId, detailPanelId, onRequestClose, project
       <ProjectBrief project={project} />
       <ScreenshotGallery
         project={project}
-        selectedScreenshot={selectedScreenshot}
         setSelectedScreenshot={setSelectedScreenshot}
       />
 
@@ -280,7 +291,7 @@ function ProjectDetail({ detailHeadingId, detailPanelId, onRequestClose, project
   );
 }
 
-function ScreenshotGallery({ project, selectedScreenshot, setSelectedScreenshot }) {
+function ScreenshotGallery({ project, setSelectedScreenshot }) {
   const hasImages = project.screenshots.some(([, , src]) => src);
 
   return (
@@ -302,6 +313,7 @@ function ScreenshotGallery({ project, selectedScreenshot, setSelectedScreenshot 
                 'screenshotSlot',
                 src ? 'hasImage' : '',
                 isLegacyFrame ? 'legacyFrame' : '',
+                ['fixchecker', 'lucid', 'reallife'].includes(project.id) ? 'cropLegacyFrame' : '',
               ].filter(Boolean).join(' ')}
               key={`${project.id}-${title}`}
               onClick={() => setSelectedScreenshot(item)}
@@ -326,31 +338,18 @@ function ProjectBrief({ project }) {
   const briefItems = [
     ['문제점', project.problem],
     ['구현한 것', project.solution],
-    ['배운 점', project.learned],
+    ['고민했던 부분', project.learned],
   ];
-  const demoHref = `${project.demoOrigin || ''}${project.demoPath}`;
-
   return (
     <section className="projectBrief" aria-label={`${project.label} 데모와 문제 해결 요약`}>
-      <article className="briefCard demoBriefCard">
-        <h4>데모 / 확인 포인트</h4>
-        <a className="projectDemoLink" href={demoHref} data-project-demo={project.id} target="_blank" rel="noreferrer">
-          데모 열기
-        </a>
-        <ul>
-          {project.checkpoints.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </article>
       {briefItems.map(([title, body]) => (
         <article className="briefCard" key={title}>
           <h4>{title}</h4>
-          <ul>
-            {body.split('\n').map((item) => (
-              <li key={item}>{item}</li>
+          <div className="briefProse">
+            {body.split('\n\n').map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
             ))}
-          </ul>
+          </div>
         </article>
       ))}
     </section>
@@ -402,6 +401,7 @@ function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
                 screenshot.src ? 'hasImage' : '',
                 shouldFillFrame ? 'fillFrame' : '',
                 isLegacyFrame ? 'legacyFrame' : '',
+                ['fixchecker', 'lucid', 'reallife'].includes(project.id) ? 'cropLegacyFrame' : '',
               ].filter(Boolean).join(' ')}>
                 {screenshot.src ? (
                   <img alt={`${project.label} ${screenshot.title}`} src={screenshot.src} />
@@ -424,25 +424,18 @@ function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
 }
 
 function DetailSummary({ headingId, project }) {
+  const demoHref = `${project.demoOrigin || ''}${project.demoPath}`;
+
   return (
-    <div className="detailHead">
+    <div className="detailHead" aria-labelledby={headingId}>
       <div>
-        <p className="eyebrow">{project.type}</p>
-        <h3 id={headingId}>{project.title}</h3>
-        <p>{project.summary}</p>
-        {project.demoPath && (
-          <a
-            href={project.demoPath}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cloneLaunchButton"
-          >
-            테스트 클론 실행하기
-          </a>
-        )}
+        <p className="eyebrow" id={headingId}>{project.type}</p>
       </div>
+      <a className="projectDemoLink detailDemoLink" href={demoHref} data-project-demo={project.id} target="_blank" rel="noreferrer">
+        데모 확인
+      </a>
     </div>
   );
 }
 
-createRoot(document.getElementById('root')).render(<App />);
+createRoot(document.getElementById('root')).render(createElement(App));
