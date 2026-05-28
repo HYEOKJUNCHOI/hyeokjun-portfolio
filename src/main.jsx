@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-import { experienceItems, profileFacts, projectDetails, resumeIntro } from './portfolioData';
+import { experienceItems, projectDetails } from './portfolioData';
 
 
 function App() {
@@ -127,31 +127,6 @@ function App() {
 
       <section className="aboutSection" id="about">
         <span className="anchorAlias" id="self-intro" aria-hidden="true" />
-        <div className="sectionTitle">
-          <p className="eyebrow">About Me</p>
-        </div>
-        <div className="introPage">
-          <article className="profileCard aboutSummaryPanel">
-            <div className="profileIntroHeader">
-              <div className="profileInitialAvatar" aria-hidden="true"><span>최</span></div>
-              <div className="profileIdentity">
-                <strong>최혁준</strong>
-                <span>반복되는 업무 흐름을 정리하는 개발자</span>
-              </div>
-            </div>
-            <dl className="profileFacts">
-              {profileFacts.map(([term, description]) => (
-                <div key={term}>
-                  <dt>{term}</dt>
-                  <dd>{description}</dd>
-                </div>
-              ))}
-            </dl>
-          </article>
-          <article className="letterPanel aboutIntroPanel">
-            <p className="resumeText">{resumeIntro}</p>
-          </article>
-        </div>
       </section>
 
       <section className="experienceSection" id="experience">
@@ -245,6 +220,7 @@ function ProjectTeaserVisual({ image, kind, label, teaser, type }) {
         <strong>{label}</strong>
         <em>자세히 보기</em>
       </span>
+      <small>자세히 보기</small>
       <span className="projectExplanation" aria-hidden="true">
         <strong>{teaser}</strong>
       </span>
@@ -444,11 +420,6 @@ function DetailSummary({ headingId, project }) {
     <div className="detailHead" aria-labelledby={headingId}>
       <div>
         <p className="eyebrow" id={headingId}>{project.type}</p>
-        <h3>{project.label}</h3>
-        <p className="detailIntro">{project.cardIntro || project.title}</p>
-        <div className="detailStack" aria-label="사용 기술">
-          {project.stack.map((item) => <span key={item}>{item}</span>)}
-        </div>
       </div>
       <a className="projectDemoLink detailDemoLink" href={demoHref} data-project-demo={project.id} target="_blank" rel="noreferrer">
         데모 확인
