@@ -1,23 +1,19 @@
-import React, { createElement, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 import { experienceItems, projectDetails } from './portfolioData';
 
-const portfolioSizeRatio = Number.parseFloat(import.meta.env.VITE_PORTFOLIO_SIZE_RATIO ?? '0.8');
-if (Number.isFinite(portfolioSizeRatio) && portfolioSizeRatio > 0) {
-  document.documentElement.style.setProperty('--portfolio-size-ratio', String(portfolioSizeRatio));
-}
 
 function App() {
-  const [activeId, setActiveId] = useState(projectDetails[0].id);
+  const [activeId, setActiveId] = useState(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeAnchor, setActiveAnchor] = useState('home');
   const detailRef = useRef(null);
   const lastTriggerRef = useRef(null);
   const detailPanelId = 'project-detail-panel';
-  const detailHeadingId = `project-detail-heading-${activeId}`;
+  const detailHeadingId = `project-detail-heading-${activeId || 'none'}`;
   const sideIndexItems = [
     { id: 'home', label: '홈', group: true },
     { id: 'about', label: '소개', group: true },
@@ -111,16 +107,17 @@ function App() {
         </div>
 
         <div className="heroCopy">
-          <h1>
-            <span className="titleLine titlePlain titleSmall">저는</span>
-            <span className="titleLine heroTitleLineOne"><span className="titlePhrase"><span className="accentOne titleFocus">반복되는 불편함</span><span className="titlePlain titleSmall">을</span></span></span>
-            <span className="titleLine titlePlain titleSmall">그냥</span>
-            <span className="titleLine heroTitleLineTwo titleFocus accentTwo">넘기지 못하는 편입니다.</span>
+          <h1 className="heroTitle">
+            <span className="heroTitleLine heroTitleOpening"><span>저는</span> 반복되는 불편함<span>을</span></span>
+            <span className="heroTitleLine heroTitleConclusion">그냥 넘기지 못하는 편입니다.</span>
           </h1>
+          <div className="heroLead">
+            <p>손을 더 빠르게 움직이기보다</p>
+            <p><span>“이 과정을 줄일 방법은 없을까?”</span>를 먼저 고민합니다.</p>
+          </div>
         </div>
 
         <HeroVisual />
-
 
         <div className="heroActions">
           <a href="#about">About Me</a>
@@ -162,7 +159,7 @@ function App() {
         <div className="projectGrid" aria-label="프로젝트 네비게이터">
           {projectDetails.map((project) => (
             <button
-              className={project.id === activeId ? 'projectCard active' : 'projectCard'}
+              className={activeId && project.id === activeId ? 'projectCard active' : 'projectCard'}
               aria-controls={detailPanelId}
               aria-expanded={isDetailOpen && project.id === activeId}
               data-project-id={project.id}
@@ -202,10 +199,6 @@ function HeroVisual() {
       <div className="heroVisualFrame hasHeroImage">
         <img src="/showcase/home.jpg" alt="포트폴리오 홈 쇼케이스 이미지" />
       </div>
-      <p className="heroLead">
-        <span>손을 더 빠르게 움직이기보다,</span>
-        <span><span className="leadQuestion">“이 과정을 줄일 방법은 없을까?”</span>를 먼저 고민했습니다.</span>
-      </p>
     </aside>
   );
 }
@@ -268,9 +261,6 @@ function ProjectDetail({ detailHeadingId, detailPanelId, onRequestClose, project
       ref={refTarget}
       tabIndex={-1}
     >
-      <button aria-label="프로젝트 상세 패널 닫기" className="detailClose" onClick={onRequestClose} type="button">
-        닫기
-      </button>
       <DetailSummary headingId={detailHeadingId} project={project} />
       <ProjectBrief project={project} />
       <ScreenshotGallery
@@ -438,4 +428,5 @@ function DetailSummary({ headingId, project }) {
   );
 }
 
-createRoot(document.getElementById('root')).render(createElement(App));
+const appElement = React.createElement(App);
+createRoot(document.getElementById('root')).render(appElement);
