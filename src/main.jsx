@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { FaArrowDownLong } from 'react-icons/fa6';
 import './styles.css';
 
 import { experienceItems, projectDetails } from './portfolioData';
@@ -117,8 +118,6 @@ function App() {
           </div>
         </div>
 
-        <HeroVisual />
-
         <div className="heroActions">
           <a href="#about">About Me</a>
           <a href="#projects">View Project</a>
@@ -132,7 +131,7 @@ function App() {
       <section className="experienceSection" id="experience">
         <span className="anchorAlias" id="career" aria-hidden="true" />
         <div className="sectionTitle">
-          <p className="eyebrow">Experience / Background</p>
+          <p className="eyebrow sectionEyebrowLarge">Experience / Background</p>
         </div>
         <div className="experienceTimeline">
           {experienceItems.map((item) => (
@@ -143,7 +142,6 @@ function App() {
               <div className="timelineContent">
                 <span>{item.label}</span>
                 <strong className={item.id === 'career-education' ? 'timelinePeriodLight' : ''}>{item.period}</strong>
-                {item.title ? <h3>{item.title}</h3> : null}
                 <p>{item.body}</p>
               </div>
             </article>
@@ -154,7 +152,7 @@ function App() {
       <section className="workSection" id="projects">
         <span className="anchorAlias" id="works" aria-hidden="true" />
         <div className="sectionTitle">
-          <p className="eyebrow">Project</p>
+          <p className="eyebrow sectionEyebrowLarge">Project</p>
         </div>
         <div className="projectGrid" aria-label="프로젝트 네비게이터">
           {projectDetails.map((project) => (
@@ -192,17 +190,6 @@ function App() {
     </main>
   );
 }
-
-function HeroVisual() {
-  return (
-    <aside className="heroVisualCard" aria-label="작업 공간을 보여주는 홈 이미지">
-      <div className="heroVisualFrame hasHeroImage">
-        <img src="/showcase/home.jpg" alt="포트폴리오 홈 쇼케이스 이미지" />
-      </div>
-    </aside>
-  );
-}
-
 
 function ProjectTeaserVisual({ image, kind, label, teaser, type }) {
   return (
@@ -334,10 +321,20 @@ function ProjectBrief({ project }) {
     <section className="projectBrief" aria-label={`${project.label} 데모와 문제 해결 요약`}>
       {briefItems.map(([title, body]) => (
         <article className="briefCard" key={title}>
-          <h4>{title}</h4>
+          <h4><span className="briefTitleCapsule">{title}</span></h4>
           <div className="briefProse">
-            {body.split('\n\n').map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
+            {body.split('\n\n').map((paragraph, index) => (
+              paragraph.trim().replace(/\u200B/g, '') === '↓' ? (
+                <div className="briefFlowArrow" key={`${title}-arrow-${index}`} aria-hidden="true">
+                  <FaArrowDownLong />
+                </div>
+              ) : (
+                <p key={`${title}-paragraph-${index}`}>
+                  {paragraph.split('\n').map((line, lineIndex) => (
+                    <span className="briefLine" key={`${title}-paragraph-${index}-line-${lineIndex}`}>{line}</span>
+                  ))}
+                </p>
+              )
             ))}
           </div>
         </article>
