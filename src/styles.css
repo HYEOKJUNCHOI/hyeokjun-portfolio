@@ -211,12 +211,12 @@ img, svg, iframe { max-width: 100%; }
   position: relative;
   display: grid;
   grid-template-areas:
-    "copy visual"
-    "actions visual";
-  grid-template-columns: minmax(0, 760px) minmax(0, 560px);
+    "copy"
+    "actions";
+  grid-template-columns: minmax(0, 960px);
   align-items: center;
-  justify-content: space-between;
-  column-gap: clamp(36px, 3.4vw, 64px);
+  justify-content: start;
+  column-gap: 0;
   row-gap: clamp(var(--space-5), 3vh, var(--space-8));
   min-height: clamp(600px, 76vh, 700px);
   padding: clamp(118px, 10vh, 148px) 0 clamp(32px, 4vh, 56px);
@@ -295,7 +295,7 @@ img, svg, iframe { max-width: 100%; }
   display: grid;
   gap: clamp(10px, 1vw, 16px);
   margin: 0;
-  font-size: clamp(49px, 3.95vw, 77px);
+  font-size: clamp(44px, 3.7vw, 72px);
   line-height: 1.08;
 }
 .heroTitleLine {
@@ -357,7 +357,7 @@ img, svg, iframe { max-width: 100%; }
   border: 0;
   color: var(--text-strong);
   font-family: var(--font-display);
-  font-size: clamp(38px, 2.55vw, 48px);
+  font-size: clamp(33px, 2.3vw, 43px);
   font-weight: 950;
   line-height: 1.28;
   text-align: left;
@@ -624,43 +624,11 @@ img, svg, iframe { max-width: 100%; }
   line-height: 1.38;
 }
 
-.heroVisualCard {
-  position: relative;
-  z-index: 2;
-  grid-area: visual;
-  display: grid;
-  align-self: center;
-  justify-self: end;
-  width: min(560px, 100%);
-  min-width: 0;
-}
-.heroVisualFrame {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 1.22 / 1;
-  border: 1px solid rgba(255, 111, 157, 0.42);
-  border-radius: clamp(24px, 3vw, 42px);
-  background: var(--surface-card);
-  box-shadow: var(--shadow-soft), var(--shadow-teal);
-}
-.heroVisualFrame.hasHeroImage img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.86) brightness(0.82);
-}
-.heroVisualFrame::after {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(7, 8, 8, 0.48), transparent 46%), radial-gradient(circle at 50% 52%, rgba(244, 241, 232, 0.08), transparent 42%);
-  content: "";
-}
-
 .aboutSection, .introSection, .experienceSection, .workSection { padding: var(--space-12) 0 0; }
 .eyebrow { margin: 0 0 var(--space-2); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
 .sectionTitle { display: grid; gap: var(--space-2); max-width: 920px; margin-bottom: var(--space-5); }
 .sectionTitle h2 { margin: 0; font-size: clamp(28px, 4vw, 42px); line-height: 1.24; }
+.sectionEyebrowLarge { font-size: clamp(24px, 1.55vw, 28px); letter-spacing: 0.04em; }
 .sectionTitle p:last-child { max-width: 880px; margin: 0; color: var(--text-muted); line-height: 1.82; white-space: pre-line; }
 
 .aboutGrid, .experienceGrid, .projectGrid, .detailBody, .detailGrid, .projectBrief, .screenshotGrid, .playgroundGrid, .docChipRow, .lifeStatRow, .kpiGrid, .scheduleButtons, .choiceRow, .statGrid {
@@ -680,6 +648,7 @@ img, svg, iframe { max-width: 100%; }
   padding: var(--space-5);
   border-radius: var(--radius-md);
 }
+.briefCard { display: grid; align-content: start; justify-items: center; text-align: center; }
 .infoCard { min-height: 180px; }
 .infoCard span, .timelineContent > span, .projectCard > .projectType { display: block; margin-bottom: var(--space-2); font-size: 12px; }
 .infoCard strong, .timelineContent > strong { display: block; margin-bottom: var(--space-3); color: var(--text-strong); font-size: 18px; line-height: 1.35; }
@@ -822,10 +791,10 @@ img, svg, iframe { max-width: 100%; }
   border-radius: 0;
   background: transparent;
   color: var(--yellow-500);
-  font-family: var(--font-body);
-  font-size: clamp(26px, 2.35vw, 38px);
-  font-weight: 1000;
-  letter-spacing: -0.035em;
+  font-family: var(--font-display);
+  font-size: clamp(23px, 2.15vw, 35px);
+  font-weight: 850;
+  letter-spacing: -0.02em;
   line-height: 1.28;
   text-align: left;
   white-space: normal;
@@ -862,8 +831,8 @@ img, svg, iframe { max-width: 100%; }
   font-size: 14px;
 }
 .projectGrid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-5);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(var(--space-3), 1.2vw, var(--space-5));
   padding: 0;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
@@ -938,7 +907,7 @@ img, svg, iframe { max-width: 100%; }
   display: grid;
   align-content: end;
   gap: var(--space-2);
-  padding: var(--space-5);
+  padding: clamp(var(--space-3), 1.25vw, var(--space-5));
   background: linear-gradient(180deg, rgba(7, 8, 8, 0.08), rgba(7, 8, 8, 0.68));
 }
 .projectCardChrome .projectType {
@@ -948,7 +917,7 @@ img, svg, iframe { max-width: 100%; }
 }
 .projectCardChrome strong {
   color: var(--text-strong);
-  font-size: clamp(24px, 3vw, 32px);
+  font-size: clamp(18px, 1.55vw, 24px);
   line-height: 1.2;
 }
 .projectCardChrome em {
@@ -1073,7 +1042,8 @@ img, svg, iframe { max-width: 100%; }
   inset: 0;
   z-index: 4;
   display: grid;
-  place-items: center;
+  align-items: center;
+  justify-items: start;
   padding: var(--space-5);
   background: rgba(7, 8, 8, 0.48);
   box-shadow: inset 0 0 0 1px rgba(40, 219, 195, 0.22), var(--shadow-teal);
@@ -1090,6 +1060,8 @@ img, svg, iframe { max-width: 100%; }
   font-size: 15px;
   font-weight: 400;
   line-height: 1.32;
+  text-align: left;
+  white-space: pre-line;
 }
 
 .projectCard:hover .projectTeaserVisual > img, .projectCard:focus-visible .projectTeaserVisual > img {
@@ -1148,9 +1120,12 @@ img, svg, iframe { max-width: 100%; }
 .projectBrief { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
 .detailBody, .projectBrief, .screenshotPanel, .playgroundPanel, .detailGrid, .caredocFramePanel { margin-top: var(--space-5); }
 .briefCard h4, .detailBody h4, .screenshotHead h4, .liveFrameHead h4, .playgroundHead h4, .mobileShowcaseHeader h4 { margin: 0 0 var(--space-3); font-size: 20px; }
-.briefCard h4 { color: var(--yellow-500); font-family: var(--font-body); font-size: 22px; font-weight: 1000; letter-spacing: -0.03em; }
-.briefProse { display: grid; gap: var(--space-3); }
-.briefProse p { margin: 0; color: var(--text-body); font-size: 14px; font-weight: 680; line-height: 1.82; white-space: pre-line; }
+.briefCard h4 { display: flex; justify-content: center; width: 100%; text-align: center; }
+.briefTitleCapsule { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 0 var(--space-5); border: 1px solid rgba(232, 193, 93, 0.92); border-radius: var(--radius-pill); background: var(--yellow-500); color: var(--charcoal-950); font-family: var(--font-body); font-size: 22px; font-weight: 1000; letter-spacing: -0.03em; text-align: center; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24); }
+.briefProse { display: grid; justify-items: center; gap: var(--space-3); width: 100%; }
+.briefProse p { width: 100%; margin: 0 auto; color: var(--text-body); font-size: 14px; font-weight: 680; line-height: 1.82; overflow-wrap: normal; text-align: center; white-space: normal; word-break: keep-all; }
+.briefLine { display: block; width: 100%; text-align: center; }
+.briefFlowArrow { display: flex; align-items: center; justify-content: center; margin: -10px 0; color: var(--teal-300); font-size: 10px; line-height: 1; opacity: 0.72; }
 .projectDemoLink { width: 100%; margin-bottom: var(--space-4); }
 .detailDemoLink { align-self: end; justify-self: end; width: auto; margin: 0; }
 
@@ -1258,14 +1233,12 @@ img, svg, iframe { max-width: 100%; }
   .heroSection {
     grid-template-areas:
       "copy"
-      "visual"
       "actions";
     grid-template-columns: minmax(0, 1fr);
     min-height: auto;
     padding-top: 132px;
   }
   .heroCopy { align-self: start; width: 100%; }
-  .heroVisualCard { justify-self: stretch; max-width: 980px; }
   .heroLead { width: 100%; }
 }
 
@@ -1273,7 +1246,7 @@ img, svg, iframe { max-width: 100%; }
   .detailHead { grid-template-columns: 1fr; }
   .heroSection { padding: 132px var(--space-8) var(--space-10); }
   .experienceTimeline { grid-template-columns: 1fr; }
-  .aboutGrid, .experienceGrid, .projectBrief, .screenshotGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .aboutGrid, .experienceGrid, .projectGrid, .projectBrief, .screenshotGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 760px) {
@@ -1290,7 +1263,7 @@ img, svg, iframe { max-width: 100%; }
     justify-content: flex-start;
   }
   .heroNav a { flex: 0 0 auto; min-width: auto; }
-  .heroTitle { font-size: clamp(34px, 10vw, 44px); }
+  .heroTitle { font-size: clamp(29px, 9vw, 39px); }
   .heroCopy p { font-size: 15.5px; }
   .workspaceAvatar { min-height: auto; }
   .workbenchIllustration { min-height: 280px; }
@@ -1405,7 +1378,7 @@ img, svg, iframe { max-width: 100%; }
 .portfolioApp .heroSection .heroLead {
   width: max-content;
   max-width: calc(100vw - (var(--portfolio-side-rail) * 2));
-  font-size: clamp(38px, 2.55vw, 48px);
+  font-size: clamp(33px, 2.3vw, 43px);
 }
 
 .portfolioApp .heroSection .heroLead p {
