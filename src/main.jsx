@@ -73,6 +73,7 @@ function App() {
       projectId: project.id,
     })),
     { id: 'library', label: 'Library', group: true },
+    { id: 'contact', label: 'Contact', group: true },
   ], []);
   const activeProject = useMemo(
     () => projectDetails.find((project) => project.id === activeId),
@@ -265,6 +266,8 @@ function App() {
 
       <LibrarySection />
 
+      <ContactSection />
+
       {activeShowcaseIndex !== null ? (
         <ShowcaseDetailModal
           item={showcaseItems[activeShowcaseIndex]}
@@ -294,6 +297,54 @@ function LibrarySection() {
               <img src={book.cover} alt={book.title} loading="lazy" />
             </span>
             <span className="libraryCaption">{book.title}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function ContactSection() {
+  // GitHub·Brunch = 바로 링크 / Email·Kakao = 클릭하면 주소를 아이콘 옆에 표시.
+  const [revealed, setRevealed] = useState(null);
+  const links = [
+    { id: 'github', label: 'GitHub', icon: '/contact/github.png', href: 'https://github.com/HYEOKJUNCHOI?tab=repositories' },
+    { id: 'brunch', label: 'Brunch', icon: '/contact/brunch.png', href: 'https://brunch.co.kr/@solbin369' },
+    { id: 'email', label: 'Email', icon: '/contact/email.png', value: 'gurwns369@naver.com', valueHref: 'mailto:gurwns369@naver.com' },
+    { id: 'kakao', label: 'KakaoTalk', icon: '/contact/kakao.png', value: 'gurwns369' },
+  ];
+
+  return (
+    <section className="contactSection" id="contact">
+      <div className="sectionTitle">
+        <p className="eyebrow sectionEyebrowLarge">Contact</p>
+        <p>필요한 이야기가 있다면 언제든 연락 주세요.</p>
+      </div>
+      <ul className="contactList">
+        {links.map((item) => (
+          <li className="contactItem" key={item.id}>
+            {item.href ? (
+              <a className="contactIcon" href={item.href} target="_blank" rel="noreferrer" aria-label={item.label}>
+                <img src={item.icon} alt={item.label} />
+              </a>
+            ) : (
+              <button
+                className="contactIcon"
+                type="button"
+                aria-label={`${item.label} 주소 보기`}
+                aria-expanded={revealed === item.id}
+                onClick={() => setRevealed((current) => (current === item.id ? null : item.id))}
+              >
+                <img src={item.icon} alt={item.label} />
+              </button>
+            )}
+            {item.value && revealed === item.id ? (
+              item.valueHref ? (
+                <a className="contactValue" href={item.valueHref}>{item.value}</a>
+              ) : (
+                <span className="contactValue">{item.value}</span>
+              )
+            ) : null}
           </li>
         ))}
       </ul>

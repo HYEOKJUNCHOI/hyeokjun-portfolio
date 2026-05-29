@@ -1869,3 +1869,39 @@ img, svg, iframe { max-width: 100%; }
   font-weight: 560;
   line-height: 1.95;
 }
+
+/* Contact — 맨 끝 푸터. 글로시 아이콘 타일(투명 배경). GitHub/Brunch=링크, Email/Kakao=클릭 시 주소 옆에 노출. */
+.contactSection { margin-top: clamp(48px, 8vw, 96px); padding-bottom: clamp(24px, 5vw, 56px); }
+.contactSection .sectionTitle { justify-items: center; text-align: center; max-width: none; }
+.contactSection .sectionTitle p:last-child { max-width: none; }
+.contactList {
+  list-style: none;
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(18px, 3vw, 36px);
+}
+.contactItem { display: flex; align-items: center; gap: 12px; }
+.contactIcon {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 22%;
+  transition: transform var(--duration-medium) ease, filter var(--duration-medium) ease;
+}
+.contactIcon img { display: block; width: clamp(60px, 7vw, 76px); height: auto; }
+.contactIcon:hover, .contactIcon:focus-visible { transform: translateY(-5px); filter: brightness(1.12); }
+.contactValue {
+  color: var(--text-body);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+a.contactValue:hover { color: var(--teal-300); text-decoration: underline; }
