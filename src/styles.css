@@ -1779,6 +1779,33 @@ img, svg, iframe { max-width: 100%; }
 /* Library — 미니멀 수평 스크롤. 책은 카테고리 순으로 정렬만, 한 줄로 쭉 옆으로 넘김.
    양끝 mask 페이드 → "무한히 이어지는" 느낌. scroll-snap 으로 슬라이드 감각. */
 .librarySection { margin-top: clamp(48px, 8vw, 96px); }
+.libraryShelf { position: relative; }
+.libraryNav {
+  position: absolute;
+  top: 107px;
+  transform: translateY(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0 0 3px;
+  border: 1px solid var(--line-soft);
+  border-radius: 50%;
+  background: rgba(28, 27, 24, 0.82);
+  color: var(--text-strong);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  transition: opacity var(--duration-medium) ease, background var(--duration-fast) ease, border-color var(--duration-fast) ease;
+}
+.libraryNav:hover, .libraryNav:focus-visible { background: rgba(28, 27, 24, 0.96); border-color: var(--line-strong); }
+.libraryNavPrev { left: 0; }
+.libraryNavNext { right: 0; }
+.libraryNav.is-hidden { opacity: 0; pointer-events: none; }
 .libraryBooks {
   list-style: none;
   margin: var(--space-6) 0 0;

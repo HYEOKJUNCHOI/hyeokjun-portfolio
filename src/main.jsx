@@ -306,30 +306,74 @@ function LibrarySection() {
     trackRef.current?.classList.remove('dragging');
   };
 
+  // 좌우 더 스크롤할 게 남았는지 → 화살표 힌트 노출 판단.
+  const [edges, setEdges] = useState({ left: false, right: true });
+  const updateEdges = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    setEdges({
+      left: track.scrollLeft > 4,
+      right: track.scrollLeft < track.scrollWidth - track.clientWidth - 4,
+    });
+  };
+  useEffect(() => {
+    updateEdges();
+    const track = trackRef.current;
+    track?.addEventListener('scroll', updateEdges, { passive: true });
+    window.addEventListener('resize', updateEdges);
+    return () => {
+      track?.removeEventListener('scroll', updateEdges);
+      window.removeEventListener('resize', updateEdges);
+    };
+  }, []);
+  const scrollByDir = (direction) => {
+    const track = trackRef.current;
+    if (!track) return;
+    track.scrollBy({ left: direction * track.clientWidth * 0.7, behavior: 'smooth' });
+  };
+
   return (
     <section className="librarySection" id="library">
       <div className="sectionTitle">
         <p className="eyebrow sectionEyebrowLarge">Library</p>
         <p>읽은 책, 그리고 언젠가 읽었으면 하는 책들.</p>
       </div>
-      <ul
-        className="libraryBooks"
-        ref={trackRef}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        onPointerLeave={endDrag}
-      >
-        {books.map((book) => (
-          <li className="libraryBook" key={book.title}>
-            <span className="libraryCover">
-              <img src={book.cover} alt={book.title} loading="lazy" draggable={false} />
-            </span>
-            <span className="libraryCaption">{book.title}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="libraryShelf">
+        <button
+          className={`libraryNav libraryNavPrev${edges.left ? '' : ' is-hidden'}`}
+          type="button"
+          aria-label="이전 책"
+          onClick={() => scrollByDir(-1)}
+        >
+          ‹
+        </button>
+        <ul
+          className="libraryBooks"
+          ref={trackRef}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onPointerLeave={endDrag}
+        >
+          {books.map((book) => (
+            <li className="libraryBook" key={book.title}>
+              <span className="libraryCover">
+                <img src={book.cover} alt={book.title} loading="lazy" draggable={false} />
+              </span>
+              <span className="libraryCaption">{book.title}</span>
+            </li>
+          ))}
+        </ul>
+        <button
+          className={`libraryNav libraryNavNext${edges.right ? '' : ' is-hidden'}`}
+          type="button"
+          aria-label="다음 책"
+          onClick={() => scrollByDir(1)}
+        >
+          ›
+        </button>
+      </div>
     </section>
   );
 }
