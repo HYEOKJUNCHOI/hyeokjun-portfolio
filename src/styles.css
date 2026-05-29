@@ -1935,3 +1935,19 @@ img, svg, iframe { max-width: 100%; }
   white-space: nowrap;
 }
 a.contactValue:hover { color: var(--teal-300); text-decoration: underline; }
+
+/* 쇼케이스 Contact 모달 — 아이콘 행. 푸터와 같은 글로시 아이콘 재사용. */
+.showcaseContactList { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; gap: 14px; }
+.showcaseContactLink { display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; }
+.showcaseContactLink img { width: 48px; height: 48px; flex-shrink: 0; }
+.showcaseContactText { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.showcaseContactText strong { font-size: 14px; font-weight: 700; color: var(--text-strong); }
+.showcaseContactText em, .showcaseContactText a {
+  font-size: 13px;
+  font-style: normal;
+  color: var(--text-muted);
+  text-decoration: none;
+  word-break: break-all;
+}
+a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300); }
+.showcaseContactText a:hover { color: var(--teal-300); text-decoration: underline; }

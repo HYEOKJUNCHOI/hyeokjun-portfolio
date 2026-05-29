@@ -40,6 +40,7 @@ const showcaseItems = [
     hover: '필요한 이야기가 있다면\n언제든 연락 주세요.',
     detailTitle: 'Contact',
     detailLabel: 'To Be Continued...',
+    isContact: true,
     detailBody: lines([
       '카카오톡 아이디 : gurwns369',
       '메일 : gurwns369@naver.com',
@@ -47,6 +48,15 @@ const showcaseItems = [
       'GitHub : https://github.com/HYEOKJUNCHOI?tab=repositories',
     ]),
   },
+];
+
+// 연락처 — 푸터(ContactSection)와 쇼케이스 Contact 모달이 공유.
+// GitHub·Brunch = 바로 링크 / Email·Kakao = 값 표시(이메일은 mailto).
+const contactLinks = [
+  { id: 'github', label: 'GitHub', icon: '/contact/github.png', href: 'https://github.com/HYEOKJUNCHOI?tab=repositories', value: 'github.com/HYEOKJUNCHOI' },
+  { id: 'brunch', label: 'Brunch', icon: '/contact/brunch.png', href: 'https://brunch.co.kr/@solbin369', value: 'brunch.co.kr/@solbin369' },
+  { id: 'email', label: 'Email', icon: '/contact/email.png', value: 'gurwns369@naver.com', valueHref: 'mailto:gurwns369@naver.com' },
+  { id: 'kakao', label: 'KakaoTalk', icon: '/contact/kakao.png', value: 'gurwns369' },
 ];
 
 function App() {
@@ -381,12 +391,6 @@ function LibrarySection() {
 function ContactSection() {
   // GitHub·Brunch = 바로 링크 / Email·Kakao = 클릭하면 주소를 아이콘 옆에 표시.
   const [revealed, setRevealed] = useState(null);
-  const links = [
-    { id: 'github', label: 'GitHub', icon: '/contact/github.png', href: 'https://github.com/HYEOKJUNCHOI?tab=repositories' },
-    { id: 'brunch', label: 'Brunch', icon: '/contact/brunch.png', href: 'https://brunch.co.kr/@solbin369' },
-    { id: 'email', label: 'Email', icon: '/contact/email.png', value: 'gurwns369@naver.com', valueHref: 'mailto:gurwns369@naver.com' },
-    { id: 'kakao', label: 'KakaoTalk', icon: '/contact/kakao.png', value: 'gurwns369' },
-  ];
 
   return (
     <section className="contactSection" id="contact">
@@ -395,7 +399,7 @@ function ContactSection() {
         <p>필요한 이야기가 있다면 언제든 연락 주세요.</p>
       </div>
       <ul className="contactList">
-        {links.map((item) => (
+        {contactLinks.map((item) => (
           <li className="contactItem" key={item.id}>
             {item.href ? (
               <a className="contactIcon" href={item.href} target="_blank" rel="noreferrer" aria-label={item.label}>
@@ -519,11 +523,42 @@ function ShowcaseDetailModal({ item, onClose, onNext, onPrevious }) {
               <p className="eyebrow">{item.detailLabel}</p>
               <h3>{item.detailTitle}</h3>
               <em>{item.period}</em>
-              <div>
-                {paragraphs.map((paragraph, index) => (
-                  <p key={`${item.title}-${index}`}>{paragraph}</p>
-                ))}
-              </div>
+              {item.isContact ? (
+                <ul className="showcaseContactList">
+                  {contactLinks.map((contact) => {
+                    const body = (
+                      <>
+                        <img src={contact.icon} alt="" />
+                        <span className="showcaseContactText">
+                          <strong>{contact.label}</strong>
+                          {contact.valueHref ? (
+                            <a href={contact.valueHref}>{contact.value}</a>
+                          ) : (
+                            <em>{contact.value}</em>
+                          )}
+                        </span>
+                      </>
+                    );
+                    return (
+                      <li className="showcaseContactRow" key={contact.id}>
+                        {contact.href ? (
+                          <a className="showcaseContactLink" href={contact.href} target="_blank" rel="noreferrer">
+                            {body}
+                          </a>
+                        ) : (
+                          <div className="showcaseContactLink">{body}</div>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <div>
+                  {paragraphs.map((paragraph, index) => (
+                    <p key={`${item.title}-${index}`}>{paragraph}</p>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
