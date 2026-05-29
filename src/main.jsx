@@ -284,17 +284,47 @@ function App() {
 function LibrarySection() {
   // 카테고리는 '정렬 기준'으로만 사용 — 같은 분류끼리 모여 한 책장에 쭉 진열.
   const books = libraryGroups.flatMap((group) => group.books);
+  const trackRef = useRef(null);
+  // 마우스 클릭-드래그로 가로 스크롤(overflow 컨테이너는 기본적으로 드래그 스크롤이 안 됨).
+  const dragRef = useRef({ active: false, startX: 0, startScroll: 0 });
+
+  const onPointerDown = (event) => {
+    const track = trackRef.current;
+    if (!track || event.pointerType === 'touch') return; // 터치는 네이티브 스크롤에 맡김
+    dragRef.current = { active: true, startX: event.clientX, startScroll: track.scrollLeft };
+    track.setPointerCapture?.(event.pointerId);
+    track.classList.add('dragging');
+  };
+  const onPointerMove = (event) => {
+    if (!dragRef.current.active) return;
+    const track = trackRef.current;
+    if (!track) return;
+    track.scrollLeft = dragRef.current.startScroll - (event.clientX - dragRef.current.startX);
+  };
+  const endDrag = () => {
+    dragRef.current.active = false;
+    trackRef.current?.classList.remove('dragging');
+  };
+
   return (
     <section className="librarySection" id="library">
       <div className="sectionTitle">
         <p className="eyebrow sectionEyebrowLarge">Library</p>
         <p>읽은 책, 그리고 언젠가 읽었으면 하는 책들.</p>
       </div>
-      <ul className="libraryBooks">
+      <ul
+        className="libraryBooks"
+        ref={trackRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onPointerLeave={endDrag}
+      >
         {books.map((book) => (
           <li className="libraryBook" key={book.title}>
             <span className="libraryCover">
-              <img src={book.cover} alt={book.title} loading="lazy" />
+              <img src={book.cover} alt={book.title} loading="lazy" draggable={false} />
             </span>
             <span className="libraryCaption">{book.title}</span>
           </li>

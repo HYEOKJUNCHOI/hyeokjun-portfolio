@@ -1794,7 +1794,10 @@ img, svg, iframe { max-width: 100%; }
   overscroll-behavior-x: contain;
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+  cursor: grab;
+  touch-action: pan-x;
 }
+.libraryBooks.dragging { cursor: grabbing; scroll-snap-type: none; }
 .libraryBooks::-webkit-scrollbar { display: none; }
 .libraryBook {
   flex: 0 0 auto;
