@@ -940,6 +940,15 @@ img, svg, iframe { max-width: 100%; }
   color: inherit;
   cursor: pointer;
   text-align: left;
+  transform-origin: center;
+  transition: transform var(--duration-medium) ease, box-shadow var(--duration-medium) ease;
+}
+
+/* Experience/Background 카드 — 호버 시 9방향(우상)으로. */
+.showcaseImageCard:hover, .showcaseImageCard:focus-within {
+  z-index: 2;
+  transform: translate(10px, -10px) rotate(1.2deg) scale(1.035);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.38);
 }
 
 .showcaseImageCard::before {
@@ -1041,10 +1050,11 @@ img, svg, iframe { max-width: 100%; }
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.38);
 }
 
+/* Project 카드 — 호버 시 전부 7방향(좌상)으로 통일. 회전만 카드별로 미세 차이. */
 .projectCard:nth-child(1):hover, .projectCard:nth-child(1):focus-visible { transform: translate(-10px, -10px) rotate(-1.4deg) scale(1.035); }
-.projectCard:nth-child(2):hover, .projectCard:nth-child(2):focus-visible { transform: translate(10px, -10px) rotate(1.4deg) scale(1.035); }
-.projectCard:nth-child(3):hover, .projectCard:nth-child(3):focus-visible { transform: translate(10px, -10px) rotate(-1.1deg) scale(1.035); }
-.projectCard:nth-child(4):hover, .projectCard:nth-child(4):focus-visible { transform: translate(10px, -10px) rotate(1.1deg) scale(1.035); }
+.projectCard:nth-child(2):hover, .projectCard:nth-child(2):focus-visible { transform: translate(-10px, -10px) rotate(-1.4deg) scale(1.035); }
+.projectCard:nth-child(3):hover, .projectCard:nth-child(3):focus-visible { transform: translate(-10px, -10px) rotate(-1.1deg) scale(1.035); }
+.projectCard:nth-child(4):hover, .projectCard:nth-child(4):focus-visible { transform: translate(-10px, -10px) rotate(-1.1deg) scale(1.035); }
 
 .projectTeaserVisual {
   position: relative;
