@@ -1,10 +1,30 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { FaArrowDownLong } from 'react-icons/fa6';
+import { FaArrowDownLong, FaMagnifyingGlass } from 'react-icons/fa6';
 import './styles.css';
 
 import { experienceItems, projectDetails } from './portfolioData';
 
+const showcaseItems = [
+  {
+    title: '고객 상담 & 유지 업무 경험',
+    period: '2016.01 ~ 현재',
+    image: '/showcase/rode.png',
+    hover: '사람은 더 좋은 것보다\n익숙한 것을 선택한다는 점을 배웠습니다.',
+  },
+  {
+    title: '일본 유학 & 워킹홀리데이 경험',
+    period: '2018.04 ~ 2019.10',
+    image: '/showcase/japen.png',
+    hover: '문화는 달라도\n사람의 불편과 감정은 비슷했습니다.',
+  },
+  {
+    title: 'AI·풀스택 과정 & 프로젝트 경험',
+    period: '2025.09 ~ 2026.02',
+    image: '/showcase/project.png',
+    hover: '기능보다 사용자 흐름이\n더 중요하다는 점을 배웠습니다.',
+  },
+];
 
 function App() {
   const [activeId, setActiveId] = useState(null);
@@ -15,15 +35,20 @@ function App() {
   const lastTriggerRef = useRef(null);
   const detailPanelId = 'project-detail-panel';
   const detailHeadingId = `project-detail-heading-${activeId || 'none'}`;
-  const sideIndexItems = [
-    { id: 'home', label: '홈', group: true },
-    { id: 'about', label: '소개', group: true },
-    { id: 'experience', label: '경험', group: true },
+  const sideIndexItems = useMemo(() => [
+    { id: 'home', label: 'Home', group: true },
+    { id: 'about', label: 'About', group: true },
+    { id: 'experience', label: 'Experience', group: true },
     { id: 'career-crm', label: 'CRM 경력' },
     { id: 'career-japan', label: '일본 연수' },
     { id: 'career-education', label: '교육 이수' },
-    { id: 'projects', label: '작업', group: true },
-  ];
+    { id: 'projects', label: 'Projects', group: true },
+    ...projectDetails.map((project) => ({
+      id: 'projects',
+      label: project.id === 'fixchecker' ? 'SFC' : project.label,
+      projectId: project.id,
+    })),
+  ], []);
   const activeProject = useMemo(
     () => projectDetails.find((project) => project.id === activeId),
     [activeId],
@@ -50,7 +75,7 @@ function App() {
       window.removeEventListener('scroll', updateScrollState);
       window.removeEventListener('resize', updateScrollState);
     };
-  }, []);
+  }, [sideIndexItems]);
   const closeDetailPanel = () => {
     setIsDetailOpen(false);
     window.requestAnimationFrame(() => {
@@ -68,6 +93,11 @@ function App() {
     });
   };
 
+  const selectSideIndexProject = (event, projectId) => {
+    event.preventDefault();
+    selectProject(projectId, event.currentTarget);
+  };
+
   return (
     <main className="pageShell">
       <nav
@@ -82,10 +112,12 @@ function App() {
           <a
             className={[
               item.group ? 'sideIndexGroup' : '',
-              activeAnchor === item.id ? 'active' : '',
+              item.projectId ? 'sideIndexProject' : '',
+              activeAnchor === item.id && (!item.projectId || item.projectId === activeId) ? 'active' : '',
             ].filter(Boolean).join(' ')}
             href={`#${item.id}`}
-            key={item.id}
+            key={item.projectId || item.id}
+            onClick={item.projectId ? (event) => selectSideIndexProject(event, item.projectId) : undefined}
           >
             <strong>{item.label}</strong>
           </a>
@@ -94,12 +126,6 @@ function App() {
 
       <section className="heroSection" id="home">
         <span className="anchorAlias" id="top" aria-hidden="true" />
-        <nav className="heroNav" aria-label="포트폴리오 섹션">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#experience">Experience</a>
-          <a href="#projects">Projects</a>
-        </nav>
         <div className="legacyAnchorFallback" aria-hidden="true">
           <a href="#top" tabIndex={-1}>처음</a>
           <a href="#career" tabIndex={-1}>경력</a>
@@ -110,18 +136,14 @@ function App() {
         <div className="heroCopy">
           <h1 className="heroTitle">
             <span className="heroTitleLine heroTitleOpening"><span>저는</span> 반복되는 불편함<span>을</span></span>
-            <span className="heroTitleLine heroTitleConclusion">그냥 넘기지 못하는 편입니다.</span>
+            <span className="heroTitleLine heroTitleConclusion"><span>그냥</span> 지나치지 않습니다.</span>
           </h1>
           <div className="heroLead">
-            <p>손을 더 빠르게 움직이기보다</p>
-            <p><span>“이 과정을 줄일 방법은 없을까?”</span>를 먼저 고민합니다.</p>
+            <p><span className="heroLeadEmphasis heroLeadWhite">손을 더 빠르게 움직이기보다,</span></p>
+            <p><span className="heroLeadEmphasis heroLeadQuestion"><span className="heroLeadWhite">같은 일을 </span><span className="heroLeadFocus">더 단순하게 만드는 방법</span><span className="heroLeadWhite">을 고민합니다.</span></span></p>
           </div>
         </div>
 
-        <div className="heroActions">
-          <a href="#about">About Me</a>
-          <a href="#projects">View Project</a>
-        </div>
       </section>
 
       <section className="aboutSection" id="about">
@@ -138,10 +160,10 @@ function App() {
             <article className="timelineCard" id={item.id} key={item.label}>
               <div className="timelineMarker" aria-hidden="true">
                 {item.markerTitle.map((line) => <span key={line}>{line}</span>)}
+                <strong>{item.period}</strong>
               </div>
               <div className="timelineContent">
                 <span>{item.label}</span>
-                <strong className={item.id === 'career-education' ? 'timelinePeriodLight' : ''}>{item.period}</strong>
                 <p>{item.body}</p>
               </div>
             </article>
@@ -154,6 +176,7 @@ function App() {
         <div className="sectionTitle">
           <p className="eyebrow sectionEyebrowLarge">Project</p>
         </div>
+        <ShowcaseImageGrid />
         <div className="projectGrid" aria-label="프로젝트 네비게이터">
           {projectDetails.map((project) => (
             <button
@@ -205,13 +228,45 @@ function ProjectTeaserVisual({ image, kind, label, teaser, type }) {
       <span className="projectCardChrome">
         <span className="projectType">{type}</span>
         <strong>{label}</strong>
-        <em>자세히 보기</em>
       </span>
-      <small>자세히 보기</small>
+      <small aria-label="자세히 보기"><FaMagnifyingGlass /></small>
       <span className="projectExplanation" aria-hidden="true">
         <strong>{teaser}</strong>
       </span>
     </span>
+  );
+}
+
+function ShowcaseImageGrid() {
+  return (
+    <section className="showcaseImagePanel" aria-label="쇼케이스 이미지">
+      <div className="showcaseImageGrid">
+        {showcaseItems.map((item) => (
+          <article className="showcaseImageCard" key={item.title}>
+            <img alt={`${item.title} 쇼케이스`} src={item.image} />
+            <span className="showcaseImageOverlay">
+              <strong>{item.title}</strong>
+              <em>{item.period}</em>
+            </span>
+            <small aria-label="자세히 보기"><FaMagnifyingGlass /></small>
+            <span className="showcaseExplanation" aria-hidden="true">
+              <strong>{item.hover}</strong>
+            </span>
+          </article>
+        ))}
+        <article className="showcaseImageCard showcaseContactCard">
+          <img alt="contact 쇼케이스" src="/showcase/mesege.png" />
+          <span className="showcaseImageOverlay">
+            <strong>contact</strong>
+            <em>연락처</em>
+          </span>
+          <small aria-label="자세히 보기"><FaMagnifyingGlass /></small>
+          <span className="showcaseExplanation" aria-hidden="true">
+            <strong>{'관심 있는 이야기가 있다면\n언제든 연락 주세요.'}</strong>
+          </span>
+        </article>
+      </div>
+    </section>
   );
 }
 
@@ -269,17 +324,8 @@ function ProjectDetail({ detailHeadingId, detailPanelId, onRequestClose, project
 }
 
 function ScreenshotGallery({ project, setSelectedScreenshot }) {
-  const hasImages = project.screenshots.some(([, , src]) => src);
-
   return (
     <section className="screenshotPanel" aria-label={`${project.label} 주요 화면`}>
-      <div className="screenshotHead">
-        <div>
-          <p className="eyebrow">주요 화면</p>
-          <h4>주요 화면 6장</h4>
-        </div>
-        <span>{hasImages ? '이미지 6장 적용' : '이미지 준비중'}</span>
-      </div>
       <div className="screenshotGrid">
         {project.screenshots.map(([title, caption, src], index) => {
           const item = { title, caption, src, index };
@@ -296,12 +342,12 @@ function ScreenshotGallery({ project, setSelectedScreenshot }) {
               onClick={() => setSelectedScreenshot(item)}
               type="button"
             >
+              <strong>{title}</strong>
               {src ? (
                 <img alt={`${project.label} ${title}`} src={src} />
               ) : (
                 <span className="screenshotPlaceholder">{String(index + 1).padStart(2, '0')}</span>
               )}
-              <strong>{title}</strong>
               <p>{caption}</p>
             </button>
           );
@@ -312,13 +358,14 @@ function ScreenshotGallery({ project, setSelectedScreenshot }) {
 }
 
 function ProjectBrief({ project }) {
+  const briefLabels = project.briefLabels || ['문제점', '구현한 것', '고민했던 부분'];
   const briefItems = [
-    ['문제점', project.problem],
-    ['구현한 것', project.solution],
-    ['고민했던 부분', project.learned],
+    [briefLabels[0], project.problem],
+    [briefLabels[1], project.solution],
+    [briefLabels[2], project.learned],
   ];
   return (
-    <section className="projectBrief" aria-label={`${project.label} 데모와 문제 해결 요약`}>
+    <section className={`projectBrief projectBrief-${project.id}`} aria-label={`${project.label} 데모와 문제 해결 요약`}>
       {briefItems.map(([title, body]) => (
         <article className="briefCard" key={title}>
           <h4><span className="briefTitleCapsule">{title}</span></h4>
@@ -381,6 +428,12 @@ function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
             &gt;
           </button>
           <div className={['screenshotDialog', isLegacyFrame ? 'legacyModal' : ''].filter(Boolean).join(' ')}>
+            <div className="modalWindowBar" aria-hidden="true">
+              <span className="modalWindowControl modalWindowClose" />
+              <span className="modalWindowControl modalWindowMinimize" />
+              <span className="modalWindowControl modalWindowZoom" />
+              <strong>{project.label}</strong>
+            </div>
             <button className="modalClose" onClick={onClose} type="button">닫기</button>
             <div className="modalMedia">
               <div className={[
