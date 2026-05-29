@@ -199,7 +199,19 @@ function App() {
           ))}
         </div>
 
-        {isDetailOpen ? (
+        {isDetailOpen && activeProject?.id === 'caredoc' ? (
+          <ProjectDetailModal onClose={closeDetailPanel} project={activeProject}>
+            <ProjectDetail
+              detailHeadingId={detailHeadingId}
+              detailPanelId={detailPanelId}
+              onRequestClose={closeDetailPanel}
+              project={activeProject}
+              refTarget={detailRef}
+            />
+          </ProjectDetailModal>
+        ) : null}
+
+        {isDetailOpen && activeProject?.id !== 'caredoc' ? (
           <ProjectDetail
             detailHeadingId={detailHeadingId}
             detailPanelId={detailPanelId}
@@ -258,15 +270,41 @@ function ShowcaseImageGrid() {
           <img alt="contact 쇼케이스" src="/showcase/mesege.png" />
           <span className="showcaseImageOverlay">
             <strong>To Be Continued...</strong>
-            <em>2026.03~</em>
+            <em>Contact</em>
           </span>
-          <small aria-label="자세히 보기"><FaMagnifyingGlass /></small>
-          <span className="showcaseExplanation" aria-hidden="true">
-            <strong>{'관심 있는 이야기가 있다면\n언제든 연락 주세요.'}</strong>
+          <small aria-label="연락처 보기"><FaMagnifyingGlass /></small>
+          <span className="showcaseExplanation contactExplanation" aria-hidden="true">
+            <strong>{'Kakao  gurwns369\nMail  gurwns369@naver.com\nBrunch  @solbin369\nGitHub  HYEOKJUNCHOI'}</strong>
           </span>
         </article>
       </div>
     </section>
+  );
+}
+
+
+function ProjectDetailModal({ children, onClose, project }) {
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      onClose();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div className="projectDetailModal" role="dialog" aria-modal="true" aria-label={`${project.label} 상세 보기`}>
+      <button className="projectDetailBackdrop" onClick={onClose} type="button" aria-label="닫기" />
+      <div className="projectDetailModalStack">
+        <div className="projectDetailModalShell">
+          <button className="modalClose projectDetailModalClose" onClick={onClose} type="button">닫기</button>
+          {children}
+        </div>
+      </div>
+    </div>
   );
 }
 
