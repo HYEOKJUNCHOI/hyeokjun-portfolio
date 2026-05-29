@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { FaArrowDownLong, FaMagnifyingGlass } from 'react-icons/fa6';
+import { FaArrowDownLong } from 'react-icons/fa6';
 import './styles.css';
 
-import { experienceItems, lines, projectDetails } from './portfolioData';
+import { experienceItems, lines, projectDetails, libraryGroups } from './portfolioData';
 
 const showcaseItems = [
   {
@@ -72,6 +72,7 @@ function App() {
       label: project.id === 'fixchecker' ? 'SFC' : project.label,
       projectId: project.id,
     })),
+    { id: 'library', label: 'Library', group: true },
   ], []);
   const activeProject = useMemo(
     () => projectDetails.find((project) => project.id === activeId),
@@ -166,8 +167,12 @@ function App() {
 
         <div className="heroCopy">
           <h1 className="heroTitle">
-            <span className="heroTitleLine heroTitleOpening"><span>저는</span> 반복되는 불편함<span>을</span></span>
-            <span className="heroTitleLine heroTitleConclusion"><span>그냥</span> 지나치지 않습니다.</span>
+            <span className="heroTitleLine heroTitleSingle">
+              <span className="heroTitlePlain">저는 </span>
+              <span className="heroTitleOpening">반복되는 불편함</span>
+              <span className="heroTitlePlain">을 그냥 </span>
+              <span className="heroTitleConclusion">지나치지 않습니다.</span>
+            </span>
           </h1>
           <div className="heroLead">
             <p><span className="heroLeadEmphasis heroLeadWhite">손을 더 빠르게 움직이기보다,</span></p>
@@ -239,6 +244,8 @@ function App() {
         ) : null}
       </section>
 
+      <LibrarySection />
+
       {activeShowcaseIndex !== null ? (
         <ShowcaseDetailModal
           item={showcaseItems[activeShowcaseIndex]}
@@ -249,6 +256,29 @@ function App() {
       ) : null}
 
     </main>
+  );
+}
+
+function LibrarySection() {
+  // 카테고리는 '정렬 기준'으로만 사용 — 같은 분류끼리 모여 한 책장에 쭉 진열.
+  const books = libraryGroups.flatMap((group) => group.books);
+  return (
+    <section className="librarySection" id="library">
+      <div className="sectionTitle">
+        <p className="eyebrow sectionEyebrowLarge">Library</p>
+        <p>읽은 책, 그리고 언젠가 읽었으면 하는 책들.</p>
+      </div>
+      <ul className="libraryBooks">
+        {books.map((book) => (
+          <li className="libraryBook" key={book.title}>
+            <span className="libraryCover">
+              <img src={book.cover} alt={book.title} loading="lazy" />
+            </span>
+            <span className="libraryCaption">{book.title}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
@@ -267,7 +297,6 @@ function ProjectTeaserVisual({ image, kind, label, teaser, type }) {
         <span className="projectType">{type}</span>
         <strong>{label}</strong>
       </span>
-      <small aria-label="자세히 보기"><FaMagnifyingGlass /></small>
       <span className="projectExplanation" aria-hidden="true">
         <strong>{teaser}</strong>
       </span>
@@ -286,7 +315,6 @@ function ShowcaseImageGrid({ onSelectShowcase }) {
               <strong>{item.title}</strong>
               <em>{item.period}</em>
             </span>
-            <small aria-label="자세히 보기"><FaMagnifyingGlass /></small>
             <span className={[
               'showcaseExplanation',
               item.detailTitle === 'Contact' ? 'contactExplanation' : '',

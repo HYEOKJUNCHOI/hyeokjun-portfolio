@@ -416,3 +416,38 @@ export const profileFacts = [
     '일본어권 가족과 생활',
   ])],
 ];
+
+// 책장(Library) — 카테고리별로 묶어 진열.
+// 지금은 시드(고정) 데이터. 추후 /book 등록 → Firebase 읽기로 교체 예정.
+// cover 는 알라딘 cover500(선명) URL.
+export const libraryGroups = [
+  {
+    category: '자기계발',
+    books: [
+      { title: '밤과 나침반', cover: 'https://image.aladin.co.kr/product/37429/45/cover500/k532032997_1.jpg' },
+      { title: '시작의 기술', cover: 'https://image.aladin.co.kr/product/37516/37/cover500/8901297825_1.jpg' },
+      { title: '더 시스템', cover: 'https://image.aladin.co.kr/product/33039/96/cover500/k232937683_1.jpg' },
+      { title: '나는 나의 스무 살을 가장 존중한다', cover: 'https://image.aladin.co.kr/product/33372/60/cover500/k952938310_2.jpg' },
+    ],
+  },
+  {
+    category: '뇌과학 · 심리',
+    books: [
+      { title: '감사하는 뇌가 인생을 바꾼다', cover: 'https://image.aladin.co.kr/product/38507/42/cover500/k612135934_1.jpg' },
+      { title: '훅', cover: 'https://image.aladin.co.kr/product/29505/9/cover500/k702837146_1.jpg' },
+    ],
+  },
+  {
+    category: 'AI · 미래',
+    books: [
+      { title: 'AGI, 천사인가 악마인가', cover: 'https://image.aladin.co.kr/product/37014/69/cover500/8962626667_1.jpg' },
+      { title: '프롬프트 텔링', cover: 'https://image.aladin.co.kr/product/37506/52/cover500/k432032828_1.jpg' },
+    ],
+  },
+  {
+    category: '돈 · 경제',
+    books: [
+      { title: '돈의 방정식', cover: 'https://image.aladin.co.kr/product/38325/60/cover500/k952034340_2.jpg' },
+    ],
+  },
+];

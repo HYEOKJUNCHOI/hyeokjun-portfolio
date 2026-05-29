@@ -311,7 +311,7 @@ img, svg, iframe { max-width: 100%; }
 .heroCopy {
   grid-area: copy;
   align-self: center;
-  width: min(860px, 100%);
+  width: min(1440px, 100%);
   margin: 0 auto;
   padding-top: clamp(var(--space-3), 2vh, var(--space-5));
   text-align: center;
@@ -321,12 +321,25 @@ img, svg, iframe { max-width: 100%; }
   justify-items: center;
   gap: clamp(10px, 1vw, 16px);
   margin: 0;
-  font-size: clamp(42px, calc(3.7vw - 2px), 70px);
+  font-size: clamp(34px, calc(3.2vw - 2px), 62px);
   line-height: 1.08;
 }
 .heroTitleLine {
   display: block;
-  white-space: nowrap;
+}
+.heroTitleSingle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  max-width: 100%;
+}
+.heroTitlePlain {
+  background: none;
+  color: var(--text-strong);
+  -webkit-text-fill-color: var(--text-strong);
+  font-size: 0.62em;
+  font-weight: 400;
 }
 .heroTitleOpening {
   background: linear-gradient(90deg, var(--pink-400), var(--pink-500));
@@ -381,7 +394,7 @@ img, svg, iframe { max-width: 100%; }
   z-index: 3;
   display: grid;
   gap: clamp(8px, 0.8vw, 12px);
-  width: max-content;
+  width: auto;
   max-width: calc(100vw - (var(--portfolio-side-rail) * 2));
   margin: clamp(var(--space-6), 2.6vw, var(--space-8)) auto 0;
   padding: 0;
@@ -454,7 +467,7 @@ img, svg, iframe { max-width: 100%; }
   letter-spacing: 0;
   text-transform: uppercase;
 }
-.heroLead p { margin: 0; color: inherit; font: inherit; line-height: inherit; white-space: nowrap; overflow-wrap: normal; word-break: keep-all; }
+.heroLead p { margin: 0; color: inherit; font: inherit; line-height: inherit; white-space: normal; overflow-wrap: normal; word-break: keep-all; }
 .heroLeadEmphasis {
   color: var(--pink-400);
   letter-spacing: 0.035em;
@@ -681,8 +694,9 @@ img, svg, iframe { max-width: 100%; }
 .eyebrow { margin: 0 0 var(--space-2); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
 .sectionTitle { display: grid; gap: var(--space-2); max-width: 920px; margin-bottom: var(--space-5); }
 .sectionTitle h2 { margin: 0; font-size: clamp(28px, 4vw, 42px); line-height: 1.24; }
-.sectionEyebrowLarge { font-size: clamp(24px, 1.55vw, 28px); letter-spacing: 0.04em; }
+.sectionEyebrowLarge { color: var(--text-strong); font-size: clamp(24px, 1.55vw, 28px); letter-spacing: 0.04em; }
 .sectionTitle p:last-child { max-width: 880px; margin: 0; color: var(--text-muted); line-height: 1.82; white-space: pre-line; }
+.sectionTitle p.sectionEyebrowLarge { color: var(--text-strong); }
 
 .aboutGrid, .experienceGrid, .projectGrid, .detailBody, .detailGrid, .projectBrief, .screenshotGrid, .playgroundGrid, .docChipRow, .lifeStatRow, .kpiGrid, .scheduleButtons, .choiceRow, .statGrid {
   display: grid;
@@ -941,24 +955,6 @@ img, svg, iframe { max-width: 100%; }
   object-fit: contain;
   background: var(--charcoal-950);
 }
-.showcaseImageCard > small {
-  position: absolute;
-  display: inline-flex;
-  box-sizing: border-box;
-  top: var(--space-3);
-  right: var(--space-4);
-  z-index: 3;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  padding: 0;
-  border: 1px solid rgba(40, 219, 195, 0.34);
-  border-radius: var(--radius-pill);
-  background: rgba(7, 8, 8, 0.52);
-  color: rgba(244, 241, 232, 0.82);
-  font-size: 16px;
-}
 .showcaseImageOverlay {
   position: absolute;
   inset: 0;
@@ -1075,24 +1071,6 @@ img, svg, iframe { max-width: 100%; }
   height: 100%;
   object-fit: contain;
   background: var(--charcoal-950);
-}
-.projectTeaserVisual > small {
-  position: absolute;
-  display: inline-flex;
-  box-sizing: border-box;
-  top: var(--space-3);
-  right: var(--space-4);
-  z-index: 3;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  padding: 0;
-  border: 1px solid rgba(40, 219, 195, 0.34);
-  border-radius: var(--radius-pill);
-  background: rgba(7, 8, 8, 0.52);
-  color: rgba(244, 241, 232, 0.82);
-  font-size: 16px;
 }
 .projectCardChrome {
   position: absolute;
@@ -1349,7 +1327,7 @@ img, svg, iframe { max-width: 100%; }
 .screenshotSlot.hasImage.legacyFrame img, .modalPreview.hasImage img, .modalPreview.hasImage.legacyFrame img { object-fit: contain; background: #ffffff; }
 .screenshotSlot.hasImage.cropLegacyFrame.legacyFrame img,
 .modalPreview.hasImage.cropLegacyFrame.legacyFrame img { object-fit: cover; background: var(--charcoal-900); }
-.modalPreview.hasImage.fillFrame img { object-fit: cover; background: var(--charcoal-900); }
+.modalPreview.hasImage.fillFrame img { object-fit: contain; background: var(--charcoal-900); }
 .screenshotSlot strong { font-size: 15.5px; line-height: 1.35; }
 .screenshotSlot p, .screenshotNote { margin: 0; font-size: 13px; }
 
@@ -1787,13 +1765,76 @@ img, svg, iframe { max-width: 100%; }
 
 
 .portfolioApp .heroSection .heroLead {
-  width: max-content;
+  width: auto;
   max-width: calc(100vw - (var(--portfolio-side-rail) * 2));
   font-size: clamp(31px, calc(2.3vw - 2px), 41px);
 }
 
 .portfolioApp .heroSection .heroLead p {
-  white-space: nowrap;
+  white-space: normal;
   overflow-wrap: normal;
   word-break: keep-all;
+}
+
+/* Library — 미니멀 수평 스크롤. 책은 카테고리 순으로 정렬만, 한 줄로 쭉 옆으로 넘김.
+   양끝 mask 페이드 → "무한히 이어지는" 느낌. scroll-snap 으로 슬라이드 감각. */
+.librarySection { margin-top: clamp(48px, 8vw, 96px); }
+.libraryBooks {
+  list-style: none;
+  margin: var(--space-6) 0 0;
+  padding: 8px clamp(8px, 6vw, 64px) 24px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: clamp(18px, 2.4vw, 32px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+.libraryBooks::-webkit-scrollbar { display: none; }
+.libraryBook {
+  flex: 0 0 auto;
+  width: 132px;
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.libraryCover {
+  width: 132px;
+  height: 198px;
+  border-radius: 3px 6px 6px 3px;
+  overflow: hidden;
+  background: var(--charcoal-700);
+  box-shadow:
+    inset 3px 0 6px rgba(0, 0, 0, 0.34),
+    0 14px 24px -12px rgba(0, 0, 0, 0.85),
+    0 2px 5px rgba(0, 0, 0, 0.5);
+  transition: transform var(--duration-medium) ease, box-shadow var(--duration-medium) ease;
+}
+.libraryBook:hover .libraryCover {
+  transform: translateY(-6px) rotate(-1.5deg);
+  box-shadow:
+    inset 3px 0 6px rgba(0, 0, 0, 0.34),
+    0 20px 32px -10px rgba(0, 0, 0, 0.9),
+    0 0 0 1px var(--line-strong);
+}
+.libraryCover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.libraryCaption {
+  margin-top: 12px;
+  height: 34px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-muted);
+  text-align: center;
+  word-break: keep-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
