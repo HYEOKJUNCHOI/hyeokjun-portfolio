@@ -1838,3 +1838,34 @@ img, svg, iframe { max-width: 100%; }
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* 히어로 이름 앵커 — '누구'를 잡아주는 워드마크(얼굴 사진 대신 타이포). */
+.heroName {
+  margin: 0 0 clamp(14px, 1.8vw, 22px);
+  font-family: var(--font-display);
+  font-size: clamp(14px, 1.4vw, 17px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+/* About — 히어로(주장)와 프로젝트(증거) 사이 다리. 소개 단락 + 팩트. */
+.aboutSection { margin-top: clamp(40px, 7vw, 88px); }
+.aboutGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
+  margin-top: var(--space-6);
+}
+@media (min-width: 760px) {
+  .aboutGrid { grid-template-columns: minmax(0, 1.5fr) minmax(238px, 1fr); }
+}
+.aboutIntro { display: grid; gap: var(--space-5); }
+.aboutIntro p {
+  margin: 0;
+  color: var(--text-body);
+  font-size: clamp(15px, 1.4vw, 17px);
+  font-weight: 560;
+  line-height: 1.95;
+}

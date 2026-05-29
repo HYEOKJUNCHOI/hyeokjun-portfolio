@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { FaArrowDownLong } from 'react-icons/fa6';
 import './styles.css';
 
-import { experienceItems, lines, projectDetails, libraryGroups } from './portfolioData';
+import { experienceItems, lines, projectDetails, libraryGroups, resumeIntro, profileFacts } from './portfolioData';
 
 const showcaseItems = [
   {
@@ -166,17 +166,18 @@ function App() {
         </div>
 
         <div className="heroCopy">
+          <p className="heroName">최혁준</p>
           <h1 className="heroTitle">
             <span className="heroTitleLine heroTitleSingle">
-              <span className="heroTitlePlain">저는 </span>
-              <span className="heroTitleOpening">반복되는 불편함</span>
-              <span className="heroTitlePlain">을 그냥 </span>
-              <span className="heroTitleConclusion">지나치지 않습니다.</span>
+              <span className="heroTitlePlain">반복되는 </span>
+              <span className="heroTitleOpening">불편</span>
+              <span className="heroTitlePlain">을, 바로 쓸 수 있는 </span>
+              <span className="heroTitleConclusion">도구로 바꿉니다.</span>
             </span>
           </h1>
           <div className="heroLead">
-            <p><span className="heroLeadEmphasis heroLeadWhite">손을 더 빠르게 움직이기보다,</span></p>
-            <p><span className="heroLeadEmphasis heroLeadQuestion"><span className="heroLeadWhite">같은 일을 </span><span className="heroLeadFocus">더 단순하게 만드는 방법</span><span className="heroLeadWhite">을 고민합니다.</span></span></p>
+            <p><span className="heroLeadEmphasis heroLeadWhite">고객 곁에서 8년, 같은 불편이 반복되는 걸 봤습니다.</span></p>
+            <p><span className="heroLeadEmphasis heroLeadQuestion"><span className="heroLeadWhite">그래서 </span><span className="heroLeadFocus">직접 만들기 시작</span><span className="heroLeadWhite">했습니다.</span></span></p>
           </div>
         </div>
 
@@ -184,6 +185,24 @@ function App() {
 
       <section className="aboutSection" id="about">
         <span className="anchorAlias" id="self-intro" aria-hidden="true" />
+        <div className="sectionTitle">
+          <p className="eyebrow sectionEyebrowLarge">About</p>
+        </div>
+        <div className="aboutGrid">
+          <div className="aboutIntro">
+            {resumeIntro.split('\n\n').map((paragraph, index) => (
+              <p key={`about-${index}`}>{paragraph}</p>
+            ))}
+          </div>
+          <dl className="profileFacts">
+            {profileFacts.map(([term, desc]) => (
+              <div className="profileFactRow" key={term}>
+                <dt>{term}</dt>
+                <dd>{desc}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </section>
 
       <section className="experienceSection" id="experience">
