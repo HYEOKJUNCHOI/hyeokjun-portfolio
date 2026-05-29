@@ -923,7 +923,11 @@ img, svg, iframe { max-width: 100%; }
   border-radius: var(--radius-lg);
   background: var(--charcoal-950);
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
 }
+
 .showcaseImageCard::before {
   display: none;
   content: "";
@@ -1358,6 +1362,106 @@ img, svg, iframe { max-width: 100%; }
   letter-spacing: -0.01em;
 }
 
+
+.showcaseDetailModal {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+}
+
+.showcaseDetailBackdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.78);
+  cursor: pointer;
+}
+
+.showcaseDetailModalStack {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: min(1180px, calc(100vw - 120px));
+  animation: modalFadeIn var(--duration-medium) ease both;
+}
+
+.showcaseDetailModalShell {
+  position: relative;
+  width: 100%;
+}
+
+.showcaseDetailDialog {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+  gap: clamp(var(--space-5), 3vw, var(--space-8));
+  max-height: min(780px, calc(100vh - 96px));
+  padding: clamp(var(--space-4), 2.4vw, var(--space-6));
+  overflow: auto;
+  border: 1px solid rgba(40, 219, 195, 0.32);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, rgba(18, 22, 22, 0.96), rgba(7, 8, 8, 0.94));
+  box-shadow: 0 30px 120px rgba(0, 0, 0, 0.58);
+}
+
+.showcaseDetailImage {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--charcoal-950);
+}
+
+.showcaseDetailImage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: min(520px, calc(100vh - 210px));
+  object-fit: cover;
+}
+
+.showcaseDetailCopy {
+  display: grid;
+  align-content: end;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-3);
+}
+
+.showcaseDetailCopy h3 {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: clamp(24px, 2.4vw, 38px);
+  font-weight: 520;
+  line-height: 1.22;
+}
+
+.showcaseDetailCopy em {
+  color: var(--pink-400);
+  font-style: normal;
+  font-weight: 900;
+  text-shadow: 0 0 14px rgba(196, 115, 156, 0.54);
+}
+
+.showcaseDetailCopy p:not(.eyebrow) {
+  margin: 0 0 var(--space-4);
+  color: var(--text-body);
+  font-size: clamp(15px, 1.05vw, 17px);
+  line-height: 1.78;
+  white-space: pre-line;
+  word-break: keep-all;
+}
+
+.showcaseDetailModalClose {
+  top: var(--space-4);
+  right: var(--space-4);
+}
+
 .projectDetailModal {
   position: fixed;
   inset: 0;
@@ -1587,6 +1691,10 @@ img, svg, iframe { max-width: 100%; }
   .showcaseStage { min-height: auto; }
   .mobileShowcase { display: block; }
   .demoRow, .errorList label { grid-template-columns: 1fr; }
+  .showcaseDetailModal { padding: var(--space-3); }
+  .showcaseDetailModalStack { width: min(100%, calc(100vw - 96px)); }
+  .showcaseDetailDialog { grid-template-columns: 1fr; max-height: calc(100vh - 78px); padding: var(--space-4); }
+  .showcaseDetailImage img { min-height: 260px; }
   .projectDetailModal { padding: var(--space-3); }
   .projectDetailModalStack { width: min(100%, calc(100vw - 32px)); max-height: calc(100vh - 24px); }
   .projectDetailModalShell { max-height: calc(100vh - 24px); }

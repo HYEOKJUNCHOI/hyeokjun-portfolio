@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { FaArrowDownLong, FaMagnifyingGlass } from 'react-icons/fa6';
 import './styles.css';
 
-import { experienceItems, projectDetails } from './portfolioData';
+import { experienceItems, lines, projectDetails } from './portfolioData';
 
 const showcaseItems = [
   {
@@ -11,24 +11,48 @@ const showcaseItems = [
     period: '2016.01~ 현재',
     image: '/showcase/rode.png',
     hover: '사람은 더 좋은 것보다\n익숙한 것을 선택한다는 점을 배웠습니다.',
+    detailTitle: '고객 상담 & 유지 업무 경험',
+    detailLabel: '경력',
+    detailBody: experienceItems[0].body,
   },
   {
     title: 'Experience in Japan',
     period: '2018.04 ~ 2019.10',
     image: '/showcase/japen.png',
     hover: '문화는 달라도\n사람의 불편과 감정은 비슷했습니다.',
+    detailTitle: '일본 유학 & 워킹홀리데이 경험',
+    detailLabel: '해외연수',
+    detailBody: experienceItems[1].body,
   },
   {
     title: 'AI & Full-Stack Journey',
     period: '2025.09 ~ 2026.02',
     image: '/showcase/project.png',
     hover: '기능보다 사용자 흐름이\n더 중요하다는 점을 배웠습니다.',
+    detailTitle: 'AI·풀스택 과정 & 프로젝트 경험',
+    detailLabel: '교육 이수',
+    detailBody: experienceItems[2].body,
+  },
+  {
+    title: 'To Be Continued...',
+    period: 'Contact',
+    image: '/showcase/mesege.png',
+    hover: '필요한 이야기가 있다면\n언제든 연락 주세요.',
+    detailTitle: 'Contact',
+    detailLabel: 'To Be Continued...',
+    detailBody: lines([
+      '카카오톡 아이디 : gurwns369',
+      '메일 : gurwns369@naver.com',
+      '브런치 : https://brunch.co.kr/@solbin369',
+      'GitHub : https://github.com/HYEOKJUNCHOI?tab=repositories',
+    ]),
   },
 ];
 
 function App() {
   const [activeId, setActiveId] = useState(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [activeShowcaseIndex, setActiveShowcaseIndex] = useState(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeAnchor, setActiveAnchor] = useState('home');
   const detailRef = useRef(null);
@@ -98,6 +122,13 @@ function App() {
     selectProject(projectId, event.currentTarget);
   };
 
+  const moveShowcase = (direction) => {
+    setActiveShowcaseIndex((current) => {
+      if (current === null) return current;
+      return (current + direction + showcaseItems.length) % showcaseItems.length;
+    });
+  };
+
   return (
     <main className="pageShell">
       <nav
@@ -155,20 +186,7 @@ function App() {
         <div className="sectionTitle">
           <p className="eyebrow sectionEyebrowLarge">Experience / Background</p>
         </div>
-        <div className="experienceTimeline">
-          {experienceItems.map((item) => (
-            <article className="timelineCard" id={item.id} key={item.label}>
-              <div className="timelineMarker" aria-hidden="true">
-                {item.markerTitle.map((line) => <span key={line}>{line}</span>)}
-                <strong>{item.period}</strong>
-              </div>
-              <div className="timelineContent">
-                <span>{item.label}</span>
-                <p>{item.body}</p>
-              </div>
-            </article>
-          ))}
-        </div>
+        <ShowcaseImageGrid onSelectShowcase={setActiveShowcaseIndex} />
       </section>
 
       <section className="workSection" id="projects">
@@ -176,7 +194,6 @@ function App() {
         <div className="sectionTitle">
           <p className="eyebrow sectionEyebrowLarge">Project</p>
         </div>
-        <ShowcaseImageGrid />
         <div className="projectGrid" aria-label="프로젝트 네비게이터">
           {projectDetails.map((project) => (
             <button
@@ -222,6 +239,15 @@ function App() {
         ) : null}
       </section>
 
+      {activeShowcaseIndex !== null ? (
+        <ShowcaseDetailModal
+          item={showcaseItems[activeShowcaseIndex]}
+          onClose={() => setActiveShowcaseIndex(null)}
+          onNext={() => moveShowcase(1)}
+          onPrevious={() => moveShowcase(-1)}
+        />
+      ) : null}
+
     </main>
   );
 }
@@ -249,39 +275,91 @@ function ProjectTeaserVisual({ image, kind, label, teaser, type }) {
   );
 }
 
-function ShowcaseImageGrid() {
+function ShowcaseImageGrid({ onSelectShowcase }) {
   return (
-    <section className="showcaseImagePanel" aria-label="쇼케이스 이미지">
+    <section className="showcaseImagePanel" aria-label="Experience / Background">
       <div className="showcaseImageGrid">
-        {showcaseItems.map((item) => (
-          <article className="showcaseImageCard" key={item.title}>
+        {showcaseItems.map((item, index) => (
+          <button className="showcaseImageCard" key={item.title} onClick={() => onSelectShowcase(index)} type="button">
             <img alt={`${item.title} 쇼케이스`} src={item.image} />
             <span className="showcaseImageOverlay">
               <strong>{item.title}</strong>
               <em>{item.period}</em>
             </span>
             <small aria-label="자세히 보기"><FaMagnifyingGlass /></small>
-            <span className="showcaseExplanation" aria-hidden="true">
-              <strong>{item.hover}</strong>
+            <span className={[
+              'showcaseExplanation',
+              item.detailTitle === 'Contact' ? 'contactExplanation' : '',
+            ].filter(Boolean).join(' ')} aria-hidden="true">
+              <strong>{item.detailTitle === 'Contact' ? 'Kakao  gurwns369\nMail  gurwns369@naver.com\nBrunch  @solbin369\nGitHub  HYEOKJUNCHOI' : item.hover}</strong>
             </span>
-          </article>
+          </button>
         ))}
-        <article className="showcaseImageCard showcaseContactCard">
-          <img alt="contact 쇼케이스" src="/showcase/mesege.png" />
-          <span className="showcaseImageOverlay">
-            <strong>To Be Continued...</strong>
-            <em>Contact</em>
-          </span>
-          <small aria-label="연락처 보기"><FaMagnifyingGlass /></small>
-          <span className="showcaseExplanation contactExplanation" aria-hidden="true">
-            <strong>{'Kakao  gurwns369\nMail  gurwns369@naver.com\nBrunch  @solbin369\nGitHub  HYEOKJUNCHOI'}</strong>
-          </span>
-        </article>
       </div>
     </section>
   );
 }
 
+
+
+function ShowcaseDetailModal({ item, onClose, onNext, onPrevious }) {
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        onPrevious();
+      }
+
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        onNext();
+      }
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose, onNext, onPrevious]);
+
+  const paragraphs = item.detailBody.split('\n\n');
+
+  return (
+    <div className="showcaseDetailModal" role="dialog" aria-modal="true" aria-label={`${item.title} 상세 보기`}>
+      <button className="showcaseDetailBackdrop" onClick={onClose} type="button" aria-label="닫기" />
+      <div className="showcaseDetailModalStack">
+        <div className="showcaseDetailModalShell">
+          <button className="modalNav modalNavPrevious" onClick={onPrevious} type="button" aria-label="이전 Experience 보기">
+            &lt;
+          </button>
+          <button className="modalNav modalNavNext" onClick={onNext} type="button" aria-label="다음 Experience 보기">
+            &gt;
+          </button>
+          <button className="modalClose showcaseDetailModalClose" onClick={onClose} type="button">닫기</button>
+          <div className="showcaseDetailDialog">
+            <div className="showcaseDetailImage">
+              <img alt={`${item.title} 이미지`} src={item.image} />
+            </div>
+            <div className="showcaseDetailCopy">
+              <p className="eyebrow">{item.detailLabel}</p>
+              <h3>{item.detailTitle}</h3>
+              <em>{item.period}</em>
+              <div>
+                {paragraphs.map((paragraph, index) => (
+                  <p key={`${item.title}-${index}`}>{paragraph}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="modalHintCapsule">키보드 ← · → 로도 이동할 수 있습니다.</p>
+      </div>
+    </div>
+  );
+}
 
 function ProjectDetailModal({ children, onClose, project }) {
   useEffect(() => {
