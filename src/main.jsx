@@ -7,19 +7,19 @@ import { experienceItems, projectDetails } from './portfolioData';
 
 const showcaseItems = [
   {
-    title: '고객 상담 & 유지 업무 경험',
-    period: '2016.01 ~ 현재',
+    title: 'Customer Relations',
+    period: '2016.01~ 현재',
     image: '/showcase/rode.png',
     hover: '사람은 더 좋은 것보다\n익숙한 것을 선택한다는 점을 배웠습니다.',
   },
   {
-    title: '일본 유학 & 워킹홀리데이 경험',
+    title: 'Experience in Japan',
     period: '2018.04 ~ 2019.10',
     image: '/showcase/japen.png',
     hover: '문화는 달라도\n사람의 불편과 감정은 비슷했습니다.',
   },
   {
-    title: 'AI·풀스택 과정 & 프로젝트 경험',
+    title: 'AI & Full-Stack Journey',
     period: '2025.09 ~ 2026.02',
     image: '/showcase/project.png',
     hover: '기능보다 사용자 흐름이\n더 중요하다는 점을 배웠습니다.',
@@ -257,8 +257,8 @@ function ShowcaseImageGrid() {
         <article className="showcaseImageCard showcaseContactCard">
           <img alt="contact 쇼케이스" src="/showcase/mesege.png" />
           <span className="showcaseImageOverlay">
-            <strong>contact</strong>
-            <em>연락처</em>
+            <strong>To Be Continued...</strong>
+            <em>2026.03~</em>
           </span>
           <small aria-label="자세히 보기"><FaMagnifyingGlass /></small>
           <span className="showcaseExplanation" aria-hidden="true">

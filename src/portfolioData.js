@@ -5,7 +5,7 @@ export const projectDetails = [
   {
     id: 'caredoc',
     label: 'CareDoc',
-    type: '복지 서류 도구',
+    type: '반복 입력 최소화',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/caredoc/index.html?portfolio=1&v=20260525-0025',
     showcaseImage: '/showcase/caredoc.png',
@@ -104,7 +104,7 @@ export const projectDetails = [
   {
     id: 'fixchecker',
     label: 'Subtitle Fix Checker',
-    type: '자막 검수 보조 도구',
+    type: '검수 → JSON주문서',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/subtitle-fix-checker/index.html',
     showcaseImage: '/showcase/fixchecker.png',
@@ -181,7 +181,7 @@ export const projectDetails = [
   {
     id: 'lucid',
     label: 'Lucid',
-    type: '부트캠프 학습 플랫폼',
+    type: '몰입과 이해도',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/lucid/index.html#/login',
     showcaseImage: '/showcase/lucid.png',
@@ -263,7 +263,7 @@ export const projectDetails = [
   {
     id: 'reallife',
     label: 'RealLife',
-    type: '생활 시뮬레이션',
+    type: '몰입감 설계',
     demoOrigin: mainDeployOrigin,
     demoPath: '/clones/reallife/index.html',
     showcaseImage: '/showcase/reallife.png',
