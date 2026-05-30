@@ -106,7 +106,7 @@ export const projectDetails = [
     label: 'Subtitle Fix Checker',
     type: '검수 → JSON주문서',
     demoOrigin: mainDeployOrigin,
-    demoPath: '/clones/subtitle-fix-checker/loaded_preview.html',
+    demoPath: '/clones/subtitle-fix-checker/index.html',
     showcaseImage: '/showcase/fixchecker.png',
     visualKind: 'browser',
     teaser: lines([

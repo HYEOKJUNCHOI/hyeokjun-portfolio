@@ -5,7 +5,86 @@
     <link rel="icon" type="image/svg+xml" href="/clones/subtitle-fix-checker/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Subtitle Fix Checker</title>
-    <script type="module" crossorigin src="/clones/subtitle-fix-checker/assets/index-BkE4z5R6.js"></script>
+    <!-- 데모 시드: MP4·SRT가 로드된 상태를 가정해, 비어있을 때만 오사카 검수 예시(자막합치기 A/B 포함)를 주입.
+         실제 앱 그대로 동작하며, 사용자가 직접 검수한 데이터가 있으면 그걸 우선. (Zustand persist 형식) -->
+    <script>
+      (function () {
+        try {
+          var KEY = "haru_review_items_react_v1";
+          var raw = localStorage.getItem(KEY),
+            has = false;
+          if (raw) {
+            try {
+              var p = JSON.parse(raw);
+              has = p && p.state && Array.isArray(p.state.items) && p.state.items.length > 0;
+            } catch (e) {}
+          }
+          if (has) return;
+          var now = "2026-05-22T10:00:00.000Z";
+          var items = [
+            {
+              type: "자막합치기A",
+              jp_text: "今日は大阪、",
+              ko_text: "오늘은 오사카 ,",
+              expression: "今日は大阪、|오늘은 오사카 ,",
+              request: "",
+              review_done: false,
+              cue_missing: false,
+              cue_index: 5,
+              cue_start: "00:00:03,200",
+              cue_end: "00:00:04,900",
+              cue_start_seconds: 3.2,
+              cue_end_seconds: 4.9,
+              time: "00:00:04,000",
+              clicked_time: "00:00:04,000",
+              clicked_seconds: 4.0,
+              created_at: now,
+            },
+            {
+              type: "자막합치기B",
+              jp_text: "ご紹介します",
+              ko_text: "소개를 해드릴게요 라면은",
+              expression: "ご紹介します|소개를 해드릴게요 라면은",
+              request: "",
+              review_done: false,
+              cue_missing: false,
+              cue_index: 6,
+              cue_start: "00:00:05,000",
+              cue_end: "00:00:06,800",
+              cue_start_seconds: 5.0,
+              cue_end_seconds: 6.8,
+              time: "00:00:05,600",
+              clicked_time: "00:00:05,600",
+              clicked_seconds: 5.6,
+              created_at: now,
+            },
+            {
+              type: "한국어틀림",
+              jp_text: "たこ焼き、めっちゃ美味しい！",
+              ko_text: "타코야끼 너무 마시써！",
+              expression: "たこ焼き、めっちゃ美味しい！|타코야끼 너무 마시써！",
+              request: "",
+              review_done: false,
+              cue_missing: false,
+              cue_index: 14,
+              cue_start: "00:00:18,400",
+              cue_end: "00:00:21,000",
+              cue_start_seconds: 18.4,
+              cue_end_seconds: 21.0,
+              time: "00:00:19,200",
+              clicked_time: "00:00:19,200",
+              clicked_seconds: 19.2,
+              created_at: now,
+            },
+          ];
+          localStorage.setItem(
+            KEY,
+            JSON.stringify({ state: { items: items, mode: "review", pauseMode: "pause" }, version: 0 }),
+          );
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/clones/subtitle-fix-checker/assets/index-BvooS5Rd.js"></script>
     <link rel="stylesheet" crossorigin href="/clones/subtitle-fix-checker/assets/index-YJRYby-q.css">
   </head>
   <body>
