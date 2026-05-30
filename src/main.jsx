@@ -50,6 +50,7 @@ const showcaseItems = [
   },
 ];
 
+
 // 연락처 — 푸터(ContactSection)와 쇼케이스 Contact 모달이 공유.
 // GitHub·Brunch = 바로 링크 / Email·Kakao = 값 표시(이메일은 mailto).
 const contactLinks = [
@@ -167,32 +168,36 @@ function App() {
         ))}
       </nav>
 
-      <section className="heroSection" id="home">
-        <span className="anchorAlias" id="top" aria-hidden="true" />
-        <div className="legacyAnchorFallback" aria-hidden="true">
-          <a href="#top" tabIndex={-1}>처음</a>
-          <a href="#career" tabIndex={-1}>경력</a>
-          <a href="#self-intro" tabIndex={-1}>소개</a>
-          <a href="#works" tabIndex={-1}>작품</a>
-        </div>
-
-        <div className="heroCopy">
-          <p className="heroName">최혁준</p>
-          <h1 className="heroTitle">
-            <span className="heroTitleLine heroTitleSingle">
-              <span className="heroTitlePlain">반복되는 </span>
-              <span className="heroTitleOpening">불편</span>
-              <span className="heroTitlePlain">을, 바로 쓸 수 있는 </span>
-              <span className="heroTitleConclusion">도구로 바꿉니다.</span>
-            </span>
-          </h1>
-          <div className="heroLead">
-            <p><span className="heroLeadEmphasis heroLeadWhite">고객 곁에서 8년, 같은 불편이 반복되는 걸 봤습니다.</span></p>
-            <p><span className="heroLeadEmphasis heroLeadQuestion"><span className="heroLeadWhite">그래서 </span><span className="heroLeadFocus">직접 만들기 시작</span><span className="heroLeadWhite">했습니다.</span></span></p>
+      <div className="heroTechLayout">
+        <section className="heroSection" id="home">
+          <span className="anchorAlias" id="top" aria-hidden="true" />
+          <div className="legacyAnchorFallback" aria-hidden="true">
+            <a href="#top" tabIndex={-1}>처음</a>
+            <a href="#career" tabIndex={-1}>경력</a>
+            <a href="#self-intro" tabIndex={-1}>소개</a>
+            <a href="#works" tabIndex={-1}>작품</a>
           </div>
-        </div>
 
-      </section>
+          <div className="heroCopy">
+            <h1 className="heroTitle heroTitleStacked">
+              <span className="heroTitleLine">
+                <span className="heroTitlePlain">저는 </span>
+                <span className="heroTitleOpening">반복되는 불편함</span>
+                <span className="heroTitlePlain">을</span>
+              </span>
+              <span className="heroTitleLine heroTitlePlain">그냥 지나치지 않습니다.</span>
+            </h1>
+            <div className="heroLead heroLeadStacked">
+              <p><span className="heroLeadWhite">손을 더 빠르게<br className="heroMobileBreak" /> 움직이기보다,</span></p>
+              <p><span className="heroLeadFocus">단순하게 만드는</span></p>
+              <p><span className="heroLeadFocus">방법</span><span className="heroLeadWhite">을 고민합니다.</span></p>
+            </div>
+          </div>
+
+        </section>
+
+        <TechStackPanel />
+      </div>
 
       <section className="aboutSection" id="about">
         <span className="anchorAlias" id="self-intro" aria-hidden="true" />
@@ -291,6 +296,16 @@ function App() {
   );
 }
 
+function TechStackPanel() {
+  return (
+    <section className="techStackPanel" aria-label="보유 기술 및 도구">
+      <div className="techStackGlass">
+        <img className="techStackMap" src="/icons/connecting-dots.png" alt="기술 흐름을 연결한 스택 이미지" />
+      </div>
+    </section>
+  );
+}
+
 function LibrarySection() {
   // 카테고리는 '정렬 기준'으로만 사용 — 같은 분류끼리 모여 한 책장에 쭉 진열.
   const books = libraryGroups.flatMap((group) => group.books);
@@ -346,7 +361,7 @@ function LibrarySection() {
     <section className="librarySection" id="library">
       <div className="sectionTitle">
         <p className="eyebrow sectionEyebrowLarge">Library</p>
-        <p>읽은 책, 그리고 언젠가 읽었으면 하는 책들.</p>
+        <p>나에게 영감을 준 책들.</p>
       </div>
       <div className="libraryShelf">
         <button
