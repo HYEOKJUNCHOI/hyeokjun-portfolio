@@ -4383,6 +4383,93 @@
         }
       }
     </style>
+    <!-- 데모: 오사카 4컷(자막 burn-in) 순환 + 드롭 안내 숨김 + 목업 카드 시드 -->
+    <style>
+      .videoShell {
+        background-image: url("/clones/subtitle-fix-checker/demo/f1.jpg") !important;
+        background-size: cover !important;
+        background-position: center !important;
+        animation: sfcReel 12s steps(1) infinite !important;
+      }
+      .videoShell .placeholder { display: none !important; }
+      .videoShell .dropOverlay { display: none !important; }
+      @keyframes sfcReel {
+        0%   { background-image: url("/clones/subtitle-fix-checker/demo/f1.jpg"); }
+        25%  { background-image: url("/clones/subtitle-fix-checker/demo/f2.jpg"); }
+        50%  { background-image: url("/clones/subtitle-fix-checker/demo/f3.jpg"); }
+        75%  { background-image: url("/clones/subtitle-fix-checker/demo/f4.jpg"); }
+        100% { background-image: url("/clones/subtitle-fix-checker/demo/f1.jpg"); }
+      }
+    </style>
+    <script>
+      (function () {
+        try {
+          var KEY = "haru_review_items_v5";
+          var saved = localStorage.getItem(KEY) || localStorage.getItem("haru_review_items_v4");
+          if (saved) {
+            try { var a = JSON.parse(saved); if (Array.isArray(a) && a.length > 0) return; } catch(e) {}
+          }
+          var now = new Date().toISOString();
+          var seed = [
+            {
+              type: "자막합치기A",
+              expression: "今日は大阪、|오늘은 오사카 ,",
+              jp_text: "今日は大阪、",
+              ko_text: "오늘은 오사카 ,",
+              expression_pipe: "今日は大阪、|오늘은 오사카 ,",
+              request: "",
+              review_done: false,
+              cue_missing: false,
+              cue_index: 5,
+              cue_start: "00:00:03,200",
+              cue_end: "00:00:04,900",
+              cue_start_seconds: 3.2,
+              cue_end_seconds: 4.9,
+              clicked_time: "00:00:04,000",
+              clicked_seconds: 4.0,
+              created_at: now,
+            },
+            {
+              type: "자막합치기B",
+              expression: "ご紹介します|소개를 해드릴게요 라면은",
+              jp_text: "ご紹介します",
+              ko_text: "소개를 해드릴게요 라면은",
+              expression_pipe: "ご紹介します|소개를 해드릴게요 라면은",
+              request: "",
+              review_done: false,
+              cue_missing: false,
+              cue_index: 6,
+              cue_start: "00:00:05,000",
+              cue_end: "00:00:06,800",
+              cue_start_seconds: 5.0,
+              cue_end_seconds: 6.8,
+              clicked_time: "00:00:05,600",
+              clicked_seconds: 5.6,
+              created_at: now,
+            },
+            {
+              type: "직접수정",
+              expression: "やっぱり大阪のたこ焼きが一番！|타코야끼 너무 마시써！",
+              jp_text: "やっぱり大阪のたこ焼きが一番！",
+              ko_text: "역시 오사카 타코야끼가 최고예요!",
+              expression_pipe: "やっぱり大阪のたこ焼きが一番！|역시 오사카 타코야끼가 최고예요!",
+              request: "",
+              review_done: true,
+              cue_missing: false,
+              cue_index: 14,
+              cue_start: "00:00:18,400",
+              cue_end: "00:00:21,000",
+              cue_start_seconds: 18.4,
+              cue_end_seconds: 21.0,
+              clicked_time: "00:00:19,200",
+              clicked_seconds: 19.2,
+              created_at: now,
+            },
+          ];
+          localStorage.setItem(KEY, JSON.stringify(seed));
+        } catch(e) {}
+      })();
+    </script>
   </head>
   <body class="reviewMode">
     <header id="topHeader">
