@@ -519,20 +519,25 @@ img, svg, iframe { max-width: 100%; }
   font-weight: 950;
 }
 .heroTitleOpening {
-  background: linear-gradient(90deg, #ffe38a 0%, var(--pink-400) 54%, #ffd1df 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: #ffe38a;
-  -webkit-text-fill-color: transparent;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.18em;
   font-size: calc(1em + 8px);
   font-weight: 950;
-  text-shadow: 0 0 18px rgba(255, 227, 138, 0.32), 0 0 34px rgba(255, 111, 157, 0.38);
+  text-shadow: none;
+}
+.heroTitleOpening .heroTitlePink {
+  color: var(--pink-400);
+  -webkit-text-fill-color: var(--pink-400);
+  text-shadow: 0 0 20px rgba(255, 111, 157, 0.34);
+}
+.heroTitleOpening .heroTitleBlue {
+  color: var(--teal-300);
+  -webkit-text-fill-color: var(--teal-300);
+  text-shadow: 0 0 20px rgba(143, 230, 210, 0.3);
 }
 .heroTitleOpening span, .heroTitleConclusion span {
   background: none;
-  color: var(--text-strong);
-  -webkit-text-fill-color: var(--text-strong);
-  font-size: 0.62em;
 }
 .heroTitleConclusion {
   background: linear-gradient(90deg, var(--teal-300), #d7b8ff 82%);

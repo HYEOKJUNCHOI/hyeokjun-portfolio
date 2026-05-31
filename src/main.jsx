@@ -236,7 +236,12 @@ function App() {
 
           <div className="heroCopy">
             <h1 className="heroTitle heroTitleStacked">
-              <span className="heroTitleLine heroTitlePlain"><span className="heroTitleOpening">반복되는 불편함</span>을</span>
+              <span className="heroTitleLine heroTitlePlain">
+                <span className="heroTitleOpening">
+                  <span className="heroTitlePink">반복되는</span>
+                  <span className="heroTitleBlue">불편함</span>
+                </span>을
+              </span>
               <span className="heroTitleLine heroTitlePlain">그냥 지나치지</span>
               <span className="heroTitleLine heroTitlePlain">않습니다.</span>
             </h1>
