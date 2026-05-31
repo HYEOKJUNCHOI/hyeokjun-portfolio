@@ -672,10 +672,16 @@ img, svg, iframe { max-width: 100%; }
 }
 .heroLeadFocus {
   display: inline-block;
-  color: #8feeff;
-  -webkit-text-fill-color: #8feeff;
-  font-size: clamp(28px, 2.65vw, 37px);
+  max-width: 100%;
+  background: linear-gradient(90deg, var(--teal-300), #d7b8ff 84%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--teal-300);
+  -webkit-text-fill-color: transparent;
+  font-size: clamp(26px, 2.35vw, 34px);
   line-height: 1.04;
+  overflow-wrap: normal;
+  word-break: keep-all;
 }
 .heroLead .identityLine {
   margin-bottom: var(--space-2);
@@ -2141,7 +2147,7 @@ img, svg, iframe { max-width: 100%; }
   .heroTitle:not(.heroTitleStacked) { font-size: clamp(35px, calc(9vw + 6px), 45px); }
   .heroTitleStacked { gap: clamp(7px, 2vw, 11px); font-size: clamp(22px, 6.4vw, 30px); }
   .heroLeadStacked { gap: clamp(8px, 2vw, 13px); margin-top: clamp(22px, 6.8vw, 34px); font-size: clamp(24px, 7vw, 32px); }
-  .heroLeadFocus { font-size: clamp(27px, 8vw, 36px); }
+  .heroLeadFocus { font-size: clamp(25px, 7.2vw, 32px); }
   .heroMobileBreak { display: block; }
   .heroCopy p { font-size: 15.5px; }
   .workspaceAvatar { min-height: auto; }
@@ -2226,7 +2232,7 @@ img, svg, iframe { max-width: 100%; }
   .heroSection, .avatarPanel, .detailPanel, .mobileShowcase, .letterPanel, .timelineCard, .infoCard, .profileCard, .briefCard { padding-right: var(--space-3); padding-left: var(--space-3); }
   .heroTitleStacked { font-size: clamp(20px, 6.2vw, 26px); }
   .heroLeadStacked { font-size: clamp(22px, 7vw, 30px); }
-  .heroLeadFocus { font-size: clamp(26px, 8.2vw, 34px); }
+  .heroLeadFocus { font-size: clamp(24px, 7.4vw, 32px); }
   .showcaseImageGrid { gap: 7px; }
   .projectGrid { gap: var(--space-2); }
   .heroNav { left: var(--space-3); width: calc(100% - 24px); }
@@ -2706,7 +2712,7 @@ a.contactValue:hover { color: var(--teal-300); text-decoration: underline; }
 }
 .emailInlineNotice {
   position: absolute;
-  inset: var(--space-3) calc(var(--space-3) + 76px) var(--space-3) var(--space-3);
+  inset: var(--space-3) calc(var(--space-3) + 86px) var(--space-3) var(--space-3);
   z-index: 2;
   display: inline-flex;
   align-items: center;
@@ -2715,13 +2721,17 @@ a.contactValue:hover { color: var(--teal-300); text-decoration: underline; }
   border-radius: calc(var(--radius-md) - 6px);
   background: rgba(13, 16, 16, 0.96);
   color: var(--teal-300);
-  font-size: clamp(13px, 1.5vw, 16px);
+  font-size: clamp(12px, 1.25vw, 15px);
   font-weight: 950;
   line-height: 1.2;
   text-align: center;
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.34);
   pointer-events: none;
-  animation: contactToastIn var(--duration-medium) ease both;
+  animation: emailInlineNoticeIn var(--duration-fast) ease both;
+}
+@keyframes emailInlineNoticeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* 쇼케이스 Contact 모달 — 아이콘 행. 푸터와 같은 글로시 아이콘 재사용. */

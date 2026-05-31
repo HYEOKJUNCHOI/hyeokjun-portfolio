@@ -227,13 +227,12 @@ function App() {
 
           <div className="heroCopy">
             <h1 className="heroTitle heroTitleStacked">
-              <span className="heroTitleLine heroTitlePlain">저는,</span>
-              <span className="heroTitleLine heroTitleOpening">반복되는 불편함을</span>
+              <span className="heroTitleLine heroTitlePlain">반복되는 <span className="heroTitleOpening">불편함</span>을</span>
               <span className="heroTitleLine heroTitlePlain">그냥 지나치지 않습니다.</span>
             </h1>
             <div className="heroLead heroLeadStacked">
               <p><span className="heroLeadWhite">손을 더 빠르게<br className="heroMobileBreak" /> 움직이기보다,</span></p>
-              <p><span className="heroLeadFocus">단순하게 만드는</span></p>
+              <p><span className="heroLeadFocus">과정을 단순하게 만드는</span></p>
               <p><span className="heroLeadFocus">방법</span><span className="heroLeadWhite">을 고민합니다.</span></p>
             </div>
           </div>
