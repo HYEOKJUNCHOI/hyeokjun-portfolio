@@ -867,17 +867,19 @@ function ContactSection() {
 function ProjectTeaserVisual({ image, kind, label, teaser, type }) {
   return (
     <span className={`projectTeaserVisual ${kind ? `projectVisual-${kind}` : ''}`} aria-hidden="true">
-      {image ? <img src={image} alt="" /> : (
-        <span className="visualFrame">
-          <span />
-          <span />
-          <span />
-          <span />
+      <span className="projectVisualPane">
+        {image ? <img src={image} alt="" /> : (
+          <span className="visualFrame">
+            <span />
+            <span />
+            <span />
+            <span />
+          </span>
+        )}
+        <span className="projectCardChrome">
+          <span className="projectType">{type}</span>
+          <strong>{label}</strong>
         </span>
-      )}
-      <span className="projectCardChrome">
-        <span className="projectType">{type}</span>
-        <strong>{label}</strong>
       </span>
       <span className="projectExplanation" aria-hidden="true">
         <strong>{teaser}</strong>
