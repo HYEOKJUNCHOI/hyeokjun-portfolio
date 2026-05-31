@@ -2468,7 +2468,13 @@ img, svg, iframe { max-width: 100%; }
   border-radius: 22%;
   transition: filter var(--duration-medium) ease, opacity var(--duration-medium) ease;
 }
-.contactIcon img { display: block; width: clamp(60px, 7vw, 76px); height: auto; }
+.contactIcon img {
+  display: block;
+  width: clamp(60px, 7vw, 76px);
+  height: auto;
+}
+.contactIcon-brunch img { transform: rotate(2.2deg); transform-origin: center; }
+.contactIcon-kakao img { transform: rotate(2.4deg); transform-origin: center; }
 .contactIcon:hover, .contactIcon:focus-visible { filter: brightness(1.12); }
 .contactIcon:active { transform: none; }
 .contactValue {

@@ -800,12 +800,12 @@ function ContactSection() {
         {contactLinks.map((item) => (
           <li className="contactItem" key={item.id}>
             {item.href ? (
-              <a className="contactIcon" href={item.href} target="_blank" rel="noreferrer" aria-label={item.label}>
+              <a className={`contactIcon contactIcon-${item.id}`} href={item.href} target="_blank" rel="noreferrer" aria-label={item.label}>
                 <img src={item.icon} alt={item.label} />
               </a>
             ) : (
               <button
-                className="contactIcon"
+                className={`contactIcon contactIcon-${item.id}`}
                 type="button"
                 aria-label={item.id === 'email' ? '이메일 주소 열기' : 'KakaoTalk 연락처 열기'}
                 aria-describedby={item.id === 'email' && emailStatus ? 'contact-email-status' : undefined}
