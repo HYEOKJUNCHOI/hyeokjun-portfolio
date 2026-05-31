@@ -732,7 +732,7 @@ function KakaoContactOverlay({ contact, onClose }) {
   );
 }
 
-function EmailContactOverlay({ onClose, onCopy }) {
+function EmailContactOverlay({ copyStatus, onClose, onCopy }) {
   useModalScrollLock();
 
   useEffect(() => {
@@ -751,11 +751,13 @@ function EmailContactOverlay({ onClose, onCopy }) {
       <button className="emailContactBackdrop" type="button" onClick={onClose} aria-label="닫기" />
       <div className="emailContactCard">
         <button className="modalClose emailContactClose" type="button" onClick={onClose}>닫기</button>
-        <p className="eyebrow">Email</p>
-        <h3 id="email-contact-title">이메일 주소</h3>
+        <h3 id="email-contact-title">email_adress</h3>
         <div className="emailCopyPanel">
           <strong>{EMAIL_ADDRESS}</strong>
           <button className="emailCopyButton" type="button" onClick={onCopy}>Copy</button>
+          {copyStatus?.kind === 'success' ? (
+            <span className="emailInlineNotice" role="status">{copyStatus.message}</span>
+          ) : null}
         </div>
       </div>
     </div>
@@ -776,7 +778,7 @@ function ContactSection() {
   const showEmailStatus = (status) => {
     if (emailStatusTimerRef.current) window.clearTimeout(emailStatusTimerRef.current);
     setEmailStatus(status);
-    emailStatusTimerRef.current = window.setTimeout(() => setEmailStatus(null), 3600);
+    emailStatusTimerRef.current = window.setTimeout(() => setEmailStatus(null), 1000);
   };
 
   const handleEmailCopy = async () => {
@@ -817,13 +819,19 @@ function ContactSection() {
           </li>
         ))}
       </ul>
-      {emailStatus ? (
+      {emailStatus?.kind === 'error' ? (
         <div className={`contactToast ${emailStatus.kind}`} id="contact-email-status" role="status">
           {emailStatus.message}
-          {emailStatus.kind === 'error' ? <strong>{EMAIL_ADDRESS}</strong> : null}
+          <strong>{EMAIL_ADDRESS}</strong>
         </div>
       ) : null}
-      {isEmailOpen ? <EmailContactOverlay onClose={() => setIsEmailOpen(false)} onCopy={handleEmailCopy} /> : null}
+      {isEmailOpen ? (
+        <EmailContactOverlay
+          copyStatus={emailStatus}
+          onClose={() => setIsEmailOpen(false)}
+          onCopy={handleEmailCopy}
+        />
+      ) : null}
       {isKakaoOpen && kakaoContact ? <KakaoContactOverlay contact={kakaoContact} onClose={() => setIsKakaoOpen(false)} /> : null}
     </section>
   );
