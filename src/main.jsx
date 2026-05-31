@@ -1053,6 +1053,7 @@ function ProjectDetailModal({ children, onClose, project }) {
 
 function ProjectDetail({ detailHeadingId, detailPanelId, onRequestClose, project, refTarget }) {
   const [selectedScreenshot, setSelectedScreenshot] = useState(null);
+  const [screenshotEdgeNotice, setScreenshotEdgeNotice] = useState(null);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -1070,9 +1071,19 @@ function ProjectDetail({ detailHeadingId, detailPanelId, onRequestClose, project
     if (!selectedScreenshot) return;
 
     const total = project.screenshots.length;
-    const nextIndex = (selectedScreenshot.index + direction + total) % total;
+    const nextIndex = selectedScreenshot.index + direction;
+
+    if (nextIndex < 0 || nextIndex >= total) {
+      setScreenshotEdgeNotice({
+        key: Date.now(),
+        message: nextIndex >= total ? '마지막 페이지입니다.' : '첫 번째 페이지입니다.',
+      });
+      return;
+    }
+
     const [title, caption, src] = project.screenshots[nextIndex];
 
+    setScreenshotEdgeNotice(null);
     setSelectedScreenshot({ title, caption, src, index: nextIndex });
   };
 
@@ -1088,14 +1099,21 @@ function ProjectDetail({ detailHeadingId, detailPanelId, onRequestClose, project
       <ProjectBrief project={project} />
       <ScreenshotGallery
         project={project}
-        setSelectedScreenshot={setSelectedScreenshot}
+        setSelectedScreenshot={(item) => {
+          setScreenshotEdgeNotice(null);
+          setSelectedScreenshot(item);
+        }}
       />
 
       {selectedScreenshot ? (
         <ScreenshotModal
+          edgeNotice={screenshotEdgeNotice}
           project={project}
           screenshot={selectedScreenshot}
-          onClose={() => setSelectedScreenshot(null)}
+          onClose={() => {
+            setScreenshotEdgeNotice(null);
+            setSelectedScreenshot(null);
+          }}
           onNext={() => moveScreenshot(1)}
           onPrevious={() => moveScreenshot(-1)}
         />
@@ -1171,7 +1189,7 @@ function ProjectBrief({ project }) {
   );
 }
 
-function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
+function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onPrevious }) {
   useModalScrollLock();
   const shouldFillFrame = screenshot.index > 0 && screenshot.index < 5;
   const isLegacyFrame = screenshot.index === 0 || screenshot.index === project.screenshots.length - 1;
@@ -1241,6 +1259,11 @@ function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
               <h4>{screenshot.title}</h4>
               <p>{screenshot.caption}</p>
               <p className="modalProjectTeaser">{project.teaser}</p>
+              {edgeNotice ? (
+                <p className="modalEdgeNotice" key={edgeNotice.key} role="status" aria-live="polite">
+                  {edgeNotice.message}
+                </p>
+              ) : null}
             </div>
           </div>
         </div>
