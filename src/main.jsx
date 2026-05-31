@@ -718,7 +718,7 @@ function KakaoContactOverlay({ contact, onClose }) {
         </div>
         <p className="eyebrow">KakaoTalk</p>
         <h3 id="kakao-contact-title">카카오톡으로 연락하기</h3>
-        <p className="kakaoContactLead">프로젝트에 포함된 KakaoTalk 아이콘과 ID로 연락처를 안내합니다.</p>
+        <img className="kakaoContactPreview" src="/contact/kakao-card.jpg" alt="카카오톡 연락처 화면" />
         <div className="kakaoContactIdCard" aria-label={`카카오톡 ID ${contact.value}`}>
           <img src={contact.icon} alt="" />
           <span>
