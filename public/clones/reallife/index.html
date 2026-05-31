@@ -40,8 +40,33 @@
     </script>
     <script type="module" crossorigin src="/clones/reallife/assets/index-DdoPAdcs.js"></script>
     <link rel="stylesheet" crossorigin href="/clones/reallife/assets/index-BbydmPZJ.css">
+    <style>
+      #reallifeMobileGate { display: none; }
+      @media (max-width: 860px) {
+        #reallifeMobileGate {
+          position: fixed;
+          inset: 0;
+          z-index: 99999;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
+          padding: 36px;
+          background: #07101d;
+          color: #eaf2ff;
+          text-align: center;
+          font-family: "Noto Sans KR", system-ui, sans-serif;
+        }
+      }
+    </style>
   </head>
   <body class="text-ink" style="background:#050505">
     <div id="root"></div>
+    <div id="reallifeMobileGate" aria-label="모바일 안내">
+      <div style="font-size:46px">🖥️</div>
+      <strong style="font-size:18px">데스크탑에서 봐주세요</strong>
+      <p style="margin:0;color:#8fa2ba;line-height:1.6;font-size:14px">이 게임 데모는 보드판·조작 패널 기반이라<br>PC 화면에 최적화돼 있어요.</p>
+    </div>
   </body>
 </html>

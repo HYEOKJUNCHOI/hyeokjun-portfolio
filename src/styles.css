@@ -2214,13 +2214,49 @@ img, svg, iframe { max-width: 100%; }
   .demoRow, .errorList label { grid-template-columns: 1fr; }
   .showcaseDetailModal { padding: 10px; }
   .showcaseDetailModalStack { width: min(100%, calc(100vw - 20px)); }
-  .showcaseDetailDialog {
-    grid-template-columns: 1fr;
+  .showcaseDetailModalShell {
     max-height: calc(100svh - 20px);
     max-height: calc(100dvh - 20px);
-    padding: var(--space-3);
   }
-  .showcaseDetailImage img { min-height: min(240px, 42svh); min-height: min(240px, 42dvh); }
+  .showcaseDetailDialog {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    max-height: calc(100svh - 20px);
+    max-height: calc(100dvh - 20px);
+    padding: 10px;
+  }
+  .showcaseDetailImage img {
+    height: min(30svh, 210px);
+    height: min(30dvh, 210px);
+    min-height: 150px;
+  }
+  .showcaseDetailCopy {
+    gap: 10px;
+    padding: 12px;
+  }
+  .showcaseDetailCopy h3 {
+    padding-right: 58px;
+    font-size: clamp(20px, 5.8vw, 25px);
+    line-height: 1.22;
+    letter-spacing: 0;
+  }
+  .showcaseDetailCopy em {
+    min-height: 26px;
+    padding: 5px 9px;
+    font-size: 12px;
+  }
+  .showcaseDetailCopy > div { gap: 7px; }
+  .showcaseDetailCopy p:not(.eyebrow) {
+    padding: 8px 9px;
+    font-size: 13px;
+    line-height: 1.48;
+  }
+  .modalClose.showcaseDetailModalClose {
+    top: 14px;
+    right: 14px;
+    min-height: 32px;
+    padding: 0 10px;
+  }
   .projectDetailModal { padding: 10px; }
   .projectDetailModalStack {
     width: min(100%, calc(100vw - 20px));
