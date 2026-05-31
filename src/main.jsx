@@ -222,36 +222,30 @@ function App() {
         <div className="sectionTitle">
           <p className="eyebrow sectionEyebrowLarge">Project</p>
         </div>
-        <div className="projectGrid" aria-label="프로젝트 네비게이터">
-          {projectDetails.map((project) => (
-            <button
-              className={activeId && project.id === activeId ? 'projectCard active' : 'projectCard'}
-              aria-controls={detailPanelId}
-              aria-expanded={isDetailOpen && project.id === activeId}
-              data-project-id={project.id}
-              key={project.id}
-              onClick={(event) => selectProject(project.id, event.currentTarget)}
-              type="button"
-            >
-              <ProjectTeaserVisual
-                image={project.showcaseImage}
-                kind={project.visualKind}
-                label={project.label}
-                teaser={project.teaser}
-                type={project.type}
-              />
-            </button>
-          ))}
-        </div>
+        <ProjectNavigator
+          activeId={activeId}
+          detailPanelId={detailPanelId}
+          isDetailOpen={isDetailOpen}
+          onSelectProject={selectProject}
+        />
 
         {isDetailOpen && activeProject ? (
-          <ProjectDetail
-            detailHeadingId={detailHeadingId}
-            detailPanelId={detailPanelId}
-            onRequestClose={closeDetailPanel}
-            project={activeProject}
-            refTarget={detailRef}
-          />
+          <>
+            <ProjectDetail
+              detailHeadingId={detailHeadingId}
+              detailPanelId={detailPanelId}
+              onRequestClose={closeDetailPanel}
+              project={activeProject}
+              refTarget={detailRef}
+            />
+            <ProjectNavigator
+              activeId={activeId}
+              detailPanelId={detailPanelId}
+              isDetailOpen={isDetailOpen}
+              onSelectProject={selectProject}
+              variant="repeat"
+            />
+          </>
         ) : null}
       </section>
 
@@ -272,6 +266,44 @@ function App() {
   );
 }
 
+function ProjectNavigator({ activeId, detailPanelId, isDetailOpen, onSelectProject, variant = 'primary' }) {
+  const isRepeat = variant === 'repeat';
+
+  return (
+    <div
+      className={isRepeat ? 'projectGrid projectGridRepeat' : 'projectGrid'}
+      aria-label={isRepeat ? '다른 프로젝트 다시 보기' : '프로젝트 네비게이터'}
+    >
+      {projectDetails.map((project) => {
+        const isActive = activeId === project.id;
+        const isDisabled = isRepeat && isActive;
+
+        return (
+          <button
+            className={isActive ? 'projectCard active' : 'projectCard'}
+            aria-controls={detailPanelId}
+            aria-current={isDisabled ? 'true' : undefined}
+            aria-expanded={isDetailOpen && isActive}
+            data-project-id={project.id}
+            disabled={isDisabled}
+            key={project.id}
+            onClick={(event) => onSelectProject(project.id, event.currentTarget)}
+            type="button"
+          >
+            <ProjectTeaserVisual
+              image={project.showcaseImage}
+              kind={project.visualKind}
+              label={project.label}
+              teaser={project.teaser}
+              type={project.type}
+            />
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function TechStackPanel() {
   return (
     <section className="techStackPanel" aria-label="보유 기술 및 도구">
@@ -283,15 +315,13 @@ function TechStackPanel() {
 }
 
 function LibrarySection() {
-  // 카테고리는 '정렬 기준'으로만 사용 — 같은 분류끼리 모여 한 책장에 쭉 진열.
-  // seed = 폴백. Firestore 'shelf'에 데이터 있으면 그걸로 교체.
-  const seedBooks = useMemo(() => libraryGroups.flatMap((group) => group.books), []);
-  const [books, setBooks] = useState(seedBooks);
+  // 책장 = Firestore 'shelf' 만 표시(seed 폴백 없음). 비면 + 타일만 중앙에.
+  // 카테고리는 정렬 기준으로만 사용 — 같은 분류끼리 모여 진열.
+  const [books, setBooks] = useState([]);
   const [addOpen, setAddOpen] = useState(false);
   const loadShelf = () => {
     getDocs(collection(db, 'shelf'))
       .then((snap) => {
-        if (snap.empty) return;
         const list = snap.docs
           .map((d) => d.data())
           .sort((a, b) =>
@@ -408,8 +438,9 @@ function LibrarySection() {
 }
 
 function BookAddModal({ onClose, onAdded }) {
-  // PIN → ISBN(카메라/입력) → 조회 → 표지·분류 확인/교체 → 등록.
-  // 조회/저장은 /api/book-lookup, /api/book-save (Vercel 서버리스). 로컬 vite dev 에선 동작 X.
+  // 2단계: ① PIN 게이트(/api/verify-pin) → ② 등록창(ISBN 조회→표지/분류 확인→저장).
+  // 서버리스(/api/*)라 로컬 vite dev 에선 동작 X, 배포(Vercel)에서 동작.
+  const [step, setStep] = useState('pin'); // 'pin' | 'register'
   const [pin, setPin] = useState('');
   const [isbn, setIsbn] = useState('');
   const [book, setBook] = useState(null);
@@ -424,6 +455,23 @@ function BookAddModal({ onClose, onAdded }) {
     setScanning(false);
   };
   useEffect(() => () => stopScan(), []);
+
+  const verifyPin = async () => {
+    if (!pin) { setStatus({ kind: 'error', msg: 'PIN을 입력하세요.' }); return; }
+    setStatus({ kind: 'loading' });
+    try {
+      const r = await fetch('/api/verify-pin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin }),
+      });
+      if (!r.ok) throw new Error('bad_pin');
+      setStatus({ kind: 'idle' });
+      setStep('register');
+    } catch (e) {
+      setStatus({ kind: 'error', msg: 'PIN이 틀렸습니다.' });
+    }
+  };
 
   const startScan = async () => {
     setStatus({ kind: 'idle' });
@@ -459,7 +507,6 @@ function BookAddModal({ onClose, onAdded }) {
 
   const save = async () => {
     if (!book) return;
-    if (!pin) { setStatus({ kind: 'error', msg: 'PIN을 입력하세요.' }); return; }
     setStatus({ kind: 'loading' });
     try {
       const r = await fetch('/api/book-save', {
@@ -484,45 +531,54 @@ function BookAddModal({ onClose, onAdded }) {
       <button className="bookAddBackdrop" type="button" onClick={onClose} aria-label="닫기" />
       <div className="bookAddPanel">
         <button className="modalClose bookAddClose" type="button" onClick={onClose}>닫기</button>
-        <h3 className="bookAddTitle">책 등록</h3>
 
-        <label className="bookAddField">
-          <span>PIN</span>
-          <input type="password" value={pin} inputMode="numeric" placeholder="••••"
-            onChange={(e) => setPin(e.target.value)} />
-        </label>
+        {step === 'pin' ? (
+          <>
+            <h3 className="bookAddTitle">관리자 확인</h3>
+            <label className="bookAddField">
+              <span>PIN</span>
+              <input type="password" value={pin} inputMode="numeric" placeholder="••••" autoFocus
+                onChange={(e) => setPin(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') verifyPin(); }} />
+            </label>
+            <button type="button" className="bookAddSave" onClick={verifyPin}>확인</button>
+          </>
+        ) : (
+          <>
+            <h3 className="bookAddTitle">책 등록</h3>
+            <label className="bookAddField">
+              <span>ISBN</span>
+              <div className="bookAddIsbnRow">
+                <input value={isbn} inputMode="numeric" placeholder="9788…(13자리)" autoFocus
+                  onChange={(e) => setIsbn(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') lookup(); }} />
+                <button type="button" onClick={scanning ? stopScan : startScan}>{scanning ? '중지' : '📷'}</button>
+                <button type="button" onClick={lookup}>조회</button>
+              </div>
+            </label>
 
-        <label className="bookAddField">
-          <span>ISBN</span>
-          <div className="bookAddIsbnRow">
-            <input value={isbn} inputMode="numeric" placeholder="9788…(13자리)"
-              onChange={(e) => setIsbn(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') lookup(); }} />
-            <button type="button" onClick={scanning ? stopScan : startScan}>{scanning ? '중지' : '📷'}</button>
-            <button type="button" onClick={lookup}>조회</button>
-          </div>
-        </label>
+            {scanning ? <video ref={videoRef} className="bookAddVideo" muted playsInline /> : null}
 
-        {scanning ? <video ref={videoRef} className="bookAddVideo" muted playsInline /> : null}
-
-        {book ? (
-          <div className="bookAddPreview">
-            <img src={book.cover} alt="" />
-            <div className="bookAddPreviewBody">
-              <strong>{book.title}</strong>
-              <em>{book.author}</em>
-              <label className="bookAddField">
-                <span>표지 URL (옛 판본이면 교체)</span>
-                <input value={book.cover} onChange={(e) => setBook({ ...book, cover: e.target.value })} />
-              </label>
-              <label className="bookAddField">
-                <span>분류</span>
-                <input value={book.category} onChange={(e) => setBook({ ...book, category: e.target.value })} />
-              </label>
-              <button type="button" className="bookAddSave" onClick={save}>등록</button>
-            </div>
-          </div>
-        ) : null}
+            {book ? (
+              <div className="bookAddPreview">
+                <img src={book.cover} alt="" />
+                <div className="bookAddPreviewBody">
+                  <strong>{book.title}</strong>
+                  <em>{book.author}</em>
+                  <label className="bookAddField">
+                    <span>표지 URL (옛 판본이면 교체)</span>
+                    <input value={book.cover} onChange={(e) => setBook({ ...book, cover: e.target.value })} />
+                  </label>
+                  <label className="bookAddField">
+                    <span>분류</span>
+                    <input value={book.category} onChange={(e) => setBook({ ...book, category: e.target.value })} />
+                  </label>
+                  <button type="button" className="bookAddSave" onClick={save}>등록</button>
+                </div>
+              </div>
+            ) : null}
+          </>
+        )}
 
         {status.kind === 'loading' ? <p className="bookAddMsg">처리 중…</p> : null}
         {status.kind === 'error' ? <p className="bookAddMsg error">{status.msg}</p> : null}
