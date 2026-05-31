@@ -1,0 +1,6 @@
+{
+  "_설명": "이 파일을 config.json 으로 복사한 뒤 값을 채우세요. config.json 은 git 에 안 올라갑니다.",
+  "aladin_ttb_key": "여기에_알라딘_TTB_키",
+  "service_account_path": "serviceAccount.json",
+  "collection": "shelf"
+}

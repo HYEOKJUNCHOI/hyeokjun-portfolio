@@ -1,0 +1,4 @@
+firebase-admin>=6.5
+requests>=2.31
+opencv-python>=4.9
+pyzbar>=0.1.9
