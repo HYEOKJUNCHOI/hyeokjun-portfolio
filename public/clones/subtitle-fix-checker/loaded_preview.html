@@ -4383,22 +4383,22 @@
         }
       }
     </style>
-    <!-- 데모: 오사카 4컷(자막 burn-in) 순환 + 드롭 안내 숨김 + 목업 카드 시드 -->
+    <!-- 데모: 카드(합치기A/B·직접수정)에 맞춘 3컷 순환 + 드롭안내 숨김 + 점선 테두리 제거 -->
     <style>
       .videoShell {
         background-image: url("/clones/subtitle-fix-checker/demo/f1.jpg") !important;
         background-size: cover !important;
         background-position: center !important;
-        animation: sfcReel 12s steps(1) infinite !important;
+        border: 0 !important;
+        animation: sfcReel 9s steps(1) infinite !important;
       }
       .videoShell .placeholder { display: none !important; }
       .videoShell .dropOverlay { display: none !important; }
       @keyframes sfcReel {
-        0%   { background-image: url("/clones/subtitle-fix-checker/demo/f1.jpg"); }
-        25%  { background-image: url("/clones/subtitle-fix-checker/demo/f2.jpg"); }
-        50%  { background-image: url("/clones/subtitle-fix-checker/demo/f3.jpg"); }
-        75%  { background-image: url("/clones/subtitle-fix-checker/demo/f4.jpg"); }
-        100% { background-image: url("/clones/subtitle-fix-checker/demo/f1.jpg"); }
+        0%    { background-image: url("/clones/subtitle-fix-checker/demo/f1.jpg"); }
+        33.3% { background-image: url("/clones/subtitle-fix-checker/demo/f2.jpg"); }
+        66.6% { background-image: url("/clones/subtitle-fix-checker/demo/f3.jpg"); }
+        100%  { background-image: url("/clones/subtitle-fix-checker/demo/f1.jpg"); }
       }
     </style>
     <script>
@@ -6752,6 +6752,43 @@ ${value}`
       setPauseMode(pauseMode);
       render(true);
       drawWaveform();
+    </script>
+    <!-- 데모 오버라이드: 결과물(JSON 파일/클립보드) 배출만 차단(과정은 그대로) + 영상 없으니 큐 캡처는 랜덤 적용 -->
+    <script>
+      (function () {
+        // 1) JSON 복사/저장 → 내보내기까지 흐름은 유지, 최종 출력만 데모 안내로 대체.
+        try {
+          window.doExport = function () {
+            toast('데모 버전에서는 파일 내보내기가 제공되지 않습니다 🙏', 'toastReview');
+          };
+        } catch (e) { /* no-op */ }
+
+        // 2) 큐 직접수정: 영상이 없어 currentTime=0 → [ / ] 캡처 시 임의(랜덤) 큐 적용.
+        try {
+          window.setManualCuePoint = function (field) {
+            if (activeIndex < 0 || !items[activeIndex]) {
+              toast('먼저 카드를 선택하세요', 'toastReview');
+              showManualCueGuide();
+              return;
+            }
+            var sec = +(Math.random() * 8 + 1).toFixed(3);
+            var it = Object.assign({}, enrich(items[activeIndex]), { manual_cue: true, review_done: false });
+            if (field === 'start') {
+              it.cue_start_seconds = sec; it.cue_start = srtTime(sec);
+              if (it.cue_end_seconds != null && it.cue_end_seconds < sec) { it.cue_end_seconds = sec; it.cue_end = srtTime(sec); }
+              toast(labelFor(activeIndex) + '번 시작큐 ' + cueDisplay(sec) + ' (데모·임의)', 'toastReview');
+            } else {
+              it.cue_end_seconds = sec; it.cue_end = srtTime(sec);
+              if (it.cue_start_seconds != null && it.cue_start_seconds > sec) { it.cue_start_seconds = sec; it.cue_start = srtTime(sec); }
+              toast(labelFor(activeIndex) + '번 끝큐 ' + cueDisplay(sec) + ' (데모·임의)', 'toastReview');
+            }
+            items[activeIndex] = enrich(it);
+            save();
+            render(true);
+            showManualCueGuide();
+          };
+        } catch (e) { /* no-op */ }
+      })();
     </script>
   </body>
 </html>
