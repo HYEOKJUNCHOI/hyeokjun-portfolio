@@ -979,6 +979,7 @@ function ShowcaseDetailModal({ item, onClose, onNext, onPrevious }) {
               <p className="eyebrow">{item.detailLabel}</p>
               <h3>{item.detailTitle}</h3>
               <em>{item.period}</em>
+              <p className="showcaseHoverMessage">{item.hover}</p>
               {item.isContact ? (
                 <ul className="showcaseContactList">
                   {contactLinks.map((contact) => {
@@ -1239,6 +1240,7 @@ function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
               <p className="eyebrow">{project.label}</p>
               <h4>{screenshot.title}</h4>
               <p>{screenshot.caption}</p>
+              <p className="modalProjectTeaser">{project.teaser}</p>
             </div>
           </div>
         </div>

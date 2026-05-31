@@ -1885,6 +1885,22 @@ img, svg, iframe { max-width: 100%; }
   text-shadow: none;
 }
 
+.showcaseHoverMessage {
+  margin: 0;
+  padding: 13px 15px;
+  border: 1px solid rgba(40, 219, 195, 0.28);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, rgba(40, 219, 195, 0.13), rgba(159, 216, 255, 0.07));
+  color: var(--text-strong);
+  font-size: clamp(16px, 1vw, 18px);
+  font-weight: 850;
+  line-height: 1.62;
+  white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  box-shadow: inset 0 1px 0 rgba(244, 241, 232, 0.08), 0 16px 40px rgba(0, 0, 0, 0.22);
+}
+
 .showcaseDetailCopy > div {
   display: grid;
   gap: 10px;
@@ -2029,6 +2045,19 @@ img, svg, iframe { max-width: 100%; }
 .modalPreview span { color: var(--teal-300); font-family: var(--font-display); font-size: 58px; }
 .modalCaption { align-self: end; padding: var(--space-2); }
 .modalCaption h4 { margin: 0 0 var(--space-3); font-size: 24px; }
+.modalProjectTeaser {
+  margin-top: var(--space-3);
+  padding: 12px 13px;
+  border: 1px solid rgba(40, 219, 195, 0.24);
+  border-radius: var(--radius-sm);
+  background: rgba(40, 219, 195, 0.08);
+  color: var(--text-strong);
+  font-weight: 820;
+  line-height: 1.6;
+  white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
 .modalHintCapsule { position: relative; z-index: 2; margin: var(--space-2) 0 0; padding: var(--space-3) var(--space-5); font-size: 13px; line-height: 1.38; text-align: center; box-shadow: 0 16px 44px rgba(0, 0, 0, 0.28); }
 
 .showcaseDetailModal .modalHintCapsule { margin: 0 0 var(--space-2); }
@@ -2248,9 +2277,16 @@ img, svg, iframe { max-width: 100%; }
   .showcaseDetailModal { padding: 10px; }
   .showcaseDetailModalStack { width: min(100%, calc(100vw - 20px)); }
   .showcaseDetailModalShell {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "dialog dialog"
+      "previous next";
+    gap: 8px;
     max-height: calc(100dvh - 20px);
   }
   .showcaseDetailDialog {
+    grid-area: dialog;
     grid-template-columns: 1fr;
     gap: 10px;
     max-height: calc(100dvh - 20px);
@@ -2274,6 +2310,11 @@ img, svg, iframe { max-width: 100%; }
     min-height: 26px;
     padding: 5px 9px;
     font-size: 12px;
+  }
+  .showcaseHoverMessage {
+    padding: 10px 11px;
+    font-size: 14px;
+    line-height: 1.48;
   }
   .showcaseDetailCopy > div { gap: 7px; }
   .showcaseDetailCopy p:not(.eyebrow) {
@@ -2360,16 +2401,17 @@ img, svg, iframe { max-width: 100%; }
   .screenshotModalShell > .modalNavPrevious { grid-area: previous; }
   .screenshotModalShell > .modalNavNext { grid-area: next; }
   .showcaseDetailModal .modalNav {
-    position: absolute;
-    top: calc(10px + min(15dvh, 105px));
-    width: 44px;
-    height: 48px;
-    transform: translateY(-50%);
-    font-size: 21px;
-    background: rgba(13, 16, 16, 0.94);
+    position: static;
+    top: auto;
+    width: 100%;
+    height: 46px;
+    transform: none;
+    border-radius: var(--radius-md);
+    font-size: 22px;
+    background: rgba(13, 16, 16, 0.96);
   }
-  .showcaseDetailModal .modalNavPrevious { left: 8px; }
-  .showcaseDetailModal .modalNavNext { right: 8px; }
+  .showcaseDetailModal .modalNavPrevious { grid-area: previous; left: auto; }
+  .showcaseDetailModal .modalNavNext { grid-area: next; right: auto; }
   .modalClose {
     top: 4px;
     right: 8px;
@@ -2378,12 +2420,18 @@ img, svg, iframe { max-width: 100%; }
     padding: 0 10px;
   }
   .modalCaption {
-    max-height: 92px;
+    max-height: none;
     padding: 0;
-    overflow: hidden;
+    overflow: visible;
   }
   .modalCaption h4 { margin-bottom: 6px; font-size: 18px; line-height: 1.2; }
   .modalCaption p:not(.eyebrow) { font-size: 12px; line-height: 1.35; }
+  .modalProjectTeaser {
+    margin-top: 8px;
+    padding: 9px 10px;
+    font-size: 12px;
+    line-height: 1.42;
+  }
   .modalHintCapsule { display: none; }
   .browserViewport { height: 68vh; min-height: 480px; }
 }
