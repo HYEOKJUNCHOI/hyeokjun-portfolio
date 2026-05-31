@@ -361,11 +361,11 @@ img, svg, iframe { max-width: 100%; }
   gap: var(--space-5);
   height: 100%;
   min-height: clamp(320px, 28vw, 430px);
-  padding: clamp(var(--space-5), 2.6vw, var(--space-8));
+  padding: 0;
   overflow: hidden;
   border: 1px solid rgba(40, 219, 195, 0.24);
   border-radius: var(--radius-lg);
-  background: var(--surface-space-card);
+  background: #1c1b18;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(244, 241, 232, 0.12);
   backdrop-filter: blur(18px);
 }
@@ -377,10 +377,23 @@ img, svg, iframe { max-width: 100%; }
   width: 100%;
   height: 100%;
   min-height: clamp(240px, 21vw, 340px);
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  opacity: 0.94;
-  filter: saturate(1.08) contrast(1.02);
+  border-radius: inherit;
+  opacity: 0.9;
+  filter: saturate(0.72) contrast(0.92) brightness(0.82);
+}
+
+.techStackGlass::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(165, 84, 128, 0.08), transparent 34%),
+    radial-gradient(circle at 82% 82%, rgba(4, 164, 186, 0.1), transparent 36%),
+    linear-gradient(180deg, rgba(28, 27, 24, 0.18), rgba(28, 27, 24, 0.34));
+  content: "";
 }
 
 .techStackGlass::before {
@@ -1871,7 +1884,7 @@ img, svg, iframe { max-width: 100%; }
     min-height: 0;
     padding: clamp(28px, 8vw, 40px) clamp(18px, 6vw, 28px);
   }
-  .techStackGlass { min-height: clamp(190px, 56vw, 280px); padding: var(--space-3); }
+  .techStackGlass { min-height: clamp(190px, 56vw, 280px); padding: 0; }
   .techStackMap { min-height: clamp(170px, 50vw, 250px); }
   .heroIdentityBadge { top: var(--space-5); left: var(--space-5); }
   .heroNav {
@@ -2084,9 +2097,10 @@ img, svg, iframe { max-width: 100%; }
 .libraryBooks {
   list-style: none;
   margin: var(--space-6) 0 0;
-  padding: 8px clamp(8px, 6vw, 64px) 24px;
+  padding: 8px clamp(8px, 6vw, 64px) 0;
   display: flex;
   flex-wrap: nowrap;
+  align-items: flex-start;
   justify-content: flex-start;
   gap: clamp(18px, 2.4vw, 32px);
   overflow-x: auto;
@@ -2296,13 +2310,13 @@ a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300)
 }
 
 /* Library + 버튼 (책장 끝 등록 타일) */
-.libraryAddTile { justify-content: center; }
+.libraryAddTile { justify-content: flex-start; }
 .libraryAddBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  aspect-ratio: 2 / 3;
+  width: 132px;
+  height: 198px;
   border: 1.5px dashed var(--line-soft, rgba(244,241,232,0.22));
   border-radius: 8px;
   background: rgba(244, 241, 232, 0.03);
