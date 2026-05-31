@@ -4394,6 +4394,15 @@
       }
       .videoShell .placeholder { display: none !important; }
       .videoShell .dropOverlay { display: none !important; }
+      #sfcMobileGate { display: none; }
+      @media (max-width: 860px) {
+        #sfcMobileGate {
+          display: flex; position: fixed; inset: 0; z-index: 99999;
+          flex-direction: column; align-items: center; justify-content: center;
+          gap: 14px; text-align: center; padding: 36px;
+          background: #07101d; color: #eaf2ff;
+        }
+      }
       @keyframes sfcReel {
         0%    { background-image: url("/clones/subtitle-fix-checker/demo/f1.jpg"); }
         33.3% { background-image: url("/clones/subtitle-fix-checker/demo/f2.jpg"); }
@@ -6824,6 +6833,22 @@ ${value}`
           if (ph) ph.style.left = x + 'px';
         }
         apply(0);
+
+        // 화면(영상) 클릭 = 재생/멈춤 토글 (기존 '클릭 시 파일선택' 대체).
+        // 등록은 미리보기 우측 MP4/SRT 배지 버튼으로만.
+        shell.onclick = function (e) {
+          if (e.target.closest('video')) return;
+          paused = !paused;
+          if (typeof toast === 'function') toast(paused ? '⏸ 일시정지' : '▶ 재생', 'toastReview');
+        };
+
+        // 모바일 게이트 — 데스크탑 전용 데모라 좁은 화면은 안내로 대체.
+        var gate = document.createElement('div');
+        gate.id = 'sfcMobileGate';
+        gate.innerHTML = '<div style="font-size:46px">🖥️</div>'
+          + '<strong style="font-size:18px">데스크탑에서 봐주세요</strong>'
+          + '<p style="margin:0;color:#8fa2ba;line-height:1.6;font-size:14px">이 도구는 단축키·영상 검수 기반이라<br>PC 화면에 최적화돼 있어요.</p>';
+        document.body.appendChild(gate);
 
         // 자동 재생 (드래그 중이거나 일시정지면 멈춤)
         setInterval(function () { if (!dragging && !paused) apply((t + 0.08) % DUR); }, 60);
