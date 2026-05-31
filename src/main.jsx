@@ -117,7 +117,7 @@ function App() {
     { id: 'home', label: 'Home', group: true },
     { id: 'about', label: 'About', group: true },
     { id: 'experience', label: 'Experience', group: true },
-    { id: 'career-crm', label: 'CRM 경력' },
+    { id: 'career-crm', label: '업무경험' },
     { id: 'career-japan', label: '일본 연수' },
     { id: 'career-education', label: '교육 이수' },
     { id: 'projects', label: 'Projects', group: true },
@@ -380,7 +380,7 @@ function TechStackPanel() {
   return (
     <section className="techStackPanel" aria-label="보유 기술 및 도구">
       <div className="techStackGlass">
-        <img className="techStackMap" src="/showcase/히어로이미지.png" alt="기술 흐름을 연결한 포트폴리오 히어로 이미지" />
+        <img className="techStackMap" src="/showcase/hero-image2.png" alt="기술 흐름을 연결한 포트폴리오 히어로 이미지" />
       </div>
     </section>
   );
@@ -715,10 +715,6 @@ function KakaoContactOverlay({ contact, onClose }) {
       <button className="kakaoContactBackdrop" type="button" onClick={onClose} aria-label="닫기" />
       <div className="kakaoContactCard">
         <button className="modalClose kakaoContactClose" type="button" onClick={onClose}>닫기</button>
-        <div className="kakaoContactMark" aria-hidden="true">
-          <img src={contact.icon} alt="" />
-        </div>
-        <p className="eyebrow">KakaoTalk</p>
         <h3 id="kakao-contact-title">카카오톡으로 연락하기</h3>
         <img className="kakaoContactPreview" src="/contact/kakao-card.jpg" alt="카카오톡 연락처 화면" />
         <div className="kakaoContactIdCard" aria-label={`카카오톡 ID ${contact.value}`}>
@@ -861,12 +857,20 @@ function ProjectTeaserVisual({ image, kind, label, teaser, type }) {
   );
 }
 
+const showcaseAnchorIds = ['career-crm', 'career-japan', 'career-education'];
+
 function ShowcaseImageGrid({ onSelectShowcase }) {
   return (
     <section className="showcaseImagePanel" aria-label="Experience / Background">
       <div className="showcaseImageGrid">
         {showcaseItems.map((item, index) => (
-          <button className="showcaseImageCard" key={item.title} onClick={() => onSelectShowcase(index)} type="button">
+          <button
+            className="showcaseImageCard"
+            id={showcaseAnchorIds[index]}
+            key={item.title}
+            onClick={() => onSelectShowcase(index)}
+            type="button"
+          >
             <img alt={`${item.title} 쇼케이스`} src={item.image} />
             <span className="showcaseImageOverlay">
               <strong>{item.title}</strong>
