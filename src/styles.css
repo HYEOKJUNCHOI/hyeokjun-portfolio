@@ -519,14 +519,14 @@ img, svg, iframe { max-width: 100%; }
   font-weight: 950;
 }
 .heroTitleOpening {
-  background: linear-gradient(90deg, var(--pink-400), var(--pink-500));
+  background: linear-gradient(90deg, #ffe38a 0%, var(--pink-400) 54%, #ffd1df 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  color: var(--pink-400);
+  color: #ffe38a;
   -webkit-text-fill-color: transparent;
   font-size: calc(1em + 8px);
   font-weight: 950;
-  text-shadow: 0 0 18px rgba(255, 111, 157, 0.42), 0 0 34px rgba(255, 111, 157, 0.22);
+  text-shadow: 0 0 18px rgba(255, 227, 138, 0.32), 0 0 34px rgba(255, 111, 157, 0.38);
 }
 .heroTitleOpening span, .heroTitleConclusion span {
   background: none;
