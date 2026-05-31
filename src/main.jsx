@@ -1196,6 +1196,9 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
   const touchStartRef = useRef(null);
   const shouldFillFrame = screenshot.index > 0 && screenshot.index < 5;
   const isLegacyFrame = screenshot.index === 0 || screenshot.index === project.screenshots.length - 1;
+  const isMobileScreenshotViewport = () => (
+    window.matchMedia?.('(max-width: 760px)').matches ?? window.innerWidth <= 760
+  );
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -1220,7 +1223,7 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
   }, [onClose, onNext, onPrevious]);
 
   const handleMediaPointerDown = (event) => {
-    if (event.pointerType !== 'touch') return;
+    if (event.pointerType !== 'touch' || !isMobileScreenshotViewport()) return;
     touchStartRef.current = {
       x: event.clientX,
       y: event.clientY,
@@ -1229,6 +1232,11 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
   };
 
   const handleMediaPointerUp = (event) => {
+    if (!isMobileScreenshotViewport()) {
+      touchStartRef.current = null;
+      return;
+    }
+
     const touchStart = touchStartRef.current;
     if (!touchStart || touchStart.id !== event.pointerId) return;
 
