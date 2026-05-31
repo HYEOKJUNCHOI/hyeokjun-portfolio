@@ -65,8 +65,10 @@
   --portfolio-side-rail: clamp(208px, 13vw, 240px);
   --portfolio-side-offset: clamp(18px, 2vw, 38px);
   --portfolio-outer-gap: clamp(60px, 4.8vw, 76px);
-  --portfolio-page-left: clamp(128px, 10vw, 160px);
   --portfolio-canvas: 1180px;
+  --portfolio-layout-width: calc(var(--portfolio-canvas) + var(--portfolio-side-rail) + var(--portfolio-side-offset));
+  --portfolio-page-left: max(clamp(128px, 10vw, 160px), calc((100vw - var(--portfolio-layout-width)) / 2));
+  --portfolio-side-right: max(var(--portfolio-side-offset), calc((100vw - var(--portfolio-layout-width)) / 2));
   color: var(--text-strong);
   background: var(--charcoal-950);
   font-family: var(--font-body);
@@ -157,7 +159,7 @@ img, svg, iframe { max-width: 100%; }
 .sideIndex {
   position: fixed;
   top: 50%;
-  right: var(--portfolio-side-offset);
+  right: var(--portfolio-side-right);
   z-index: 18;
   display: grid;
   gap: 5px;
