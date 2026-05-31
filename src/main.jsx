@@ -1067,16 +1067,28 @@ function ProjectDetail({ detailHeadingId, detailPanelId, onRequestClose, project
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onRequestClose, selectedScreenshot]);
 
+  useEffect(() => {
+    if (!screenshotEdgeNotice) return undefined;
+
+    const noticeTimer = window.setTimeout(() => {
+      setScreenshotEdgeNotice(null);
+    }, 1400);
+
+    return () => window.clearTimeout(noticeTimer);
+  }, [screenshotEdgeNotice]);
+
   const moveScreenshot = (direction) => {
     if (!selectedScreenshot) return;
 
     const total = project.screenshots.length;
     const nextIndex = selectedScreenshot.index + direction;
 
-    if (nextIndex < 0 || nextIndex >= total) {
+    if (nextIndex < 0) return;
+
+    if (nextIndex >= total) {
       setScreenshotEdgeNotice({
         key: Date.now(),
-        message: nextIndex >= total ? '마지막 페이지입니다.' : '첫 번째 페이지입니다.',
+        message: '마지막 페이지입니다.',
       });
       return;
     }
@@ -1253,17 +1265,17 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
                   <span>{String(screenshot.index + 1).padStart(2, '0')}</span>
                 )}
               </div>
+              {edgeNotice ? (
+                <p className="modalEdgeNotice" key={edgeNotice.key} role="status" aria-live="polite">
+                  {edgeNotice.message}
+                </p>
+              ) : null}
             </div>
             <div className="modalCaption">
               <p className="eyebrow">{project.label}</p>
               <h4>{screenshot.title}</h4>
               <p>{screenshot.caption}</p>
               <p className="modalProjectTeaser">{project.teaser}</p>
-              {edgeNotice ? (
-                <p className="modalEdgeNotice" key={edgeNotice.key} role="status" aria-live="polite">
-                  {edgeNotice.message}
-                </p>
-              ) : null}
             </div>
           </div>
         </div>
