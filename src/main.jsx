@@ -118,9 +118,9 @@ function App() {
     { id: 'home', label: 'Home', group: true },
     { id: 'about', label: 'About', group: true },
     { id: 'experience', label: 'Experience', group: true },
-    { id: 'career-crm', label: '업무경험' },
-    { id: 'career-japan', label: '일본 연수' },
-    { id: 'career-education', label: '교육 이수' },
+    { id: 'career-crm', label: '업무 경험', showcaseIndex: 0 },
+    { id: 'career-japan', label: '일본 연수', showcaseIndex: 1 },
+    { id: 'career-education', label: '교육 이수', showcaseIndex: 2 },
     { id: 'projects', label: 'Projects', group: true },
     ...projectDetails.map((project) => ({
       id: 'projects',
@@ -183,6 +183,11 @@ function App() {
     selectProject(projectId, event.currentTarget);
   };
 
+  const selectSideIndexShowcase = (event, index) => {
+    event.preventDefault();
+    selectShowcase(index);
+  };
+
   const selectShowcase = (index) => {
     setViewedShowcaseIndexes((current) => {
       if (current.has(index)) return current;
@@ -217,7 +222,13 @@ function App() {
             ].filter(Boolean).join(' ')}
             href={`#${item.id}`}
             key={item.projectId || item.id}
-            onClick={item.projectId ? (event) => selectSideIndexProject(event, item.projectId) : undefined}
+            onClick={
+              item.projectId
+                ? (event) => selectSideIndexProject(event, item.projectId)
+                : item.showcaseIndex !== undefined
+                  ? (event) => selectSideIndexShowcase(event, item.showcaseIndex)
+                  : undefined
+            }
           >
             <strong>{item.label}</strong>
           </a>
