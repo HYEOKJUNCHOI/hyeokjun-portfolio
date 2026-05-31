@@ -684,14 +684,12 @@ img, svg, iframe { max-width: 100%; }
 .heroLeadFocus {
   display: inline-block;
   max-width: 100%;
-  background: linear-gradient(90deg, var(--teal-300), #d7b8ff 84%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: var(--teal-300);
-  -webkit-text-fill-color: transparent;
+  background: none;
+  color: #5ab7ff;
+  -webkit-text-fill-color: #5ab7ff;
   font-size: clamp(34px, calc(2.35vw + 8px), 42px);
   line-height: 1.04;
-  text-shadow: 0 0 18px rgba(120, 212, 223, 0.32), 0 0 34px rgba(215, 184, 255, 0.2);
+  text-shadow: 0 0 18px rgba(90, 183, 255, 0.34);
   overflow-wrap: normal;
   word-break: keep-all;
 }

@@ -250,7 +250,7 @@ function App() {
               <span className="heroTitleLine heroTitlePlain">
                 <span className="heroTitleOpening">
                   <span className="heroTitlePink">반복되는</span>
-                  <span className="heroTitleBlue">불편함</span>
+                  <span className="heroTitlePink">불편함</span>
                 </span>을
               </span>
               <span className="heroTitleLine heroTitlePlain">그냥 지나치지</span>
