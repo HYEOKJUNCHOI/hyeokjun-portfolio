@@ -398,7 +398,7 @@ function TechStackPanel() {
   return (
     <section className="techStackPanel" aria-label="보유 기술 및 도구">
       <div className="techStackGlass">
-        <img className="techStackMap" src="/showcase/hero-image2.png" alt="기술 흐름을 연결한 포트폴리오 히어로 이미지" />
+        <img className="techStackMap" src="/showcase/hero-image2.jpg" alt="기술 흐름을 연결한 포트폴리오 히어로 이미지" />
       </div>
     </section>
   );
