@@ -6856,17 +6856,45 @@ ${value}`
         setInterval(function () { if (!dragging && !paused) apply((t + 0.08) % DUR); }, 60);
 
         // 스페이스바 = 재생/멈춤 (입력창 포커스 땐 무시). capture로 메인 핸들러보다 먼저.
-        // window capture = document capture(메인 핸들러)보다 먼저 → stopImmediatePropagation 으로 메인 Space 선점.
+        // window capture = document capture(메인 핸들러)보다 먼저.
         window.addEventListener('keydown', function (e) {
-          if (e.code !== 'Space' && e.key !== ' ') return;
           var el = e.target;
-          if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)) return;
-          e.preventDefault();
-          e.stopPropagation();
-          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-          paused = !paused;
-          if (typeof toast === 'function') toast(paused ? '⏸ 일시정지' : '▶ 재생', 'toastReview');
+          var inField = el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
+          if (inField) return;
+          // Space = 재생/멈춤 토글 (메인 Space 선점).
+          if (e.code === 'Space' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+            paused = !paused;
+            if (typeof toast === 'function') toast(paused ? '⏸ 일시정지' : '▶ 재생', 'toastReview');
+            return;
+          }
+          // Tab = 현재 위치에 큐 기록 + 일시정지. 카드 생성은 메인 newMark 가, 시간은 buildItem 오버라이드(t)가 처리 → 막지 않고 흘려보냄.
+          if (e.key === 'Tab') {
+            paused = true;
+          }
         }, true);
+
+        // Tab/큐 기록 시 시간 소스 = video.currentTime(0) 대신 가짜 플레이헤드 t.
+        try {
+          window.buildItem = function (type) {
+            type = type || '초기록';
+            var sec = +(t || 0).toFixed(3);
+            var cue = (typeof cueAt === 'function') ? cueAt(sec) : null;
+            var text = cue ? cue.text : '';
+            var p = splitJP(text);
+            return enrich({
+              index: items.length + 1, seconds: sec, time: fmt(sec), srt_time: srtTime(sec),
+              clicked_seconds: sec, clicked_time: fmt(sec), type: type, expression: text, request: '',
+              review_done: false, cue_missing: !cue, cue_index: cue ? cue.cue_index : null,
+              cue_start: cue ? cue.start_time : '', cue_end: cue ? cue.end_time : '',
+              cue_start_seconds: cue ? cue.start : null, cue_end_seconds: cue ? cue.end : null,
+              jp_text: p.jp, ko_text: p.ko, expression_pipe: p.pipe,
+              created_at: new Date().toISOString(),
+            });
+          };
+        } catch (e) { /* no-op */ }
 
         // 파형 큐 마커 — 큐 좌표마다 점. 검수완료=초록, 미완료=회색.
         window.drawMarkers = function () {
