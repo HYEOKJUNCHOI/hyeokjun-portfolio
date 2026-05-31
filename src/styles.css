@@ -2220,18 +2220,15 @@ img, svg, iframe { max-width: 100%; }
   .showcaseDetailModal { padding: 10px; }
   .showcaseDetailModalStack { width: min(100%, calc(100vw - 20px)); }
   .showcaseDetailModalShell {
-    max-height: calc(100svh - 20px);
     max-height: calc(100dvh - 20px);
   }
   .showcaseDetailDialog {
     grid-template-columns: 1fr;
     gap: 10px;
-    max-height: calc(100svh - 20px);
     max-height: calc(100dvh - 20px);
     padding: 10px;
   }
   .showcaseDetailImage img {
-    height: min(30svh, 210px);
     height: min(30dvh, 210px);
     min-height: 150px;
   }
@@ -2266,25 +2263,21 @@ img, svg, iframe { max-width: 100%; }
   .projectDetailModal { padding: 10px; }
   .projectDetailModalStack {
     width: min(100%, calc(100vw - 20px));
-    max-height: calc(100svh - 20px);
     max-height: calc(100dvh - 20px);
   }
   .projectDetailModalShell {
-    max-height: calc(100svh - 20px);
     max-height: calc(100dvh - 20px);
   }
   .projectDetailModal .detailHead { padding-right: 76px; }
   .screenshotModal { padding: 10px; }
   .screenshotModalStack {
     width: min(100%, calc(100vw - 20px));
-    max-height: calc(100svh - 20px);
     max-height: calc(100dvh - 20px);
     gap: 8px;
   }
   .screenshotDialog {
     grid-template-rows: 34px minmax(0, 1fr) auto;
     gap: 10px;
-    max-height: calc(100svh - 20px);
     max-height: calc(100dvh - 20px);
     padding: 0 10px 10px;
     overflow: hidden;
@@ -2293,17 +2286,14 @@ img, svg, iframe { max-width: 100%; }
   .modalWindowBar strong { max-width: 46vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .modalPreview {
     min-height: 0;
-    height: min(60svh, 420px);
     height: min(60dvh, 420px);
   }
   .screenshotDialog.fillModal .modalPreview {
     min-height: 0;
-    height: min(52svh, 360px);
     height: min(52dvh, 360px);
   }
   .screenshotDialog.legacyModal { max-width: none; }
   .screenshotDialog.legacyModal .modalPreview {
-    height: min(62svh, 430px);
     height: min(62dvh, 430px);
   }
   .screenshotDialog.legacyModal .modalPreview.hasImage img { object-fit: cover; }
@@ -2315,7 +2305,6 @@ img, svg, iframe { max-width: 100%; }
     background: rgba(13, 16, 16, 0.94);
   }
   .showcaseDetailModal .modalNav {
-    top: calc(10px + min(15svh, 105px));
     top: calc(10px + min(15dvh, 105px));
   }
   .modalNavPrevious { left: 8px; }
@@ -2348,11 +2337,9 @@ img, svg, iframe { max-width: 100%; }
   .heroNav a { font-size: 11px; }
   .screenshotModalStack { width: calc(100vw - 20px); }
   .modalPreview {
-    height: min(56svh, 380px);
     height: min(56dvh, 380px);
   }
   .screenshotDialog.legacyModal .modalPreview {
-    height: min(58svh, 392px);
     height: min(58dvh, 392px);
   }
   .mobileScreen { min-height: 402px; padding: var(--space-3); }
