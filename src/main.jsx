@@ -411,6 +411,8 @@ function LibrarySection() {
   const onPointerDown = (event) => {
     const track = trackRef.current;
     if (!track || event.pointerType === 'touch') return; // 터치는 네이티브 스크롤에 맡김
+    // 버튼/링크 위에서 시작한 포인터는 드래그(포인터 캡처) 대상에서 제외 → 클릭이 정상 작동
+    if (event.target.closest('button, a, input, [role="button"]')) return;
     dragRef.current = { active: true, startX: event.clientX, startScroll: track.scrollLeft };
     track.setPointerCapture?.(event.pointerId);
     track.classList.add('dragging');
