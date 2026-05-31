@@ -2070,6 +2070,7 @@ img, svg, iframe { max-width: 100%; }
     --portfolio-side-offset: clamp(10px, 1.2vw, 18px);
     --portfolio-outer-gap: clamp(60px, 4.8vw, 76px);
     --portfolio-page-left: clamp(124px, 9vw, 140px);
+    --portfolio-side-right: var(--portfolio-side-offset);
     --portfolio-canvas: 1120px;
   }
   .sideIndex {
