@@ -1661,7 +1661,11 @@ img, svg, iframe { max-width: 100%; }
 .detailHead p:not(.eyebrow) { max-width: 860px; margin: 0; }
 .detailIntro { color: var(--text-body); font-size: clamp(18px, 2vw, 24px); font-weight: 760; line-height: 1.82; white-space: pre-line; }
 .detailBody, .detailGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
-.projectBrief { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.projectBrief {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  scroll-margin-top: clamp(88px, 12vh, 132px);
+}
 .detailBody, .projectBrief, .screenshotPanel, .playgroundPanel, .detailGrid, .caredocFramePanel { margin-top: var(--space-5); }
 .briefCard h4, .detailBody h4, .screenshotHead h4, .liveFrameHead h4, .playgroundHead h4, .mobileShowcaseHeader h4 { margin: 0 0 var(--space-3); font-size: 20px; }
 .briefCard h4 { display: flex; justify-content: center; width: 100%; text-align: center; }

@@ -173,8 +173,11 @@ function App() {
     setActiveId(projectId);
     setIsDetailOpen(true);
     window.requestAnimationFrame(() => {
-      detailRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
-      detailRef.current?.focus();
+      window.requestAnimationFrame(() => {
+        const briefTarget = document.getElementById(`project-brief-${projectId}`);
+        (briefTarget || detailRef.current)?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        detailRef.current?.focus({ preventScroll: true });
+      });
     });
   };
 
@@ -1169,14 +1172,18 @@ function ScreenshotGallery({ project, setSelectedScreenshot }) {
 }
 
 function ProjectBrief({ project }) {
-  const briefLabels = project.briefLabels || ['문제점', '구현한 것', '고민했던 부분'];
+  const briefLabels = project.briefLabels || ['기존의 문제점', '구현한 것', '고민했던 부분'];
   const briefItems = [
     [briefLabels[0], project.problem],
     [briefLabels[1], project.solution],
     [briefLabels[2], project.learned],
   ];
   return (
-    <section className={`projectBrief projectBrief-${project.id}`} aria-label={`${project.label} 데모와 문제 해결 요약`}>
+    <section
+      className={`projectBrief projectBrief-${project.id}`}
+      id={`project-brief-${project.id}`}
+      aria-label={`${project.label} 데모와 문제 해결 요약`}
+    >
       {briefItems.map(([title, body]) => (
         <article className="briefCard" key={title}>
           <h4><span className="briefTitleCapsule">{title}</span></h4>
