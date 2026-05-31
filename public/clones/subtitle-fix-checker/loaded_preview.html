@@ -6790,5 +6790,55 @@ ${value}`
         } catch (e) { /* no-op */ }
       })();
     </script>
+    <!-- 데모 가짜 플레이어: 영상이 없으니 파형/타임바/이미지 전환을 JS로 흉내 -->
+    <script>
+      (function () {
+        var DUR = 22, t = 0, dragging = false;
+        var shell = document.getElementById('videoShell');
+        var ph = document.getElementById('playhead');
+        var wrap = document.getElementById('waveWrap');
+        if (!shell || !wrap) return;
+        var FRAMES = ['f1', 'f2', 'f3'].map(function (n) {
+          return '/clones/subtitle-fix-checker/demo/' + n + '.jpg';
+        });
+        function frameFor(tt) { return tt < DUR / 3 ? FRAMES[0] : tt < (DUR * 2) / 3 ? FRAMES[1] : FRAMES[2]; }
+
+        // 가짜 파형 — 자연스러운 진폭 변화
+        try {
+          var N = 240, peaks = [];
+          for (var i = 0; i < N; i++) {
+            var env = 0.2 + 0.6 * Math.abs(Math.sin(i * 0.045) + 0.4 * Math.sin(i * 0.21));
+            peaks.push(Math.min(1, env * (0.55 + 0.7 * Math.random())));
+          }
+          waveformPeaks = peaks;
+          if (typeof drawWaveform === 'function') drawWaveform();
+        } catch (e) { /* no-op */ }
+
+        // CSS 자동 순환·고정 배경 끄고 JS가 직접 제어 (!important 덮기)
+        shell.style.setProperty('animation', 'none', 'important');
+        function apply(tt) {
+          t = Math.max(0, Math.min(DUR, tt));
+          shell.style.setProperty('background-image', "url('" + frameFor(t) + "')", 'important');
+          var w = wrap.clientWidth || 0;
+          var x = Math.max(14, Math.min(Math.max(14, w - 14), (t / DUR) * w));
+          if (ph) ph.style.left = x + 'px';
+        }
+        apply(0);
+
+        // 자동 재생 (드래그 중엔 멈춤)
+        setInterval(function () { if (!dragging) apply((t + 0.08) % DUR); }, 60);
+
+        // 타임바 드래그 → 시킹(이미지·플레이헤드 즉시 반영)
+        function seekFrom(e) {
+          var r = wrap.getBoundingClientRect();
+          var p = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+          apply(p * DUR);
+        }
+        wrap.addEventListener('pointerdown', function (e) { dragging = true; try { wrap.setPointerCapture(e.pointerId); } catch (_) {} seekFrom(e); });
+        wrap.addEventListener('pointermove', function (e) { if (dragging) seekFrom(e); });
+        wrap.addEventListener('pointerup', function (e) { dragging = false; try { wrap.releasePointerCapture(e.pointerId); } catch (_) {} });
+        wrap.addEventListener('pointercancel', function () { dragging = false; });
+      })();
+    </script>
   </body>
 </html>
