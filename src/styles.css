@@ -1287,7 +1287,7 @@ img, svg, iframe { max-width: 100%; }
 .projectTeaserVisual {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.02fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: 1px;
   width: 100%;
   min-height: clamp(210px, 18vw, 286px);
@@ -1309,19 +1309,20 @@ img, svg, iframe { max-width: 100%; }
 }
 .projectVisualPane {
   position: relative;
-  display: block;
+  display: grid;
+  place-items: center;
   min-width: 0;
   overflow: hidden;
   background:
     radial-gradient(circle at 22% 18%, rgba(255, 111, 157, 0.14), transparent 34%),
-    rgba(7, 8, 8, 0.32);
+    rgba(7, 8, 8, 0.56);
 }
 .projectVisualPane > img {
   display: block;
   width: 100%;
   height: 100%;
   min-height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 .projectCardChrome {
@@ -2627,7 +2628,7 @@ img, svg, iframe { max-width: 100%; }
 }
 .contactIcon img {
   display: block;
-  width: clamp(60px, 7vw, 76px);
+  width: clamp(76px, 8vw, 96px);
   height: auto;
 }
 .contactIcon-brunch img { transform: rotate(2.2deg); transform-origin: center; }
@@ -2944,7 +2945,7 @@ a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300)
     gap: 6px;
   }
   .contactIcon img {
-    width: clamp(44px, 12vw, 54px);
+    width: clamp(58px, 14.5vw, 70px);
   }
   .contactToast {
     max-width: min(300px, calc(100vw - (var(--space-4) * 2)));
@@ -3055,6 +3056,14 @@ a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300)
   border-color: var(--teal-400, #04A4BA);
   color: var(--teal-300, #78d4df);
   background: rgba(4, 164, 186, 0.06);
+}
+
+@media (max-width: 760px) {
+  .libraryAddBtn {
+    width: clamp(58px, 17vw, 84px);
+    height: clamp(88px, 25.5vw, 126px);
+    font-size: clamp(28px, 7vw, 36px);
+  }
 }
 
 /* 책 등록 모달 */
