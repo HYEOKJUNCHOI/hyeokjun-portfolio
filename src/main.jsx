@@ -1238,6 +1238,12 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
   return (
     <div className="screenshotModal" role="dialog" aria-modal="true" aria-label={`${screenshot.title} 크게 보기`}>
       <button className="screenshotBackdrop" onClick={onClose} type="button" aria-label="닫기" />
+      <div className="screenshotRotateNotice">
+        <button className="modalClose screenshotRotateClose" onClick={onClose} type="button">닫기</button>
+        <p className="eyebrow">{project.label}</p>
+        <h4>가로모드로 사진을 크게 볼 수 있습니다.</h4>
+        <p>휴대폰을 가로로 돌리면 설명 없이 사진만 화면에 맞춰 보여줍니다.</p>
+      </div>
       <div className="screenshotModalStack">
         <div className="screenshotModalShell">
           <button className="modalNav modalNavPrevious" onClick={onPrevious} type="button" aria-label="이전 사진 보기">

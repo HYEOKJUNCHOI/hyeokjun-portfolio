@@ -2024,6 +2024,9 @@ img, svg, iframe { max-width: 100%; }
 
 .screenshotModal { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; padding: var(--space-6); }
 .screenshotBackdrop { position: absolute; inset: 0; border: 0; background: rgba(0, 0, 0, 0.78); cursor: pointer; }
+.screenshotRotateNotice { position: relative; z-index: 1; display: none; width: min(360px, calc(100vw - 40px)); padding: var(--space-6) var(--space-5); border: 1px solid rgba(40, 219, 195, 0.38); border-radius: var(--radius-md); background: rgba(13, 16, 16, 0.96); box-shadow: 0 26px 80px rgba(0, 0, 0, 0.52); text-align: center; }
+.screenshotRotateNotice h4 { margin: var(--space-2) 0 var(--space-3); font-size: clamp(22px, 6.4vw, 30px); line-height: 1.22; letter-spacing: 0; }
+.screenshotRotateNotice p:not(.eyebrow) { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.58; }
 .screenshotModalStack { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-3); width: min(1280px, calc(100% - 120px)); }
 .screenshotModalShell, .screenshotDialog { position: relative; width: 100%; }
 .screenshotDialog { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 300px); grid-template-rows: 40px minmax(0, 1fr); gap: var(--space-5); max-height: min(820px, calc(100vh - 88px)); padding: 0 var(--space-5) var(--space-5); overflow: auto; border: 1px solid rgba(40, 219, 195, 0.32); border-radius: var(--radius-lg); background: linear-gradient(180deg, rgba(244, 241, 232, 0.07), transparent 72px), var(--charcoal-900); box-shadow: 0 30px 120px rgba(0, 0, 0, 0.58); }
@@ -2473,6 +2476,87 @@ img, svg, iframe { max-width: 100%; }
   }
   .modalHintCapsule { display: none; }
   .browserViewport { height: 68vh; min-height: 480px; }
+}
+
+@media (max-width: 760px) and (orientation: portrait) {
+  .screenshotModal {
+    padding: 16px;
+  }
+  .screenshotModalStack {
+    display: none;
+  }
+  .screenshotRotateNotice {
+    display: block;
+  }
+  .modalClose.screenshotRotateClose {
+    top: 12px;
+    right: 12px;
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .screenshotModal {
+    padding: 8px;
+  }
+  .screenshotModalStack {
+    width: calc(100vw - 16px);
+    max-height: calc(100dvh - 16px);
+  }
+  .screenshotDialog,
+  .screenshotDialog.fillModal {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0;
+    max-width: none;
+    max-height: calc(100dvh - 16px);
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+  }
+  .screenshotDialog .modalWindowBar,
+  .screenshotDialog .modalCaption,
+  .screenshotModal .modalHintCapsule {
+    display: none;
+  }
+  .screenshotDialog .modalMedia {
+    min-height: 0;
+  }
+  .screenshotDialog .modalPreview,
+  .screenshotDialog.fillModal .modalPreview,
+  .screenshotDialog.legacyModal .modalPreview {
+    width: 100%;
+    height: calc(100dvh - 16px);
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    background: #050606;
+  }
+  .screenshotDialog .modalPreview.hasImage img,
+  .screenshotDialog.legacyModal .modalPreview.hasImage img,
+  .screenshotDialog.legacyModal .modalPreview.hasImage.cropLegacyFrame img {
+    object-fit: contain;
+    object-position: center;
+    background: #050606;
+  }
+  .screenshotDialog .modalClose {
+    top: 10px;
+    right: 10px;
+    min-width: 46px;
+    min-height: 40px;
+    background: rgba(5, 6, 6, 0.78);
+  }
+  .screenshotModal .modalNav {
+    width: 40px;
+    height: 52px;
+    background: rgba(5, 6, 6, 0.72);
+  }
+  .screenshotModal .modalNavPrevious {
+    left: 10px;
+  }
+  .screenshotModal .modalNavNext {
+    right: 10px;
+  }
 }
 
 @media (max-width: 420px) {
