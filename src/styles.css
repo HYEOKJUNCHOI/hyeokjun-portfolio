@@ -2579,6 +2579,10 @@ img, svg, iframe { max-width: 100%; }
 }
 .contactIcon {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0;
   border: 0;
   background: none;
@@ -2890,8 +2894,9 @@ a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300)
   }
   .libraryNav {
     top: clamp(52px, 15vw, 72px);
-    width: 34px;
-    height: 34px;
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
   }
   .contactList {
     grid-template-columns: repeat(4, auto);
@@ -2902,7 +2907,7 @@ a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300)
     gap: 6px;
   }
   .contactIcon img {
-    width: clamp(38px, 12vw, 54px);
+    width: clamp(44px, 12vw, 54px);
   }
   .contactToast {
     max-width: min(300px, calc(100vw - (var(--space-4) * 2)));
