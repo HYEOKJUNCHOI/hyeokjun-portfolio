@@ -1193,20 +1193,20 @@ img, svg, iframe { max-width: 100%; }
 }
 .showcaseImageOverlay em {
   position: absolute;
-  top: clamp(10px, 1vw, 16px);
-  left: clamp(10px, 1vw, 16px);
+  top: clamp(8px, 0.78vw, 12px);
+  left: clamp(8px, 0.78vw, 12px);
   order: 1;
   align-self: flex-start;
-  max-width: calc(100% - clamp(20px, 2vw, 32px));
-  padding: var(--space-1) var(--space-2);
+  max-width: calc(100% - clamp(16px, 1.56vw, 24px));
+  padding: 3px 8px;
   border: 1px solid var(--showcase-date-border);
   border-radius: var(--radius-pill);
   background: var(--showcase-date-surface);
   box-shadow: var(--showcase-date-shadow);
   color: var(--pink-400);
-  font-size: clamp(12px, 0.9vw, 14px);
+  font-size: clamp(10px, 0.72vw, 12px);
   font-style: normal;
-  font-weight: 900;
+  font-weight: 850;
   letter-spacing: 0;
   line-height: 1.2;
   text-shadow: var(--showcase-date-text-shadow);
