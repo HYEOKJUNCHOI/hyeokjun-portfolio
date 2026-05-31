@@ -34,10 +34,14 @@
       href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
+    <!-- 데모: 저장된 게임 제거 → '이어하기/새로하기' 팝업 없이 항상 처음부터 -->
+    <script>
+      try { localStorage.removeItem('reallife-save'); } catch (e) {}
+    </script>
     <script type="module" crossorigin src="/clones/reallife/assets/index-DdoPAdcs.js"></script>
     <link rel="stylesheet" crossorigin href="/clones/reallife/assets/index-BbydmPZJ.css">
   </head>
   <body class="text-ink" style="background:#050505">
-    <div id="root"></div>
+    <div id="root"></div>
   </body>
 </html>
