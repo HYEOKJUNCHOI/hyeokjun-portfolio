@@ -30,7 +30,7 @@ const showcaseItems = [
   {
     title: 'AI·풀스택 과정 & 프로젝트 경험',
     period: '2025.09 ~ 2026.02',
-    image: '/showcase/project.png',
+    image: '/showcase/project2.png',
     hover: '기능보다 사용자 흐름이\n더 중요하다는 점을 배웠습니다.',
     detailTitle: 'AI·풀스택 과정 & 프로젝트 경험',
     detailLabel: '교육 이수',
@@ -40,16 +40,71 @@ const showcaseItems = [
 
 
 // 연락처 — 푸터(ContactSection)와 쇼케이스 Contact 모달이 공유.
-// GitHub·Brunch = 바로 링크 / Email·Kakao = 값 표시(이메일은 mailto).
+// GitHub·Brunch = 바로 링크 / Email = 클립보드 복사 / Kakao = 팝업 카드.
+const EMAIL_ADDRESS = 'gurwns369@naver.com';
+const KAKAO_ID = 'gurwns369';
+
 const contactLinks = [
   { id: 'github', label: 'GitHub', icon: '/contact/github.png', href: 'https://github.com/HYEOKJUNCHOI?tab=repositories', value: 'github.com/HYEOKJUNCHOI' },
   { id: 'brunch', label: 'Brunch', icon: '/contact/brunch.png', href: 'https://brunch.co.kr/@solbin369', value: 'brunch.co.kr/@solbin369' },
-  { id: 'email', label: 'Email', icon: '/contact/email.png', value: 'gurwns369@naver.com', valueHref: 'mailto:gurwns369@naver.com' },
-  { id: 'kakao', label: 'KakaoTalk', icon: '/contact/kakao.png', value: 'gurwns369' },
+  { id: 'email', label: 'Email', icon: '/contact/email.png', value: EMAIL_ADDRESS },
+  { id: 'kakao', label: 'KakaoTalk', icon: '/contact/kakao.png', value: KAKAO_ID },
 ];
+
+let modalLockCount = 0;
+let modalRestoreState = null;
+
+function useModalScrollLock() {
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined;
+
+    const { body, documentElement } = document;
+    const scrollY = window.scrollY || documentElement.scrollTop || 0;
+
+    if (modalLockCount === 0) {
+      modalRestoreState = {
+        bodyOverflow: body.style.overflow,
+        bodyPosition: body.style.position,
+        bodyTop: body.style.top,
+        bodyWidth: body.style.width,
+        bodyTouchAction: body.style.touchAction,
+        htmlOverflow: documentElement.style.overflow,
+        scrollY,
+      };
+
+      body.style.overflow = 'hidden';
+      body.style.position = 'fixed';
+      body.style.top = `-${scrollY}px`;
+      body.style.width = '100%';
+      body.style.touchAction = 'none';
+      body.classList.add('modalLocked');
+      documentElement.style.overflow = 'hidden';
+      documentElement.classList.add('modalLocked');
+    }
+
+    modalLockCount += 1;
+
+    return () => {
+      modalLockCount = Math.max(0, modalLockCount - 1);
+      if (modalLockCount > 0 || !modalRestoreState) return;
+
+      body.style.overflow = modalRestoreState.bodyOverflow;
+      body.style.position = modalRestoreState.bodyPosition;
+      body.style.top = modalRestoreState.bodyTop;
+      body.style.width = modalRestoreState.bodyWidth;
+      body.style.touchAction = modalRestoreState.bodyTouchAction;
+      body.classList.remove('modalLocked');
+      documentElement.style.overflow = modalRestoreState.htmlOverflow;
+      documentElement.classList.remove('modalLocked');
+      window.scrollTo?.(0, modalRestoreState.scrollY);
+      modalRestoreState = null;
+    };
+  }, []);
+}
 
 function App() {
   const [activeId, setActiveId] = useState(null);
+  const [visitedProjectIds, setVisitedProjectIds] = useState(() => new Set());
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [activeShowcaseIndex, setActiveShowcaseIndex] = useState(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -68,7 +123,7 @@ function App() {
     { id: 'projects', label: 'Projects', group: true },
     ...projectDetails.map((project) => ({
       id: 'projects',
-      label: project.id === 'fixchecker' ? 'SFC' : project.label,
+      label: project.label,
       projectId: project.id,
     })),
     { id: 'library', label: 'Library', group: true },
@@ -110,6 +165,10 @@ function App() {
 
   const selectProject = (projectId, trigger) => {
     lastTriggerRef.current = trigger;
+    setVisitedProjectIds((current) => {
+      if (current.has(projectId)) return current;
+      return new Set(current).add(projectId);
+    });
     setActiveId(projectId);
     setIsDetailOpen(true);
     window.requestAnimationFrame(() => {
@@ -168,11 +227,8 @@ function App() {
 
           <div className="heroCopy">
             <h1 className="heroTitle heroTitleStacked">
-              <span className="heroTitleLine">
-                <span className="heroTitlePlain">저는 </span>
-                <span className="heroTitleOpening">반복되는 불편함</span>
-                <span className="heroTitlePlain">을</span>
-              </span>
+              <span className="heroTitleLine heroTitlePlain">저는,</span>
+              <span className="heroTitleLine heroTitleOpening">반복되는 불편함을</span>
               <span className="heroTitleLine heroTitlePlain">그냥 지나치지 않습니다.</span>
             </h1>
             <div className="heroLead heroLeadStacked">
@@ -244,6 +300,7 @@ function App() {
               isDetailOpen={isDetailOpen}
               onSelectProject={selectProject}
               variant="repeat"
+              visitedProjectIds={visitedProjectIds}
             />
           </>
         ) : null}
@@ -266,7 +323,7 @@ function App() {
   );
 }
 
-function ProjectNavigator({ activeId, detailPanelId, isDetailOpen, onSelectProject, variant = 'primary' }) {
+function ProjectNavigator({ activeId, detailPanelId, isDetailOpen, onSelectProject, variant = 'primary', visitedProjectIds = new Set() }) {
   const isRepeat = variant === 'repeat';
 
   return (
@@ -276,14 +333,21 @@ function ProjectNavigator({ activeId, detailPanelId, isDetailOpen, onSelectProje
     >
       {projectDetails.map((project) => {
         const isActive = activeId === project.id;
+        const isVisited = isRepeat && visitedProjectIds.has(project.id);
         const isDisabled = isRepeat && isActive;
+        const statusLabel = isRepeat && isActive ? '열람중' : isVisited ? '확인완료' : '';
 
         return (
           <button
-            className={isActive ? 'projectCard active' : 'projectCard'}
+            className={[
+              'projectCard',
+              isActive ? 'active' : '',
+              isVisited ? 'visited' : '',
+            ].filter(Boolean).join(' ')}
             aria-controls={detailPanelId}
             aria-current={isDisabled ? 'true' : undefined}
             aria-expanded={isDetailOpen && isActive}
+            aria-label={statusLabel ? `${project.label} ${statusLabel}` : project.label}
             data-project-id={project.id}
             disabled={isDisabled}
             key={project.id}
@@ -297,6 +361,14 @@ function ProjectNavigator({ activeId, detailPanelId, isDetailOpen, onSelectProje
               teaser={project.teaser}
               type={project.type}
             />
+            {statusLabel ? (
+              <>
+                <span className="projectVisitBadge" aria-hidden="true">{statusLabel}</span>
+                <span className="projectStatusMessage" aria-hidden="true">
+                  <strong>{project.teaser}</strong>
+                </span>
+              </>
+            ) : null}
           </button>
         );
       })}
@@ -438,6 +510,7 @@ function LibrarySection() {
 }
 
 function BookAddModal({ onClose, onAdded }) {
+  useModalScrollLock();
   // 2단계: ① PIN 게이트(/api/verify-pin) → ② 등록창(ISBN 조회→표지/분류 확인→저장).
   // 서버리스(/api/*)라 로컬 vite dev 에선 동작 X, 배포(Vercel)에서 동작.
   const [step, setStep] = useState('pin'); // 'pin' | 'register'
@@ -587,9 +660,102 @@ function BookAddModal({ onClose, onAdded }) {
   );
 }
 
+async function copyContactText(text) {
+  if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+    }
+  }
+
+  if (typeof document === 'undefined') return false;
+
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.top = '0';
+  textarea.style.left = '0';
+  textarea.style.width = '1px';
+  textarea.style.height = '1px';
+  textarea.style.opacity = '0';
+
+  try {
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    const execCommand = Reflect.get(document, 'execCommand');
+    return typeof execCommand === 'function' ? execCommand.call(document, 'copy') : false;
+  } catch (error) {
+    return false;
+  } finally {
+    textarea.remove();
+  }
+}
+
+function KakaoContactOverlay({ contact, onClose }) {
+  useModalScrollLock();
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      onClose();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div className="kakaoContactModal" role="dialog" aria-modal="true" aria-labelledby="kakao-contact-title">
+      <button className="kakaoContactBackdrop" type="button" onClick={onClose} aria-label="닫기" />
+      <div className="kakaoContactCard">
+        <button className="modalClose kakaoContactClose" type="button" onClick={onClose}>닫기</button>
+        <div className="kakaoContactMark" aria-hidden="true">
+          <img src={contact.icon} alt="" />
+        </div>
+        <p className="eyebrow">KakaoTalk</p>
+        <h3 id="kakao-contact-title">카카오톡으로 연락하기</h3>
+        <p className="kakaoContactLead">프로젝트에 포함된 KakaoTalk 아이콘과 ID로 연락처를 안내합니다.</p>
+        <div className="kakaoContactIdCard" aria-label={`카카오톡 ID ${contact.value}`}>
+          <img src={contact.icon} alt="" />
+          <span>
+            <em>KakaoTalk ID</em>
+            <strong>{contact.value}</strong>
+          </span>
+        </div>
+        <p className="kakaoContactHint">카카오톡 친구 추가에서 위 ID를 검색해 주세요.</p>
+      </div>
+    </div>
+  );
+}
+
 function ContactSection() {
-  // GitHub·Brunch = 바로 링크 / Email·Kakao = 클릭하면 주소를 아이콘 옆에 표시.
-  const [revealed, setRevealed] = useState(null);
+  const [isKakaoOpen, setIsKakaoOpen] = useState(false);
+  const [emailStatus, setEmailStatus] = useState(null);
+  const emailStatusTimerRef = useRef(null);
+  const kakaoContact = contactLinks.find((item) => item.id === 'kakao');
+
+  useEffect(() => () => {
+    if (emailStatusTimerRef.current) window.clearTimeout(emailStatusTimerRef.current);
+  }, []);
+
+  const showEmailStatus = (status) => {
+    if (emailStatusTimerRef.current) window.clearTimeout(emailStatusTimerRef.current);
+    setEmailStatus(status);
+    emailStatusTimerRef.current = window.setTimeout(() => setEmailStatus(null), 3600);
+  };
+
+  const handleEmailCopy = async () => {
+    const copied = await copyContactText(EMAIL_ADDRESS);
+
+    showEmailStatus(copied ? { kind: 'success', message: '이메일주소를 복사했습니다.' } : {
+      kind: 'error',
+      message: '복사에 실패했습니다. 아래 이메일 주소를 직접 복사해 주세요.',
+    });
+  };
 
   return (
     <section className="contactSection" id="contact">
@@ -608,23 +774,25 @@ function ContactSection() {
               <button
                 className="contactIcon"
                 type="button"
-                aria-label={`${item.label} 주소 보기`}
-                aria-expanded={revealed === item.id}
-                onClick={() => setRevealed((current) => (current === item.id ? null : item.id))}
+                aria-label={item.id === 'email' ? '이메일 주소 복사' : 'KakaoTalk 연락처 열기'}
+                aria-describedby={item.id === 'email' && emailStatus ? 'contact-email-status' : undefined}
+                aria-expanded={item.id === 'kakao' ? isKakaoOpen : undefined}
+                aria-haspopup={item.id === 'kakao' ? 'dialog' : undefined}
+                onClick={item.id === 'email' ? handleEmailCopy : () => setIsKakaoOpen(true)}
               >
                 <img src={item.icon} alt={item.label} />
               </button>
             )}
-            {item.value && revealed === item.id ? (
-              item.valueHref ? (
-                <a className="contactValue" href={item.valueHref}>{item.value}</a>
-              ) : (
-                <span className="contactValue">{item.value}</span>
-              )
-            ) : null}
           </li>
         ))}
       </ul>
+      {emailStatus ? (
+        <div className={`contactToast ${emailStatus.kind}`} id="contact-email-status" role="status">
+          {emailStatus.message}
+          {emailStatus.kind === 'error' ? <strong>{EMAIL_ADDRESS}</strong> : null}
+        </div>
+      ) : null}
+      {isKakaoOpen && kakaoContact ? <KakaoContactOverlay contact={kakaoContact} onClose={() => setIsKakaoOpen(false)} /> : null}
     </section>
   );
 }
@@ -678,6 +846,7 @@ function ShowcaseImageGrid({ onSelectShowcase }) {
 
 
 function ShowcaseDetailModal({ item, onClose, onNext, onPrevious }) {
+  useModalScrollLock();
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'ArrowLeft') {
@@ -768,6 +937,7 @@ function ShowcaseDetailModal({ item, onClose, onNext, onPrevious }) {
 }
 
 function ProjectDetailModal({ children, onClose, project }) {
+  useModalScrollLock();
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key !== 'Escape') return;
@@ -913,6 +1083,7 @@ function ProjectBrief({ project }) {
 }
 
 function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
+  useModalScrollLock();
   const shouldFillFrame = screenshot.index > 0 && screenshot.index < 5;
   const isLegacyFrame = screenshot.index === 0 || screenshot.index === project.screenshots.length - 1;
 
@@ -949,7 +1120,11 @@ function ScreenshotModal({ project, screenshot, onClose, onNext, onPrevious }) {
           <button className="modalNav modalNavNext" onClick={onNext} type="button" aria-label="다음 사진 보기">
             &gt;
           </button>
-          <div className={['screenshotDialog', isLegacyFrame ? 'legacyModal' : ''].filter(Boolean).join(' ')}>
+          <div className={[
+              'screenshotDialog',
+              shouldFillFrame ? 'fillModal' : '',
+              isLegacyFrame ? 'legacyModal' : '',
+            ].filter(Boolean).join(' ')}>
             <div className="modalWindowBar" aria-hidden="true">
               <span className="modalWindowControl modalWindowClose" />
               <span className="modalWindowControl modalWindowMinimize" />
