@@ -715,10 +715,6 @@ function KakaoContactOverlay({ contact, onClose }) {
       <button className="kakaoContactBackdrop" type="button" onClick={onClose} aria-label="닫기" />
       <div className="kakaoContactCard">
         <button className="modalClose kakaoContactClose" type="button" onClick={onClose}>닫기</button>
-        <div className="kakaoContactMark" aria-hidden="true">
-          <img src={contact.icon} alt="" />
-        </div>
-        <p className="eyebrow">KakaoTalk</p>
         <h3 id="kakao-contact-title">카카오톡으로 연락하기</h3>
         <img className="kakaoContactPreview" src="/contact/kakao-card.jpg" alt="카카오톡 연락처 화면" />
         <div className="kakaoContactIdCard" aria-label={`카카오톡 ID ${contact.value}`}>
