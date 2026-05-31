@@ -2036,7 +2036,7 @@ img, svg, iframe { max-width: 100%; }
 .screenshotDialog.fillModal .modalPreview.hasImage img { object-fit: contain; object-position: center; background: var(--charcoal-950); }
 .screenshotDialog.legacyModal { max-width: min(1280px, calc(100vw - 120px)); margin: 0 auto; }
 .screenshotDialog.legacyModal .modalPreview { height: min(640px, calc(100vh - 180px)); min-height: 0; border-style: solid; background: var(--charcoal-950); }
-.modalMedia { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.modalMedia { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); min-width: 0; touch-action: pan-y; }
 .modalNav { position: absolute; top: 50%; z-index: 3; display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 58px; padding: 0; transform: translateY(-50%); border: 1px solid rgba(40, 219, 195, 0.36); border-radius: var(--radius-sm); background: rgba(13, 16, 16, 0.88); cursor: pointer; font-size: 26px; font-weight: 900; line-height: 1; box-shadow: 0 14px 38px rgba(0, 0, 0, 0.38); }
 .modalNav:hover, .modalNav:focus-visible, .modalClose:hover, .modalClose:focus-visible { border-color: rgba(255, 111, 157, 0.58); background: rgba(40, 219, 195, 0.12); color: var(--pink-400); }
 .modalNavPrevious { left: -58px; }
