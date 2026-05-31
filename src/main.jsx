@@ -45,7 +45,7 @@ const EMAIL_ADDRESS = 'gurwns369@naver.com';
 const KAKAO_ID = 'gurwns369';
 
 const contactLinks = [
-  { id: 'github', label: 'GitHub', icon: '/contact/github.png', href: 'https://github.com/HYEOKJUNCHOI?tab=repositories', value: 'github.com/HYEOKJUNCHOI' },
+  { id: 'github', label: 'GitHub', icon: '/contact/github.png', href: 'https://github.com/HYEOKJUNCHOI', value: 'github.com/HYEOKJUNCHOI' },
   { id: 'brunch', label: 'Brunch', icon: '/contact/brunch.png', href: 'https://brunch.co.kr/@solbin369', value: 'brunch.co.kr/@solbin369' },
   { id: 'email', label: 'Email', icon: '/contact/email.png', value: EMAIL_ADDRESS },
   { id: 'kakao', label: 'KakaoTalk', icon: '/contact/kakao.png', value: KAKAO_ID },
