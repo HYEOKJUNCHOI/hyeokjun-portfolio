@@ -2375,6 +2375,27 @@ img, svg, iframe { max-width: 100%; }
   .avatarPanel:hover .workbenchIllustration, .avatarPanel:focus-visible .workbenchIllustration { filter: none; opacity: 1; transform: none; }
 }
 
+@media (hover: none), (pointer: coarse) {
+  .showcaseImageCard:hover > img,
+  .showcaseImageCard:focus-within > img {
+    filter: none;
+  }
+
+  .showcaseImageCard:hover .showcaseExplanation,
+  .showcaseImageCard:focus-within .showcaseExplanation {
+    opacity: 0;
+  }
+
+  .showcaseImageCard.viewed > img {
+    filter: saturate(0.92) brightness(0.68);
+  }
+
+  .showcaseImageCard.viewed .showcaseExplanation {
+    opacity: 1;
+    background: rgba(7, 8, 8, 0.5);
+  }
+}
+
 .heroNav a:focus-visible,
 .heroActions a:focus-visible,
 .projectDemoLink:focus-visible,

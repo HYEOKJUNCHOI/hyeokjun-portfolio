@@ -107,6 +107,7 @@ function App() {
   const [visitedProjectIds, setVisitedProjectIds] = useState(() => new Set());
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [activeShowcaseIndex, setActiveShowcaseIndex] = useState(null);
+  const [viewedShowcaseIndexes, setViewedShowcaseIndexes] = useState(() => new Set());
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeAnchor, setActiveAnchor] = useState('home');
   const detailRef = useRef(null);
@@ -180,6 +181,14 @@ function App() {
   const selectSideIndexProject = (event, projectId) => {
     event.preventDefault();
     selectProject(projectId, event.currentTarget);
+  };
+
+  const selectShowcase = (index) => {
+    setViewedShowcaseIndexes((current) => {
+      if (current.has(index)) return current;
+      return new Set(current).add(index);
+    });
+    setActiveShowcaseIndex(index);
   };
 
   const moveShowcase = (direction) => {
@@ -270,7 +279,11 @@ function App() {
         <div className="sectionTitle">
           <p className="eyebrow sectionEyebrowLarge">Experience / Background</p>
         </div>
-        <ShowcaseImageGrid onSelectShowcase={setActiveShowcaseIndex} />
+        <ShowcaseImageGrid
+          activeShowcaseIndex={activeShowcaseIndex}
+          onSelectShowcase={selectShowcase}
+          viewedShowcaseIndexes={viewedShowcaseIndexes}
+        />
       </section>
 
       <section className="workSection" id="projects">
@@ -859,31 +872,42 @@ function ProjectTeaserVisual({ image, kind, label, teaser, type }) {
 
 const showcaseAnchorIds = ['career-crm', 'career-japan', 'career-education'];
 
-function ShowcaseImageGrid({ onSelectShowcase }) {
+function ShowcaseImageGrid({ activeShowcaseIndex, onSelectShowcase, viewedShowcaseIndexes }) {
   return (
     <section className="showcaseImagePanel" aria-label="Experience / Background">
       <div className="showcaseImageGrid">
-        {showcaseItems.map((item, index) => (
-          <button
-            className="showcaseImageCard"
-            id={showcaseAnchorIds[index]}
-            key={item.title}
-            onClick={() => onSelectShowcase(index)}
-            type="button"
-          >
-            <img alt={`${item.title} 쇼케이스`} src={item.image} />
-            <span className="showcaseImageOverlay">
-              <strong>{item.title}</strong>
-              <em>{item.period}</em>
-            </span>
-            <span className={[
-              'showcaseExplanation',
-              item.detailTitle === 'Contact' ? 'contactExplanation' : '',
-            ].filter(Boolean).join(' ')} aria-hidden="true">
-              <strong>{item.detailTitle === 'Contact' ? 'Kakao  gurwns369\nMail  gurwns369@naver.com\nBrunch  @solbin369\nGitHub  HYEOKJUNCHOI' : item.hover}</strong>
-            </span>
-          </button>
-        ))}
+        {showcaseItems.map((item, index) => {
+          const isActive = activeShowcaseIndex === index;
+          const isViewed = viewedShowcaseIndexes.has(index);
+          const statusLabel = isActive ? '열람중' : isViewed ? '확인완료' : '';
+
+          return (
+            <button
+              className={[
+                'showcaseImageCard',
+                isActive ? 'active' : '',
+                isViewed ? 'viewed' : '',
+              ].filter(Boolean).join(' ')}
+              id={showcaseAnchorIds[index]}
+              key={item.title}
+              onClick={() => onSelectShowcase(index)}
+              type="button"
+              aria-label={statusLabel ? `${item.title} ${statusLabel}` : item.title}
+            >
+              <img alt={`${item.title} 쇼케이스`} src={item.image} />
+              <span className="showcaseImageOverlay">
+                <strong>{item.title}</strong>
+                <em>{item.period}</em>
+              </span>
+              <span className={[
+                'showcaseExplanation',
+                item.detailTitle === 'Contact' ? 'contactExplanation' : '',
+              ].filter(Boolean).join(' ')} aria-hidden="true">
+                <strong>{item.detailTitle === 'Contact' ? 'Kakao  gurwns369\nMail  gurwns369@naver.com\nBrunch  @solbin369\nGitHub  HYEOKJUNCHOI' : item.hover}</strong>
+              </span>
+            </button>
+          );
+        })}
       </div>
     </section>
   );
