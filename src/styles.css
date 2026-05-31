@@ -2642,12 +2642,14 @@ a.contactValue:hover { color: var(--teal-300); text-decoration: underline; }
   width: min(560px, calc(100vw - (var(--space-6) * 2)));
 }
 .emailCopyPanel {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
   width: 100%;
   padding: var(--space-3);
+  overflow: hidden;
   border: 1px solid rgba(120, 212, 223, 0.28);
   border-radius: var(--radius-md);
   background: rgba(3, 4, 4, 0.58);
@@ -2681,6 +2683,25 @@ a.contactValue:hover { color: var(--teal-300); text-decoration: underline; }
   border-color: rgba(120, 212, 223, 0.72);
   background: rgba(13, 16, 16, 0.96);
   color: var(--teal-300);
+}
+.emailInlineNotice {
+  position: absolute;
+  inset: var(--space-3) calc(var(--space-3) + 76px) var(--space-3) var(--space-3);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(120, 212, 223, 0.42);
+  border-radius: calc(var(--radius-md) - 6px);
+  background: rgba(13, 16, 16, 0.96);
+  color: var(--teal-300);
+  font-size: clamp(13px, 1.5vw, 16px);
+  font-weight: 950;
+  line-height: 1.2;
+  text-align: center;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.34);
+  pointer-events: none;
+  animation: contactToastIn var(--duration-medium) ease both;
 }
 
 /* 쇼케이스 Contact 모달 — 아이콘 행. 푸터와 같은 글로시 아이콘 재사용. */
