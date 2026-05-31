@@ -732,8 +732,39 @@ function KakaoContactOverlay({ contact, onClose }) {
   );
 }
 
+function EmailContactOverlay({ onClose, onCopy }) {
+  useModalScrollLock();
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      onClose();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div className="emailContactModal" role="dialog" aria-modal="true" aria-labelledby="email-contact-title">
+      <button className="emailContactBackdrop" type="button" onClick={onClose} aria-label="닫기" />
+      <div className="emailContactCard">
+        <button className="modalClose emailContactClose" type="button" onClick={onClose}>닫기</button>
+        <p className="eyebrow">Email</p>
+        <h3 id="email-contact-title">이메일 주소</h3>
+        <div className="emailCopyPanel">
+          <strong>{EMAIL_ADDRESS}</strong>
+          <button className="emailCopyButton" type="button" onClick={onCopy}>Copy</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ContactSection() {
   const [isKakaoOpen, setIsKakaoOpen] = useState(false);
+  const [isEmailOpen, setIsEmailOpen] = useState(false);
   const [emailStatus, setEmailStatus] = useState(null);
   const emailStatusTimerRef = useRef(null);
   const kakaoContact = contactLinks.find((item) => item.id === 'kakao');
@@ -774,11 +805,11 @@ function ContactSection() {
               <button
                 className="contactIcon"
                 type="button"
-                aria-label={item.id === 'email' ? '이메일 주소 복사' : 'KakaoTalk 연락처 열기'}
+                aria-label={item.id === 'email' ? '이메일 주소 열기' : 'KakaoTalk 연락처 열기'}
                 aria-describedby={item.id === 'email' && emailStatus ? 'contact-email-status' : undefined}
-                aria-expanded={item.id === 'kakao' ? isKakaoOpen : undefined}
-                aria-haspopup={item.id === 'kakao' ? 'dialog' : undefined}
-                onClick={item.id === 'email' ? handleEmailCopy : () => setIsKakaoOpen(true)}
+                aria-expanded={item.id === 'kakao' ? isKakaoOpen : item.id === 'email' ? isEmailOpen : undefined}
+                aria-haspopup={item.id === 'kakao' || item.id === 'email' ? 'dialog' : undefined}
+                onClick={item.id === 'email' ? () => setIsEmailOpen(true) : () => setIsKakaoOpen(true)}
               >
                 <img src={item.icon} alt={item.label} />
               </button>
@@ -792,6 +823,7 @@ function ContactSection() {
           {emailStatus.kind === 'error' ? <strong>{EMAIL_ADDRESS}</strong> : null}
         </div>
       ) : null}
+      {isEmailOpen ? <EmailContactOverlay onClose={() => setIsEmailOpen(false)} onCopy={handleEmailCopy} /> : null}
       {isKakaoOpen && kakaoContact ? <KakaoContactOverlay contact={kakaoContact} onClose={() => setIsKakaoOpen(false)} /> : null}
     </section>
   );
