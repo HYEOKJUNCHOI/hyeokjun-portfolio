@@ -1192,12 +1192,9 @@ img, svg, iframe { max-width: 100%; }
   white-space: nowrap;
 }
 .showcaseImageOverlay em {
-  position: absolute;
-  top: clamp(8px, 0.78vw, 12px);
-  left: clamp(8px, 0.78vw, 12px);
   order: 1;
   align-self: flex-start;
-  max-width: calc(100% - clamp(16px, 1.56vw, 24px));
+  max-width: 100%;
   padding: 3px 8px;
   border: 1px solid var(--showcase-date-border);
   border-radius: var(--radius-pill);
