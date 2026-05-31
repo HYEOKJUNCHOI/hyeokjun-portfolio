@@ -2720,20 +2720,22 @@ a.contactValue:hover { color: var(--teal-300); text-decoration: underline; }
 }
 .kakaoContactPreview {
   display: block;
-  width: 100%;
-  max-width: 360px;
-  height: clamp(240px, 44dvh, 340px);
-  object-fit: cover;
+  width: min(100%, 330px);
+  height: auto;
+  max-height: min(48dvh, 410px);
+  aspect-ratio: 750 / 925;
+  object-fit: contain;
   border: 1px solid rgba(254, 229, 0, 0.34);
   border-radius: var(--radius-md);
   background: transparent;
   box-shadow: 0 18px 46px rgba(0, 0, 0, 0.38);
 }
 .kakaoContactCard {
-  gap: var(--space-3);
-  max-height: min(640px, calc(100dvh - (var(--space-3) * 2)));
-  padding: clamp(18px, 3dvh, 28px) clamp(16px, 4vw, 28px);
-  overflow: hidden;
+  gap: clamp(10px, 1.6dvh, var(--space-3));
+  width: min(460px, calc(100vw - (var(--space-6) * 2)));
+  max-height: calc(100dvh - (var(--space-3) * 2));
+  padding: clamp(18px, 3.2dvh, 30px) clamp(16px, 4vw, 30px);
+  overflow-y: auto;
   scrollbar-width: none;
 }
 .kakaoContactCard::-webkit-scrollbar { display: none; width: 0; height: 0; }
@@ -2943,8 +2945,8 @@ a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300)
     padding: 14px 12px;
   }
   .kakaoContactPreview {
-    max-width: 286px;
-    height: clamp(178px, 34dvh, 250px);
+    width: min(100%, 258px);
+    max-height: min(46dvh, 318px);
   }
   .kakaoContactCard h3 {
     padding-right: 56px;
@@ -2983,8 +2985,8 @@ a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300)
     padding: 12px 10px;
   }
   .kakaoContactPreview {
-    max-width: 260px;
-    height: clamp(160px, 31dvh, 218px);
+    width: min(100%, 232px);
+    max-height: min(43dvh, 286px);
   }
   .kakaoContactIdCard {
     padding: 9px;
