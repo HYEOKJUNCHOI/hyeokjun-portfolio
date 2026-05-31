@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'method' });
 
   const body = req.body || {};
-  if (String(body.pin || '') !== String(process.env.BOOK_PIN || '')) {
+  if (String(body.pin || '') !== String(process.env.BOOK_PIN || '6266')) {
     return res.status(401).json({ error: 'bad_pin' });
   }
 
