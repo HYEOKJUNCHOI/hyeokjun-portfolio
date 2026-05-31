@@ -30,7 +30,7 @@ const showcaseItems = [
   {
     title: 'AI·풀스택 과정 & 프로젝트 경험',
     period: '2025.09 ~ 2026.02',
-    image: '/showcase/project2.png',
+    image: '/showcase/project.png',
     hover: '기능보다 사용자 흐름이\n더 중요하다는 점을 배웠습니다.',
     detailTitle: 'AI·풀스택 과정 & 프로젝트 경험',
     detailLabel: '교육 이수',
