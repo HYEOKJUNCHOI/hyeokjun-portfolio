@@ -1081,17 +1081,7 @@ function ProjectDetail({ detailHeadingId, detailPanelId, onRequestClose, project
     if (!selectedScreenshot) return;
 
     const total = project.screenshots.length;
-    const nextIndex = selectedScreenshot.index + direction;
-
-    if (nextIndex < 0) return;
-
-    if (nextIndex >= total) {
-      setScreenshotEdgeNotice({
-        key: Date.now(),
-        message: '마지막 페이지입니다.',
-      });
-      return;
-    }
+    const nextIndex = (selectedScreenshot.index + direction + total) % total;
 
     const [title, caption, src] = project.screenshots[nextIndex];
 
