@@ -2016,8 +2016,8 @@ img, svg, iframe { max-width: 100%; }
 .modalPreview { display: grid; place-items: center; min-width: 0; min-height: min(620px, calc(100vh - 230px)); overflow: hidden; border: 1px dashed rgba(40, 219, 195, 0.32); border-radius: var(--radius-md); background: rgba(40, 219, 195, 0.08); }
 .modalPreview.hasImage img { object-position: center; }
 .screenshotDialog.fillModal { grid-template-columns: minmax(0, 1fr) minmax(220px, 300px); }
-.screenshotDialog.fillModal .modalPreview { aspect-ratio: 16 / 9; min-height: min(520px, calc(100vh - 250px)); border-style: solid; background: #ffffff; }
-.screenshotDialog.fillModal .modalPreview.hasImage img { object-fit: contain; object-position: center; background: #ffffff; }
+.screenshotDialog.fillModal .modalPreview { aspect-ratio: 16 / 9; min-height: min(520px, calc(100vh - 250px)); border-style: solid; background: var(--charcoal-950); }
+.screenshotDialog.fillModal .modalPreview.hasImage img { object-fit: contain; object-position: center; background: var(--charcoal-950); }
 .screenshotDialog.legacyModal { max-width: min(1280px, calc(100vw - 120px)); margin: 0 auto; }
 .screenshotDialog.legacyModal .modalPreview { height: min(640px, calc(100vh - 180px)); min-height: 0; border-style: solid; background: var(--charcoal-950); }
 .modalMedia { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); min-width: 0; }
@@ -2303,19 +2303,38 @@ img, svg, iframe { max-width: 100%; }
     max-height: calc(100dvh - 20px);
     gap: 8px;
   }
+  .screenshotModalShell {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "dialog dialog"
+      "previous next";
+    gap: 8px;
+  }
   .screenshotDialog {
+    grid-area: dialog;
     grid-template-rows: 34px minmax(0, 1fr) auto;
-    gap: 10px;
+    gap: 8px;
     max-height: calc(100dvh - 20px);
-    padding: 0 10px 10px;
+    padding: 0 8px 9px;
     overflow: auto;
   }
-  .modalWindowBar { min-height: 34px; }
-  .modalWindowBar strong { max-width: 46vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .modalWindowBar {
+    min-height: 34px;
+    padding-right: 58px;
+  }
+  .modalWindowBar strong { max-width: 38vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .modalMedia {
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: var(--charcoal-950);
+  }
   .modalPreview {
     min-height: 0;
     height: auto;
     aspect-ratio: 16 / 9;
+    border-style: solid;
+    background: var(--charcoal-950);
   }
   .screenshotDialog.fillModal .modalPreview {
     min-height: 0;
@@ -2329,21 +2348,34 @@ img, svg, iframe { max-width: 100%; }
   }
   .screenshotDialog.legacyModal .modalPreview.hasImage img { object-fit: contain; }
   .modalNav {
-    top: 50%;
+    position: static;
+    top: auto;
+    width: 100%;
+    height: 46px;
+    transform: none;
+    border-radius: var(--radius-md);
+    font-size: 22px;
+    background: rgba(13, 16, 16, 0.96);
+  }
+  .screenshotModalShell > .modalNavPrevious { grid-area: previous; }
+  .screenshotModalShell > .modalNavNext { grid-area: next; }
+  .showcaseDetailModal .modalNav {
+    position: absolute;
+    top: calc(10px + min(15dvh, 105px));
     width: 44px;
     height: 48px;
+    transform: translateY(-50%);
     font-size: 21px;
     background: rgba(13, 16, 16, 0.94);
   }
-  .showcaseDetailModal .modalNav {
-    top: calc(10px + min(15dvh, 105px));
-  }
-  .modalNavPrevious { left: 8px; }
-  .modalNavNext { right: 8px; }
+  .showcaseDetailModal .modalNavPrevious { left: 8px; }
+  .showcaseDetailModal .modalNavNext { right: 8px; }
   .modalClose {
+    top: 4px;
+    right: 8px;
     min-width: 44px;
-    min-height: 44px;
-    padding: 0 12px;
+    min-height: 34px;
+    padding: 0 10px;
   }
   .modalCaption {
     max-height: 92px;
