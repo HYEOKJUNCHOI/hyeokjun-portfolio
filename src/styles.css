@@ -2254,8 +2254,9 @@ img, svg, iframe { max-width: 100%; }
   .modalClose.showcaseDetailModalClose {
     top: 14px;
     right: 14px;
-    min-height: 32px;
-    padding: 0 10px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 12px;
   }
   .projectDetailModal { padding: 10px; }
   .projectDetailModalStack {
@@ -2303,13 +2304,22 @@ img, svg, iframe { max-width: 100%; }
   .screenshotDialog.legacyModal .modalPreview.hasImage img { object-fit: cover; }
   .modalNav {
     top: 50%;
-    width: 34px;
-    height: 44px;
+    width: 44px;
+    height: 48px;
     font-size: 21px;
     background: rgba(13, 16, 16, 0.94);
   }
+  .showcaseDetailModal .modalNav {
+    top: calc(10px + min(15svh, 105px));
+    top: calc(10px + min(15dvh, 105px));
+  }
   .modalNavPrevious { left: 8px; }
   .modalNavNext { right: 8px; }
+  .modalClose {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 12px;
+  }
   .modalCaption {
     max-height: 92px;
     padding: 0;
@@ -2941,7 +2951,8 @@ a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300)
   .modalClose.kakaoContactClose {
     top: 14px;
     right: 12px;
-    min-height: 34px;
+    min-width: 44px;
+    min-height: 44px;
     padding: 0 12px;
   }
 }
