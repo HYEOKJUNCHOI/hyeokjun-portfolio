@@ -1,13 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { FaArrowDownLong } from 'react-icons/fa6';
-import './styles.css';
+import './styles.css?experience-final';
+import './experienceOverrides.css';
 
-import { experienceItems, lines, projectDetails, libraryGroups, resumeIntro, profileFacts } from './portfolioData';
+import { collection, getDocs } from 'firebase/firestore';
+import { experienceItems, projectDetails, libraryGroups, resumeIntro, profileFacts } from './portfolioData';
+import { db } from './firebase';
 
 const showcaseItems = [
   {
-    title: 'Customer Relations',
+    title: '고객 상담 & 유지 업무 경험',
     period: '2016.01~ 현재',
     image: '/showcase/rode.png',
     hover: '사람은 더 좋은 것보다\n익숙한 것을 선택한다는 점을 배웠습니다.',
@@ -16,7 +19,7 @@ const showcaseItems = [
     detailBody: experienceItems[0].body,
   },
   {
-    title: 'Experience in Japan',
+    title: '일본 유학 & 워킹홀리데이 경험',
     period: '2018.04 ~ 2019.10',
     image: '/showcase/japen.png',
     hover: '문화는 달라도\n사람의 불편과 감정은 비슷했습니다.',
@@ -25,28 +28,13 @@ const showcaseItems = [
     detailBody: experienceItems[1].body,
   },
   {
-    title: 'AI & Full-Stack Journey',
+    title: 'AI·풀스택 과정 & 프로젝트 경험',
     period: '2025.09 ~ 2026.02',
     image: '/showcase/project.png',
     hover: '기능보다 사용자 흐름이\n더 중요하다는 점을 배웠습니다.',
     detailTitle: 'AI·풀스택 과정 & 프로젝트 경험',
     detailLabel: '교육 이수',
     detailBody: experienceItems[2].body,
-  },
-  {
-    title: 'To Be Continued...',
-    period: 'Contact',
-    image: '/showcase/mesege.png',
-    hover: '필요한 이야기가 있다면\n언제든 연락 주세요.',
-    detailTitle: 'Contact',
-    detailLabel: 'To Be Continued...',
-    isContact: true,
-    detailBody: lines([
-      '카카오톡 아이디 : gurwns369',
-      '메일 : gurwns369@naver.com',
-      '브런치 : https://brunch.co.kr/@solbin369',
-      'GitHub : https://github.com/HYEOKJUNCHOI?tab=repositories',
-    ]),
   },
 ];
 
@@ -256,19 +244,7 @@ function App() {
           ))}
         </div>
 
-        {isDetailOpen && activeProject?.id === 'caredoc' ? (
-          <ProjectDetailModal onClose={closeDetailPanel} project={activeProject}>
-            <ProjectDetail
-              detailHeadingId={detailHeadingId}
-              detailPanelId={detailPanelId}
-              onRequestClose={closeDetailPanel}
-              project={activeProject}
-              refTarget={detailRef}
-            />
-          </ProjectDetailModal>
-        ) : null}
-
-        {isDetailOpen && activeProject?.id !== 'caredoc' ? (
+        {isDetailOpen && activeProject ? (
           <ProjectDetail
             detailHeadingId={detailHeadingId}
             detailPanelId={detailPanelId}
@@ -300,7 +276,7 @@ function TechStackPanel() {
   return (
     <section className="techStackPanel" aria-label="보유 기술 및 도구">
       <div className="techStackGlass">
-        <img className="techStackMap" src="/icons/connecting-dots.png" alt="기술 흐름을 연결한 스택 이미지" />
+        <img className="techStackMap" src="/showcase/히어로이미지.png" alt="기술 흐름을 연결한 포트폴리오 히어로 이미지" />
       </div>
     </section>
   );
@@ -308,7 +284,24 @@ function TechStackPanel() {
 
 function LibrarySection() {
   // 카테고리는 '정렬 기준'으로만 사용 — 같은 분류끼리 모여 한 책장에 쭉 진열.
-  const books = libraryGroups.flatMap((group) => group.books);
+  // seed = 폴백. Firestore 'shelf'에 데이터 있으면 그걸로 교체.
+  const seedBooks = useMemo(() => libraryGroups.flatMap((group) => group.books), []);
+  const [books, setBooks] = useState(seedBooks);
+  const [addOpen, setAddOpen] = useState(false);
+  const loadShelf = () => {
+    getDocs(collection(db, 'shelf'))
+      .then((snap) => {
+        if (snap.empty) return;
+        const list = snap.docs
+          .map((d) => d.data())
+          .sort((a, b) =>
+            (a.category || '').localeCompare(b.category || '') ||
+            (a.title || '').localeCompare(b.title || ''));
+        setBooks(list);
+      })
+      .catch(() => {});
+  };
+  useEffect(() => { loadShelf(); }, []);
   const trackRef = useRef(null);
   // 마우스 클릭-드래그로 가로 스크롤(overflow 컨테이너는 기본적으로 드래그 스크롤이 안 됨).
   const dragRef = useRef({ active: false, startX: 0, startScroll: 0 });
@@ -382,13 +375,18 @@ function LibrarySection() {
           onPointerLeave={endDrag}
         >
           {books.map((book) => (
-            <li className="libraryBook" key={book.title}>
+            <li className="libraryBook" key={book.isbn13 || book.title}>
               <span className="libraryCover">
                 <img src={book.cover} alt={book.title} loading="lazy" draggable={false} />
               </span>
               <span className="libraryCaption">{book.title}</span>
             </li>
           ))}
+          <li className="libraryBook libraryAddTile" key="__add__">
+            <button type="button" className="libraryAddBtn" onClick={() => setAddOpen(true)} aria-label="책 등록">
+              <span aria-hidden="true">+</span>
+            </button>
+          </li>
         </ul>
         <button
           className={`libraryNav libraryNavNext${edges.right ? '' : ' is-hidden'}`}
@@ -399,7 +397,137 @@ function LibrarySection() {
           ›
         </button>
       </div>
+      {addOpen ? (
+        <BookAddModal
+          onClose={() => setAddOpen(false)}
+          onAdded={() => { setAddOpen(false); loadShelf(); }}
+        />
+      ) : null}
     </section>
+  );
+}
+
+function BookAddModal({ onClose, onAdded }) {
+  // PIN → ISBN(카메라/입력) → 조회 → 표지·분류 확인/교체 → 등록.
+  // 조회/저장은 /api/book-lookup, /api/book-save (Vercel 서버리스). 로컬 vite dev 에선 동작 X.
+  const [pin, setPin] = useState('');
+  const [isbn, setIsbn] = useState('');
+  const [book, setBook] = useState(null);
+  const [status, setStatus] = useState({ kind: 'idle' });
+  const [scanning, setScanning] = useState(false);
+  const videoRef = useRef(null);
+  const controlsRef = useRef(null);
+
+  const stopScan = () => {
+    try { controlsRef.current?.stop(); } catch (e) { /* no-op */ }
+    controlsRef.current = null;
+    setScanning(false);
+  };
+  useEffect(() => () => stopScan(), []);
+
+  const startScan = async () => {
+    setStatus({ kind: 'idle' });
+    setScanning(true);
+    try {
+      const { BrowserMultiFormatReader } = await import('@zxing/browser');
+      const reader = new BrowserMultiFormatReader();
+      controlsRef.current = await reader.decodeFromVideoDevice(undefined, videoRef.current, (result) => {
+        if (!result) return;
+        const code = result.getText().replace(/\D/g, '');
+        if (code.length === 13) { setIsbn(code); stopScan(); }
+      });
+    } catch (e) {
+      setStatus({ kind: 'error', msg: '카메라 실패: ' + (e.message || e) });
+      setScanning(false);
+    }
+  };
+
+  const lookup = async () => {
+    const id = isbn.replace(/\D/g, '');
+    if (id.length !== 13) { setStatus({ kind: 'error', msg: 'ISBN 13자리를 입력하세요.' }); return; }
+    setStatus({ kind: 'loading' });
+    try {
+      const r = await fetch(`/api/book-lookup?isbn=${id}`);
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'lookup');
+      setBook(data);
+      setStatus({ kind: 'idle' });
+    } catch (e) {
+      setStatus({ kind: 'error', msg: '조회 실패 (배포 후 동작): ' + (e.message || e) });
+    }
+  };
+
+  const save = async () => {
+    if (!book) return;
+    if (!pin) { setStatus({ kind: 'error', msg: 'PIN을 입력하세요.' }); return; }
+    setStatus({ kind: 'loading' });
+    try {
+      const r = await fetch('/api/book-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pin, isbn: book.isbn13, title: book.title, author: book.author,
+          publisher: book.publisher, cover: book.cover, category: book.category,
+        }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'save');
+      onAdded();
+    } catch (e) {
+      const m = String(e.message || e);
+      setStatus({ kind: 'error', msg: m === 'bad_pin' ? 'PIN이 틀렸습니다.' : '저장 실패: ' + m });
+    }
+  };
+
+  return (
+    <div className="bookAddModal" role="dialog" aria-modal="true" aria-label="책 등록">
+      <button className="bookAddBackdrop" type="button" onClick={onClose} aria-label="닫기" />
+      <div className="bookAddPanel">
+        <button className="modalClose bookAddClose" type="button" onClick={onClose}>닫기</button>
+        <h3 className="bookAddTitle">책 등록</h3>
+
+        <label className="bookAddField">
+          <span>PIN</span>
+          <input type="password" value={pin} inputMode="numeric" placeholder="••••"
+            onChange={(e) => setPin(e.target.value)} />
+        </label>
+
+        <label className="bookAddField">
+          <span>ISBN</span>
+          <div className="bookAddIsbnRow">
+            <input value={isbn} inputMode="numeric" placeholder="9788…(13자리)"
+              onChange={(e) => setIsbn(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') lookup(); }} />
+            <button type="button" onClick={scanning ? stopScan : startScan}>{scanning ? '중지' : '📷'}</button>
+            <button type="button" onClick={lookup}>조회</button>
+          </div>
+        </label>
+
+        {scanning ? <video ref={videoRef} className="bookAddVideo" muted playsInline /> : null}
+
+        {book ? (
+          <div className="bookAddPreview">
+            <img src={book.cover} alt="" />
+            <div className="bookAddPreviewBody">
+              <strong>{book.title}</strong>
+              <em>{book.author}</em>
+              <label className="bookAddField">
+                <span>표지 URL (옛 판본이면 교체)</span>
+                <input value={book.cover} onChange={(e) => setBook({ ...book, cover: e.target.value })} />
+              </label>
+              <label className="bookAddField">
+                <span>분류</span>
+                <input value={book.category} onChange={(e) => setBook({ ...book, category: e.target.value })} />
+              </label>
+              <button type="button" className="bookAddSave" onClick={save}>등록</button>
+            </div>
+          </div>
+        ) : null}
+
+        {status.kind === 'loading' ? <p className="bookAddMsg">처리 중…</p> : null}
+        {status.kind === 'error' ? <p className="bookAddMsg error">{status.msg}</p> : null}
+      </div>
+    </div>
   );
 }
 
