@@ -4394,6 +4394,8 @@
       }
       .videoShell .placeholder { display: none !important; }
       .videoShell .dropOverlay { display: none !important; }
+      /* 직접수정 마커 색 (원본엔 .markLine.direct 정의가 없어 추가) — 뱃지색과 동일 */
+      .markLine.direct { background: #7cc7ff; color: #7cc7ff; }
       #sfcMobileGate { display: none; }
       @media (max-width: 860px) {
         #sfcMobileGate {
@@ -6871,8 +6873,8 @@ ${value}`
             var sec = Number(it.clicked_seconds != null ? it.clicked_seconds : it.seconds);
             if (!isFinite(sec)) return;
             var m = document.createElement('span');
-            m.className = 'markLine';
-            m.style.background = it.review_done ? '#42d66b' : '#8a8f99';
+            // 마커 색 = 카드 유형(뱃지) 색. 자막합치기=merge(초록), 직접수정=direct 등.
+            m.className = 'markLine ' + ((typeof TYPE_CLASS !== 'undefined' && TYPE_CLASS[it.type]) || 'draft');
             var w = wrap.clientWidth || 0, pct = Math.max(0, Math.min(1, sec / DUR));
             m.style.left = Math.max(14, Math.min(Math.max(14, w - 14), pct * w)) + 'px';
             wrap.appendChild(m);
