@@ -2287,7 +2287,15 @@ img, svg, iframe { max-width: 100%; }
     width: 100%;
   }
   .heroTechLayout .heroSection { min-height: 0; }
-  .techStackGlass { min-height: clamp(340px, 52vw, 520px); }
+  .techStackGlass {
+    aspect-ratio: 1280 / 853;
+    height: auto;
+    min-height: 0;
+  }
+  .techStackMap {
+    object-fit: contain;
+    background: #05070b;
+  }
   .heroCopy { align-self: start; width: 100%; }
   .heroLead { width: 100%; }
 }
@@ -2319,10 +2327,10 @@ img, svg, iframe { max-width: 100%; }
     padding: clamp(var(--space-5), 6vw, var(--space-8)) clamp(var(--space-4), 6vw, var(--space-6));
   }
   .techStackGlass {
-    min-height: clamp(300px, 84vw, 520px);
+    min-height: 0;
     padding: 0;
   }
-  .techStackMap { min-height: 100%; }
+  .techStackMap { min-height: 0; }
   .heroIdentityBadge { top: var(--space-5); left: var(--space-5); }
   .heroNav {
     top: 82px;
