@@ -6827,12 +6827,62 @@ ${value}`
 
         // CSS 자동 순환·고정 배경 끄고 JS가 직접 제어 (!important 덮기)
         shell.style.setProperty('animation', 'none', 'important');
+
+        // 씨드 자막 테이블 — clicked_seconds 기준 ±1.5초 안에 있으면 해당 텍스트 반환
+        var SEED_SUBS = [
+          { start: 3.0, end: 5.5, jp: '今日は大阪、', ko: '오늘은 오사카 ,' },
+          { start: 5.0, end: 7.5, jp: 'ご紹介します', ko: '소개를 해드릴게요' },
+          { start: 18.0, end: 22.0, jp: 'やっぱり大阪のたこ焼きが一番！', ko: '역시 오사카 타코야끼가 최고예요!' },
+        ];
+        function cueAt(sec) {
+          var found = null;
+          SEED_SUBS.forEach(function (s) { if (sec >= s.start && sec <= s.end) found = s; });
+          if (!found) return null;
+          var jp = found.jp, ko = found.ko;
+          return {
+            text: jp + '\n' + ko,
+            jp: jp, ko: ko,
+            pipe: jp + '|' + ko,
+            start_time: fmt(found.start), end_time: fmt(found.end),
+            start: found.start, end: found.end,
+            cue_index: SEED_SUBS.indexOf(found) + 1,
+          };
+        }
+
+        // 화면 자막 오버레이 요소 생성
+        var subOverlay = document.createElement('div');
+        subOverlay.style.cssText = [
+          'position:absolute','bottom:18px','left:50%','transform:translateX(-50%)',
+          'text-align:center','pointer-events:none','z-index:10',
+          'display:flex','flex-direction:column','align-items:center','gap:2px',
+        ].join(';');
+        shell.style.position = 'relative';
+        shell.appendChild(subOverlay);
+
+        var subJP = document.createElement('div');
+        var subKO = document.createElement('div');
+        var subStyle = [
+          'display:inline-block','padding:2px 10px','border-radius:4px',
+          'font-size:15px','font-weight:700','line-height:1.45',
+          'background:rgba(0,0,0,0.62)','letter-spacing:0.02em',
+        ].join(';');
+        subJP.style.cssText = subStyle + ';color:#d7a6ff;'; // JP = 보라
+        subKO.style.cssText = subStyle + ';color:#fff;font-size:16px;'; // KO = 흰색
+        subOverlay.appendChild(subJP);
+        subOverlay.appendChild(subKO);
+
         function apply(tt) {
           t = Math.max(0, Math.min(DUR, tt));
           shell.style.setProperty('background-image', "url('" + frameFor(t) + "')", 'important');
           var w = wrap.clientWidth || 0;
           var x = Math.max(14, Math.min(Math.max(14, w - 14), (t / DUR) * w));
           if (ph) ph.style.left = x + 'px';
+          // 화면 자막 갱신
+          var cur = cueAt(t);
+          subJP.textContent = cur ? cur.jp : '';
+          subKO.textContent = cur ? cur.ko : '';
+          subJP.style.display = (cur && cur.jp) ? 'inline-block' : 'none';
+          subKO.style.display = (cur && cur.ko) ? 'inline-block' : 'none';
         }
         apply(0);
 
