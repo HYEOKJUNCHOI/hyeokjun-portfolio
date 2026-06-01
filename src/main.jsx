@@ -80,6 +80,11 @@ function useModalScrollLock() {
       body.classList.add('modalLocked');
       documentElement.style.overflow = 'hidden';
       documentElement.classList.add('modalLocked');
+      // sideIndex JS 직접 차단 (fixed 요소는 CSS descendant selector 미적용)
+      document.querySelectorAll('.sideIndex, .sideIndexRail').forEach(el => {
+        el.dataset.prevPe = el.style.pointerEvents;
+        el.style.pointerEvents = 'none';
+      });
     }
 
     modalLockCount += 1;
@@ -96,6 +101,11 @@ function useModalScrollLock() {
       body.classList.remove('modalLocked');
       documentElement.style.overflow = modalRestoreState.htmlOverflow;
       documentElement.classList.remove('modalLocked');
+      // sideIndex 복원
+      document.querySelectorAll('.sideIndex, .sideIndexRail').forEach(el => {
+        el.style.pointerEvents = el.dataset.prevPe || '';
+        delete el.dataset.prevPe;
+      });
       window.scrollTo?.(0, modalRestoreState.scrollY);
       modalRestoreState = null;
     };
@@ -1238,7 +1248,7 @@ function ShowcaseDetailModal({ item, onClose, onNext, onPrevious }) {
             </div>
           </div>
         </div>
-        <p className="modalHintCapsule">← →</p>
+        <p className="modalHintCapsule"><span className="hintKey">←</span><span className="hintKey">→</span> 이동&nbsp;&nbsp;·&nbsp;&nbsp;<span className="hintKey">ESC</span> 나가기</p>
       </div>
     </div>
   );
@@ -1508,7 +1518,7 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
             </div>
           </div>
         </div>
-        <p className="modalHintCapsule">← →</p>
+        <p className="modalHintCapsule"><span className="hintKey">←</span><span className="hintKey">→</span> 이동&nbsp;&nbsp;·&nbsp;&nbsp;<span className="hintKey">ESC</span> 나가기</p>
       </div>
     </div>
   );
