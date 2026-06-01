@@ -2362,6 +2362,7 @@ img, svg, iframe { max-width: 100%; }
   .projectVisualPane {
     aspect-ratio: 44 / 35;
     height: auto;
+    padding: clamp(14px, 1.8vw, 22px);
     border-bottom: 1px solid rgba(40, 219, 195, 0.16);
     border-radius: 17px 17px 0 0;
     clip-path: inset(0 round 17px 17px 0 0);
@@ -2376,12 +2377,13 @@ img, svg, iframe { max-width: 100%; }
   .projectVisualPane > img {
     object-fit: contain;
     object-position: center;
+    border-radius: 12px;
     filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.34));
   }
   .projectCardChrome {
     align-content: end;
-    gap: 6px;
-    padding: 18px 16px 20px;
+    gap: 8px;
+    padding: 24px 24px 30px;
     background: linear-gradient(180deg, rgba(7, 8, 8, 0.02) 34%, rgba(7, 8, 8, 0.76));
   }
   .projectCardChrome strong {
@@ -2512,6 +2514,7 @@ img, svg, iframe { max-width: 100%; }
   .projectVisualPane {
     aspect-ratio: 44 / 35;
     height: auto;
+    padding: 0;
     overflow: hidden;
     border-radius: 17px 17px 0 0;
     border-bottom: 1px solid rgba(40, 219, 195, 0.16);
@@ -2530,6 +2533,7 @@ img, svg, iframe { max-width: 100%; }
   .projectVisualPane > img {
     object-fit: contain;
     object-position: center;
+    border-radius: 0;
     filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.34));
   }
   .showcaseImageCard { aspect-ratio: 44 / 35; }
