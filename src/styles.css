@@ -2298,6 +2298,41 @@ img, svg, iframe { max-width: 100%; }
   }
   .heroCopy { align-self: start; width: 100%; }
   .heroLead { width: 100%; }
+  .showcaseDetailModal {
+    padding: 12px;
+  }
+  .showcaseDetailModalStack {
+    gap: 8px;
+    width: min(100%, calc(100vw - 24px));
+  }
+  .showcaseDetailDialog {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.84fr);
+    gap: 14px;
+    max-height: calc(100dvh - 44px);
+    padding: 14px;
+  }
+  .showcaseDetailImage img {
+    min-height: 0;
+    height: min(62dvh, 480px);
+  }
+  .showcaseDetailCopy {
+    align-content: start;
+    gap: 10px;
+    padding: 14px;
+    overflow: auto;
+  }
+  .showcaseDetailCopy h3 {
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.2;
+  }
+  .showcaseDetailCopy p:not(.eyebrow) {
+    padding: 8px 10px;
+    font-size: 14px;
+    line-height: 1.58;
+  }
+  .showcaseDetailModal .modalHintCapsule {
+    display: none;
+  }
 }
 
 @media (max-width: 1040px) {
