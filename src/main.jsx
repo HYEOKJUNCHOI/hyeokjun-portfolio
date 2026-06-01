@@ -535,23 +535,27 @@ function LibrarySection() {
       </div>
       {addOpen ? (
         <BookAddModal
+          books={books}
           onClose={() => setAddOpen(false)}
           onAdded={() => { setAddOpen(false); loadShelf(); }}
+          onChanged={loadShelf}
         />
       ) : null}
     </section>
   );
 }
 
-function BookAddModal({ onClose, onAdded }) {
+function BookAddModal({ books, onClose, onAdded, onChanged }) {
   useModalScrollLock();
-  // 2단계: ① PIN 게이트(/api/verify-pin) → ② 등록창(ISBN 조회→표지/분류 확인→저장).
+  // 2단계: ① PIN 게이트(/api/verify-pin) → ② 관리 메뉴(등록/삭제).
   // 서버리스(/api/*)라 로컬 vite dev 에선 동작 X, 배포(Vercel)에서 동작.
-  const [step, setStep] = useState('pin'); // 'pin' | 'register'
+  const [step, setStep] = useState('pin'); // 'pin' | 'manage'
+  const [mode, setMode] = useState('register'); // 'register' | 'delete'
   const [pin, setPin] = useState('');
   const [isbn, setIsbn] = useState('');
   const [book, setBook] = useState(null);
   const [status, setStatus] = useState({ kind: 'idle' });
+  const [confirmDeleteIsbn, setConfirmDeleteIsbn] = useState('');
   const [scanning, setScanning] = useState(false);
   const videoRef = useRef(null);
   const controlsRef = useRef(null);
@@ -574,7 +578,7 @@ function BookAddModal({ onClose, onAdded }) {
       });
       if (!r.ok) throw new Error('bad_pin');
       setStatus({ kind: 'idle' });
-      setStep('register');
+      setStep('manage');
     } catch (e) {
       setStatus({ kind: 'error', msg: 'PIN이 틀렸습니다.' });
     }
@@ -633,8 +637,35 @@ function BookAddModal({ onClose, onAdded }) {
     }
   };
 
+  const deleteBook = async (target) => {
+    const targetIsbn = String(target?.isbn13 || '').replace(/\D/g, '');
+    if (!targetIsbn) return;
+    if (confirmDeleteIsbn !== targetIsbn) {
+      setConfirmDeleteIsbn(targetIsbn);
+      setStatus({ kind: 'idle' });
+      return;
+    }
+
+    setStatus({ kind: 'loading' });
+    try {
+      const r = await fetch('/api/book-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', pin, isbn: targetIsbn }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'delete');
+      setConfirmDeleteIsbn('');
+      setStatus({ kind: 'idle' });
+      onChanged?.();
+    } catch (e) {
+      const m = String(e.message || e);
+      setStatus({ kind: 'error', msg: m === 'bad_pin' ? 'PIN이 틀렸습니다.' : '삭제 실패: ' + m });
+    }
+  };
+
   return (
-    <div className="bookAddModal" role="dialog" aria-modal="true" aria-label="책 등록">
+    <div className="bookAddModal" role="dialog" aria-modal="true" aria-label="책 관리">
       <button className="bookAddBackdrop" type="button" onClick={onClose} aria-label="닫기" />
       <div className="bookAddPanel">
         <button className="modalClose bookAddClose" type="button" onClick={onClose}>닫기</button>
@@ -652,38 +683,76 @@ function BookAddModal({ onClose, onAdded }) {
           </>
         ) : (
           <>
-            <h3 className="bookAddTitle">책 등록</h3>
-            <label className="bookAddField">
-              <span>ISBN</span>
-              <div className="bookAddIsbnRow">
-                <input value={isbn} inputMode="numeric" placeholder="9788…(13자리)" autoFocus
-                  onChange={(e) => setIsbn(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter') lookup(); }} />
-                <button type="button" onClick={scanning ? stopScan : startScan}>{scanning ? '중지' : '📷'}</button>
-                <button type="button" onClick={lookup}>조회</button>
-              </div>
-            </label>
+            <h3 className="bookAddTitle">책 관리</h3>
+            <div className="bookManageTabs" role="tablist" aria-label="책 관리 메뉴">
+              <button type="button" className={mode === 'register' ? 'active' : ''} onClick={() => setMode('register')}>
+                등록
+              </button>
+              <button type="button" className={mode === 'delete' ? 'active' : ''} onClick={() => { stopScan(); setMode('delete'); }}>
+                삭제
+              </button>
+            </div>
 
-            {scanning ? <video ref={videoRef} className="bookAddVideo" muted playsInline /> : null}
+            {mode === 'register' ? (
+              <>
+                <label className="bookAddField">
+                  <span>ISBN</span>
+                  <div className="bookAddIsbnRow">
+                    <input value={isbn} inputMode="numeric" placeholder="9788…(13자리)" autoFocus
+                      onChange={(e) => setIsbn(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') lookup(); }} />
+                    <button type="button" onClick={scanning ? stopScan : startScan}>{scanning ? '중지' : '📷'}</button>
+                    <button type="button" onClick={lookup}>조회</button>
+                  </div>
+                </label>
 
-            {book ? (
-              <div className="bookAddPreview">
-                <img src={book.cover} alt="" />
-                <div className="bookAddPreviewBody">
-                  <strong>{book.title}</strong>
-                  <em>{book.author}</em>
-                  <label className="bookAddField">
-                    <span>표지 URL (옛 판본이면 교체)</span>
-                    <input value={book.cover} onChange={(e) => setBook({ ...book, cover: e.target.value })} />
-                  </label>
-                  <label className="bookAddField">
-                    <span>분류</span>
-                    <input value={book.category} onChange={(e) => setBook({ ...book, category: e.target.value })} />
-                  </label>
-                  <button type="button" className="bookAddSave" onClick={save}>등록</button>
-                </div>
+                {scanning ? <video ref={videoRef} className="bookAddVideo" muted playsInline /> : null}
+
+                {book ? (
+                  <div className="bookAddPreview">
+                    <img src={book.cover} alt="" />
+                    <div className="bookAddPreviewBody">
+                      <strong>{book.title}</strong>
+                      <em>{book.author}</em>
+                      <label className="bookAddField">
+                        <span>표지 URL (옛 판본이면 교체)</span>
+                        <input value={book.cover} onChange={(e) => setBook({ ...book, cover: e.target.value })} />
+                      </label>
+                      <label className="bookAddField">
+                        <span>분류</span>
+                        <input value={book.category} onChange={(e) => setBook({ ...book, category: e.target.value })} />
+                      </label>
+                      <button type="button" className="bookAddSave" onClick={save}>등록</button>
+                    </div>
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              <div className="bookDeleteList" aria-label="등록된 책 삭제">
+                {books.length ? books.map((item) => {
+                  const itemIsbn = item.isbn13 || '';
+                  const isConfirming = confirmDeleteIsbn === itemIsbn;
+                  return (
+                    <div className="bookDeleteItem" key={itemIsbn || item.title}>
+                      <img src={item.cover} alt="" loading="lazy" />
+                      <span>
+                        <strong>{item.title}</strong>
+                        <em>{item.author || item.category || itemIsbn}</em>
+                      </span>
+                      <button
+                        type="button"
+                        className={isConfirming ? 'confirming' : ''}
+                        onClick={() => deleteBook(item)}
+                      >
+                        {isConfirming ? '삭제 확인' : '삭제'}
+                      </button>
+                    </div>
+                  );
+                }) : (
+                  <p className="bookAddMsg">등록된 책이 없습니다.</p>
+                )}
               </div>
-            ) : null}
+            )}
           </>
         )}
 

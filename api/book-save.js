@@ -20,6 +20,19 @@ export default async function handler(req, res) {
   }
 
   const isbn = String(body.isbn || '').replace(/\D/g, '');
+  if (body.action === 'delete') {
+    if (isbn.length !== 13) {
+      return res.status(400).json({ error: 'invalid_input' });
+    }
+
+    try {
+      await getDb().collection('shelf').doc(isbn).delete();
+      return res.status(200).json({ ok: true, deleted: isbn });
+    } catch (e) {
+      return res.status(500).json({ error: 'delete_failed', detail: String(e.message || e) });
+    }
+  }
+
   const title = String(body.title || '').trim();
   if (isbn.length !== 13 || !title) {
     return res.status(400).json({ error: 'invalid_input' });
@@ -42,5 +55,3 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'save_failed', detail: String(e.message || e) });
   }
 }
-
-// (선택) 삭제도 같은 PIN 으로 — body.action === 'delete'
