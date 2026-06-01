@@ -2197,8 +2197,17 @@ img, svg, iframe { max-width: 100%; }
 .errorList input { min-height: auto; padding: 0; }
 .statGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); margin-bottom: var(--space-3); }
 
-@media (max-width: 1180px) {
+@media (max-width: 1700px) {
   .sideIndex { display: none; }
+  .pageShell {
+    width: min(100% - 32px, 1280px);
+    max-width: none;
+    margin: 0 auto;
+  }
+  .projectTeaserVisual {
+    grid-template-columns: minmax(0, 1.24fr) minmax(0, 0.76fr);
+    min-height: clamp(224px, 21vw, 286px);
+  }
 }
 
 @media (max-width: 1500px) {
@@ -2228,7 +2237,7 @@ img, svg, iframe { max-width: 100%; }
 
 @media (max-width: 1180px) {
   .pageShell {
-    width: min(100% - 40px, 1040px);
+    width: min(100% - 24px, 1080px);
     margin: 0 auto;
     padding-right: 0;
     padding-left: 0;
@@ -2263,11 +2272,16 @@ img, svg, iframe { max-width: 100%; }
   .showcaseImageCard { width: 100%; max-width: 100%; min-width: 0; aspect-ratio: 44 / 35; }
   .showcaseImageCard:hover, .showcaseImageCard:focus-within { transform: none; }
   .showcaseImageOverlay strong { white-space: normal; overflow-wrap: anywhere; word-break: keep-all; }
+  .projectTeaserVisual {
+    grid-template-columns: minmax(0, 1.28fr) minmax(0, 0.72fr);
+    min-height: clamp(228px, 24vw, 292px);
+  }
+  .projectExplanation { padding: clamp(var(--space-3), 1.6vw, var(--space-5)); }
 }
 
 @media (max-width: 760px) {
   :root { --portfolio-side-rail: 12px; --portfolio-left-gutter: 12px; --portfolio-canvas: 1520px; }
-  .pageShell { width: min(100% - 24px, 1520px); margin: 0 auto; padding: var(--space-3) 0 var(--space-12); }
+  .pageShell { width: min(100% - 12px, 1520px); margin: 0 auto; padding: var(--space-2) 0 var(--space-12); }
   .heroSection { min-height: auto; padding: 152px var(--space-5) var(--space-8); border-radius: var(--radius-md); }
   .heroTechLayout { gap: var(--space-4); margin-bottom: var(--space-8); }
   .heroTechLayout .heroSection {
@@ -2349,9 +2363,12 @@ img, svg, iframe { max-width: 100%; }
     border-radius: inherit;
     background: rgba(7, 8, 8, 0.48);
   }
-  .projectTeaserVisual > img {
-    height: clamp(168px, 46vw, 210px);
+  .projectVisualPane {
+    height: clamp(208px, 58vw, 264px);
+  }
+  .projectVisualPane > img {
     object-fit: cover;
+    object-position: center;
     background: rgba(7, 8, 8, 0.4);
   }
   .showcaseImageCard { aspect-ratio: 44 / 35; }
@@ -2360,7 +2377,7 @@ img, svg, iframe { max-width: 100%; }
     right: 0;
     bottom: auto;
     left: 0;
-    min-height: clamp(168px, 46vw, 210px);
+    min-height: clamp(208px, 58vw, 264px);
     align-content: end;
     gap: 6px;
     padding: 18px 16px;
