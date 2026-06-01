@@ -6849,27 +6849,29 @@ ${value}`
           };
         }
 
-        // 화면 자막 오버레이 요소 생성
+        // 화면 자막 오버레이 — shell 밖 fixed로 붙여 overflow:hidden 영향 회피
         var subOverlay = document.createElement('div');
-        subOverlay.style.cssText = [
-          'position:absolute','bottom:18px','left:50%','transform:translateX(-50%)',
-          'text-align:center','pointer-events:none','z-index:10',
-          'display:flex','flex-direction:column','align-items:center','gap:2px',
-        ].join(';');
-        shell.style.position = 'relative';
-        shell.appendChild(subOverlay);
+        subOverlay.style.cssText = 'position:fixed;pointer-events:none;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:3px;transition:opacity .15s;';
+        document.body.appendChild(subOverlay);
 
+        var subStyle = 'padding:3px 12px;border-radius:4px;font-size:15px;font-weight:700;line-height:1.5;background:rgba(0,0,0,0.72);letter-spacing:0.02em;white-space:nowrap;';
         var subJP = document.createElement('div');
         var subKO = document.createElement('div');
-        var subStyle = [
-          'display:inline-block','padding:2px 10px','border-radius:4px',
-          'font-size:15px','font-weight:700','line-height:1.45',
-          'background:rgba(0,0,0,0.62)','letter-spacing:0.02em',
-        ].join(';');
-        subJP.style.cssText = subStyle + ';color:#d7a6ff;'; // JP = 보라
-        subKO.style.cssText = subStyle + ';color:#fff;font-size:16px;'; // KO = 흰색
+        subJP.style.cssText = subStyle + 'color:#d7a6ff;font-size:14px;';
+        subKO.style.cssText = subStyle + 'color:#fff;font-size:16px;';
         subOverlay.appendChild(subJP);
         subOverlay.appendChild(subKO);
+
+        function positionSubOverlay() {
+          var r = shell.getBoundingClientRect();
+          if (!r.width) return;
+          subOverlay.style.left = (r.left + r.width / 2) + 'px';
+          subOverlay.style.top  = (r.bottom - 56) + 'px';
+          subOverlay.style.transform = 'translateX(-50%)';
+        }
+        positionSubOverlay();
+        window.addEventListener('resize', positionSubOverlay);
+        window.addEventListener('scroll', positionSubOverlay, { passive: true });
 
         function apply(tt) {
           t = Math.max(0, Math.min(DUR, tt));
@@ -6877,12 +6879,14 @@ ${value}`
           var w = wrap.clientWidth || 0;
           var x = Math.max(14, Math.min(Math.max(14, w - 14), (t / DUR) * w));
           if (ph) ph.style.left = x + 'px';
+          positionSubOverlay();
           // 화면 자막 갱신
           var cur = cueAt(t);
           subJP.textContent = cur ? cur.jp : '';
           subKO.textContent = cur ? cur.ko : '';
           subJP.style.display = (cur && cur.jp) ? 'inline-block' : 'none';
           subKO.style.display = (cur && cur.ko) ? 'inline-block' : 'none';
+          subOverlay.style.opacity = cur ? '1' : '0';
         }
         apply(0);
 
