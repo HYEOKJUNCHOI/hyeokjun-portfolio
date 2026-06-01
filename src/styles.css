@@ -2370,6 +2370,13 @@ img, svg, iframe { max-width: 100%; }
   .introPage .letterPanel { min-height: auto; }
   .timelineCard { min-height: auto; gap: var(--space-3); }
   .timelineContent { padding-top: var(--space-10); }
+  .workSection {
+    padding-top: clamp(76px, 18vw, 104px);
+    scroll-margin-top: 104px;
+  }
+  .workSection .sectionTitle {
+    margin-bottom: clamp(var(--space-4), 5vw, var(--space-6));
+  }
   .projectGrid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -2414,6 +2421,9 @@ img, svg, iframe { max-width: 100%; }
   .projectVisualPane {
     aspect-ratio: 44 / 35;
     height: auto;
+    overflow: hidden;
+    border-radius: 17px 17px 0 0;
+    border-bottom: 1px solid rgba(40, 219, 195, 0.16);
     background: rgba(7, 8, 8, 0.72);
   }
   .projectVisualPane::before {
@@ -2436,8 +2446,8 @@ img, svg, iframe { max-width: 100%; }
     min-height: 0;
     align-content: end;
     gap: 6px;
-    padding: 18px 16px;
-    background: linear-gradient(180deg, rgba(7, 8, 8, 0.04), rgba(7, 8, 8, 0.72));
+    padding: 18px 16px 20px;
+    background: linear-gradient(180deg, rgba(7, 8, 8, 0.02) 34%, rgba(7, 8, 8, 0.76));
   }
   .projectActionCue {
     top: clamp(184px, calc(79.545vw - 70px), 326px);
@@ -2461,6 +2471,7 @@ img, svg, iframe { max-width: 100%; }
     inset: auto;
     display: block;
     padding: 18px 18px 20px;
+    border-top: 1px solid rgba(244, 241, 232, 0.06);
     background:
       linear-gradient(135deg, rgba(40, 219, 195, 0.075), transparent 52%),
       rgba(18, 22, 22, 0.9);
