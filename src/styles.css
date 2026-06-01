@@ -114,6 +114,10 @@ html.modalLocked, body.modalLocked {
   overscroll-behavior: none;
   scrollbar-width: none;
 }
+/* 모달 열린 동안 sideIndex(우측 네비게이션) 클릭 차단 */
+body.modalLocked .sideIndex {
+  pointer-events: none;
+}
 
 button, a, input, select, textarea { font: inherit; }
 button { color: inherit; }
@@ -1650,13 +1654,22 @@ img, svg, iframe { max-width: 100%; }
   opacity: 1;
 }
 
-.screenshotHead > span, .mobileShowcaseHeader > span, .resultPill, .modalHintCapsule, .docChipRow span {
+.screenshotHead > span, .mobileShowcaseHeader > span, .resultPill, .docChipRow span {
   border: 1px solid rgba(40, 219, 195, 0.28);
   border-radius: var(--radius-pill);
   background: rgba(40, 219, 195, 0.09);
   color: var(--teal-300);
   font-style: normal;
   font-weight: 900;
+}
+.modalHintCapsule {
+  border: 1px solid rgba(40, 219, 195, 0.55);
+  border-radius: var(--radius-pill);
+  background: rgba(10, 14, 14, 0.92);
+  color: var(--teal-300);
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: 0.12em;
 }
 
 .detailPanel {

@@ -1238,7 +1238,7 @@ function ShowcaseDetailModal({ item, onClose, onNext, onPrevious }) {
             </div>
           </div>
         </div>
-        <p className="modalHintCapsule">키보드 ← · → 로도 이동할 수 있습니다.</p>
+        <p className="modalHintCapsule">← →</p>
       </div>
     </div>
   );
@@ -1508,7 +1508,7 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
             </div>
           </div>
         </div>
-        <p className="modalHintCapsule">키보드 ← · → 로도 이동할 수 있습니다.</p>
+        <p className="modalHintCapsule">← →</p>
       </div>
     </div>
   );
