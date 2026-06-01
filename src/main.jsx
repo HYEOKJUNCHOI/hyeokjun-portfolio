@@ -1310,17 +1310,7 @@ function ProjectDetail({ detailHeadingId, detailPanelId, onRequestClose, project
     if (!selectedScreenshot) return;
 
     const total = project.screenshots.length;
-    const nextIndex = selectedScreenshot.index + direction;
-
-    if (nextIndex < 0) return;
-
-    if (nextIndex >= total) {
-      setScreenshotEdgeNotice({
-        key: Date.now(),
-        message: '마지막 페이지입니다.',
-      });
-      return;
-    }
+    const nextIndex = (selectedScreenshot.index + direction + total) % total;
 
     const [title, caption, src] = project.screenshots[nextIndex];
 
@@ -1436,8 +1426,12 @@ function ProjectBrief({ project }) {
 
 function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onPrevious }) {
   useModalScrollLock();
+  const touchStartRef = useRef(null);
   const shouldFillFrame = screenshot.index > 0 && screenshot.index < 5;
   const isLegacyFrame = screenshot.index === 0 || screenshot.index === project.screenshots.length - 1;
+  const isMobileScreenshotViewport = () => (
+    window.matchMedia?.('(max-width: 760px)').matches ?? window.innerWidth <= 760
+  );
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -1460,6 +1454,48 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose, onNext, onPrevious]);
+
+  const handleMediaPointerDown = (event) => {
+    if (event.pointerType !== 'touch' || !isMobileScreenshotViewport()) return;
+    touchStartRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+      id: event.pointerId,
+    };
+  };
+
+  const handleMediaPointerUp = (event) => {
+    if (!isMobileScreenshotViewport()) {
+      touchStartRef.current = null;
+      return;
+    }
+
+    const touchStart = touchStartRef.current;
+    if (!touchStart || touchStart.id !== event.pointerId) return;
+
+    touchStartRef.current = null;
+
+    const deltaX = event.clientX - touchStart.x;
+    const deltaY = event.clientY - touchStart.y;
+    const isHorizontalSwipe = Math.abs(deltaX) > 46 && Math.abs(deltaX) > Math.abs(deltaY) * 1.25;
+
+    if (isHorizontalSwipe) {
+      if (deltaX < 0) {
+        onNext();
+      } else {
+        onPrevious();
+      }
+      return;
+    }
+
+    if (Math.abs(deltaX) < 12 && Math.abs(deltaY) < 12) {
+      onClose();
+    }
+  };
+
+  const handleMediaPointerCancel = () => {
+    touchStartRef.current = null;
+  };
 
   return (
     <div className="screenshotModal" role="dialog" aria-modal="true" aria-label={`${screenshot.title} 크게 보기`}>
@@ -1490,7 +1526,12 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
               <strong>{project.label}</strong>
             </div>
             <button className="modalClose" onClick={onClose} type="button">닫기</button>
-            <div className="modalMedia">
+            <div
+              className="modalMedia"
+              onPointerCancel={handleMediaPointerCancel}
+              onPointerDown={handleMediaPointerDown}
+              onPointerUp={handleMediaPointerUp}
+            >
               <div className={[
                 'modalPreview',
                 screenshot.src ? 'hasImage' : '',

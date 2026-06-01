@@ -2567,84 +2567,90 @@ img, svg, iframe { max-width: 100%; }
   .browserViewport { height: 68vh; min-height: 480px; }
 }
 
-@media (max-width: 760px) and (orientation: portrait) {
-  .screenshotModal {
-    padding: 16px;
-  }
-  .screenshotModalStack {
-    display: none;
-  }
-  .screenshotRotateNotice {
-    display: block;
-  }
-  .modalClose.screenshotRotateClose {
-    top: 12px;
-    right: 12px;
-  }
-}
-
-@media (max-height: 520px) and (orientation: landscape) {
+@media (max-width: 760px) {
   .screenshotModal {
     padding: 8px;
+    background: rgba(0, 0, 0, 0.92);
   }
   .screenshotModalStack {
-    width: calc(100vw - 16px);
+    width: min(calc(100vw - 16px), calc((100dvh - 72px) * 1.777));
     max-height: calc(100dvh - 16px);
+    gap: 8px;
+  }
+  .screenshotModalShell {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    grid-template-areas: "previous dialog next";
+    align-items: center;
+    gap: 6px;
   }
   .screenshotDialog,
-  .screenshotDialog.fillModal {
+  .screenshotDialog.fillModal,
+  .screenshotDialog.legacyModal {
+    grid-area: dialog;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
-    gap: 0;
+    width: 100%;
     max-width: none;
     max-height: calc(100dvh - 16px);
     padding: 0;
-    overflow: hidden;
+    overflow: visible;
+    border: 0;
     border-radius: var(--radius-md);
+    background: transparent;
+    box-shadow: none;
   }
   .screenshotDialog .modalWindowBar,
-  .screenshotDialog .modalCaption,
-  .screenshotModal .modalHintCapsule {
+  .screenshotDialog .modalCaption {
     display: none;
   }
   .screenshotDialog .modalMedia {
-    min-height: 0;
+    overflow: hidden;
+    touch-action: pan-y;
+    border: 1px solid rgba(244, 241, 232, 0.22);
+    border-radius: var(--radius-md);
+    background: #ffffff;
+    box-shadow: 0 18px 64px rgba(0, 0, 0, 0.45);
   }
   .screenshotDialog .modalPreview,
   .screenshotDialog.fillModal .modalPreview,
   .screenshotDialog.legacyModal .modalPreview {
     width: 100%;
-    height: calc(100dvh - 16px);
+    height: auto;
     min-height: 0;
+    aspect-ratio: 16 / 9;
     border: 0;
     border-radius: 0;
-    background: #050606;
+    background: #ffffff;
   }
   .screenshotDialog .modalPreview.hasImage img,
-  .screenshotDialog.legacyModal .modalPreview.hasImage img,
-  .screenshotDialog.legacyModal .modalPreview.hasImage.cropLegacyFrame img {
+  .screenshotDialog.fillModal .modalPreview.hasImage img,
+  .screenshotDialog.legacyModal .modalPreview.hasImage img {
     object-fit: contain;
     object-position: center;
-    background: #050606;
+    background: #ffffff;
   }
+  .screenshotModalShell > .modalNavPrevious,
+  .screenshotModalShell > .modalNavNext {
+    position: static;
+    width: 44px;
+    height: min(42dvh, 180px);
+    min-height: 92px;
+    transform: none;
+    border-radius: var(--radius-md);
+    background: rgba(13, 16, 16, 0.76);
+  }
+  .screenshotModalShell > .modalNavPrevious { grid-area: previous; }
+  .screenshotModalShell > .modalNavNext { grid-area: next; }
   .screenshotDialog .modalClose {
-    top: 10px;
-    right: 10px;
-    min-width: 46px;
+    top: -52px;
+    right: 0;
+    min-width: 48px;
     min-height: 40px;
-    background: rgba(5, 6, 6, 0.78);
   }
-  .screenshotModal .modalNav {
-    width: 40px;
-    height: 52px;
-    background: rgba(5, 6, 6, 0.72);
-  }
-  .screenshotModal .modalNavPrevious {
-    left: 10px;
-  }
-  .screenshotModal .modalNavNext {
-    right: 10px;
+  .screenshotDialog .modalEdgeNotice {
+    top: 8px;
   }
 }
 
@@ -2658,13 +2664,7 @@ img, svg, iframe { max-width: 100%; }
   .projectGrid { gap: var(--space-2); }
   .heroNav { left: var(--space-3); width: calc(100% - 24px); }
   .heroNav a { font-size: 11px; }
-  .screenshotModalStack { width: calc(100vw - 20px); }
-  .modalPreview {
-    height: min(56dvh, 380px);
-  }
-  .screenshotDialog.legacyModal .modalPreview {
-    height: min(58dvh, 392px);
-  }
+  .screenshotModalStack { width: min(calc(100vw - 16px), calc((100dvh - 72px) * 1.777)); }
   .mobileScreen { min-height: 402px; padding: var(--space-3); }
 }
 
