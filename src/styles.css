@@ -2340,7 +2340,7 @@ img, svg, iframe { max-width: 100%; }
   .heroSection { padding: 132px var(--space-8) var(--space-10); }
   .heroTechLayout .heroSection { padding: var(--space-6) var(--space-6) var(--space-5); }
   .experienceTimeline { grid-template-columns: 1fr; }
-  .aboutGrid, .experienceGrid, .projectGrid, .projectBrief, .screenshotGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .aboutGrid, .experienceGrid, .projectBrief, .screenshotGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .showcaseImageGrid { width: 100%; max-width: 100%; min-width: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .showcaseImageCard { width: 100%; max-width: 100%; min-width: 0; aspect-ratio: 44 / 35; }
   .showcaseImageCard:hover, .showcaseImageCard:focus-within { transform: none; }
