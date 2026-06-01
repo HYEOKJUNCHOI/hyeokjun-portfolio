@@ -4468,12 +4468,12 @@
               review_done: true,
               cue_missing: false,
               cue_index: 14,
-              cue_start: "00:00:18,400",
-              cue_end: "00:00:21,000",
-              cue_start_seconds: 18.4,
-              cue_end_seconds: 21.0,
-              clicked_time: "00:00:19,200",
-              clicked_seconds: 19.2,
+              cue_start: "00:00:07,000",
+              cue_end: "00:00:09,500",
+              cue_start_seconds: 7.0,
+              cue_end_seconds: 9.5,
+              clicked_time: "00:00:08,000",
+              clicked_seconds: 8.0,
               created_at: now,
             },
           ];
@@ -6804,18 +6804,19 @@ ${value}`
     <!-- 데모 플레이어: osaka.mp4 자동 로드 + JP/KO 자막 오버레이 -->
     <script>
       (function () {
-        var DUR = 22, t = 0, dragging = false, paused = false;
+        var DUR = 10, t = 0, dragging = false, paused = false;
         var shell = document.getElementById('videoShell');
         var ph = document.getElementById('playhead');
         var wrap = document.getElementById('waveWrap');
         var videoEl = document.getElementById('video');
         if (!shell || !wrap) return;
 
-        // osaka.mp4 자동 로드
-        (function autoLoadVideo() {
+        // osaka.mp4 + osaka.srt 자동 로드 — 실제 SFC 툴처럼 동작
+        (function autoLoadFiles() {
           try {
-            var url = '/clones/subtitle-fix-checker/demo/osaka.mp4';
-            videoEl.src = url;
+            // MP4 로드
+            var videoUrl = '/clones/subtitle-fix-checker/demo/osaka.mp4';
+            videoEl.src = videoUrl;
             videoEl.loop = true;
             videoEl.muted = true;
             videoEl.autoplay = true;
@@ -6825,7 +6826,29 @@ ${value}`
             shell.style.removeProperty('animation');
             var badge = document.getElementById('videoBadge');
             if (badge) { badge.classList.add('visible'); var sp=badge.querySelector('span'); if(sp) sp.textContent='osaka.mp4'; }
-          } catch(e) { /* no-op: 영상 로드 실패 시 이미지 폴백 */ }
+
+            // SRT 로드 — fetch로 텍스트 가져와서 실제 loadSrtFile 경로로 주입
+            fetch('/clones/subtitle-fix-checker/demo/osaka.srt')
+              .then(function(r){ return r.text(); })
+              .then(function(txt){
+                // parseSrt + srtCues 설정 (원본 앱 함수 활용)
+                if (typeof parseSrt === 'function') {
+                  window.srtCues = parseSrt(txt);
+                }
+                var srtBadge = document.getElementById('srtBadge');
+                if (srtBadge) { srtBadge.classList.add('visible'); var sp2=srtBadge.querySelector('span'); if(sp2) sp2.textContent='osaka.srt'; }
+                // 파형 재그리기 (SRT 큐 반영)
+                if (typeof drawWaveform === 'function') setTimeout(drawWaveform, 100);
+              }).catch(function(){});
+
+            // 파형은 영상 오디오로 실제 그리기
+            if (typeof loadWaveform === 'function') {
+              fetch(videoUrl).then(function(r){ return r.blob(); }).then(function(b){
+                var f = new File([b], 'osaka.mp4', { type: 'video/mp4' });
+                loadWaveform(f).catch(function(){});
+              }).catch(function(){});
+            }
+          } catch(e) { /* no-op */ }
         })();
 
         var FRAMES = ['f1', 'f2', 'f3'].map(function (n) {
@@ -6849,9 +6872,9 @@ ${value}`
 
         // 씨드 자막 테이블 — clicked_seconds 기준 ±1.5초 안에 있으면 해당 텍스트 반환
         var SEED_SUBS = [
-          { start: 3.0, end: 5.5, jp: '今日は大阪、', ko: '오늘은 오사카 ,' },
-          { start: 5.0, end: 7.5, jp: 'ご紹介します', ko: '소개를 해드릴게요' },
-          { start: 18.0, end: 22.0, jp: 'やっぱり大阪のたこ焼きが一番！', ko: '역시 오사카 타코야끼가 최고예요!' },
+          { start: 1.2, end: 3.6, jp: '今日は大阪、', ko: '오늘은 오사카 ,' },
+          { start: 4.0, end: 6.2, jp: 'ご紹介します', ko: '소개를 해드릴게요' },
+          { start: 7.0, end: 9.5, jp: 'やっぱり大阪のたこ焼きが一番！', ko: '역시 오사카 타코야끼가 최고예요!' },
         ];
         function cueAt(sec) {
           var found = null;
