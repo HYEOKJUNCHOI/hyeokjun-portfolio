@@ -1169,7 +1169,7 @@ function ContactSection() {
 function ProjectTeaserVisual({ image, kind, label, teaser, type }) {
   return (
     <span className={`projectTeaserVisual ${kind ? `projectVisual-${kind}` : ''}`} aria-hidden="true">
-      <span className="projectVisualPane">
+      <span className="projectVisualPane" style={image ? { '--project-image': `url("${image}")` } : undefined}>
         {image ? <img src={image} alt="" /> : (
           <span className="visualFrame">
             <span />
