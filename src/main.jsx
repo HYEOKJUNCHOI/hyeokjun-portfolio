@@ -550,6 +550,14 @@ function LibrarySection() {
       window.removeEventListener('resize', updateEdges);
     };
   }, []);
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    requestAnimationFrame(() => {
+      track.scrollLeft = 0;
+      updateEdges();
+    });
+  }, [books.length]);
   const scrollByDir = (direction) => {
     const track = trackRef.current;
     if (!track) return;
