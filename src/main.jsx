@@ -463,6 +463,9 @@ function ProjectNavigator({ activeId, detailPanelId, isDetailOpen, onSelectProje
               teaser={project.teaser}
               type={project.type}
             />
+            {!isDisabled ? (
+              <span className="projectActionCue" aria-hidden="true">자세히 보기</span>
+            ) : null}
             {statusLabel ? (
               <>
                 <span className="projectVisitBadge" aria-hidden="true">{statusLabel}</span>
@@ -597,8 +600,9 @@ function LibrarySection() {
             </li>
           ))}
           <li className="libraryBook libraryAddTile" key="__add__">
-            <button type="button" className="libraryAddBtn" onClick={() => setAddOpen(true)} aria-label="책 등록">
+            <button type="button" className="libraryAddBtn" onClick={() => setAddOpen(true)} aria-label="관리자 책 등록">
               <span aria-hidden="true">+</span>
+              <strong>관리자 책 등록</strong>
             </button>
           </li>
         </ul>
@@ -1076,7 +1080,7 @@ function EmailContactOverlay({ copyStatus, onClose, onCopy }) {
       <button className="emailContactBackdrop" type="button" onClick={onClose} aria-label="닫기" />
       <div className="emailContactCard">
         <button className="modalClose emailContactClose" type="button" onClick={onClose}>닫기</button>
-        <h3 id="email-contact-title">email_adress</h3>
+        <h3 id="email-contact-title">이메일 주소</h3>
         <div className="emailCopyPanel">
           <strong>{EMAIL_ADDRESS}</strong>
           <button className="emailCopyButton" type="button" onClick={onCopy}>Copy</button>

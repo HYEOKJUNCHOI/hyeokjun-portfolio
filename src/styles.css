@@ -81,18 +81,25 @@
 html {
   min-width: 320px;
   overflow-y: auto;
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 212, 223, 0.56) rgba(28, 27, 24, 0.5);
   scroll-behavior: smooth;
   scroll-padding-top: var(--space-6);
   background: var(--charcoal-950);
 }
-html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { width: 10px; height: 10px; }
+html::-webkit-scrollbar-track, body::-webkit-scrollbar-track { background: rgba(28, 27, 24, 0.5); }
+html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(28, 27, 24, 0.5);
+  border-radius: var(--radius-pill);
+  background: rgba(120, 212, 223, 0.56);
+}
 
 body {
   min-width: 320px;
   margin: 0;
   overflow-x: hidden;
-  scrollbar-width: none;
+  scrollbar-width: thin;
   background: #1C1B18;
   color: var(--text-body);
   font-family: var(--font-body);
@@ -125,9 +132,9 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.22e
 img, svg, iframe { max-width: 100%; }
 
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-  outline: 1px solid rgba(120, 212, 223, 0.72);
+  outline: 2px solid rgba(120, 212, 223, 0.9);
   outline-offset: 3px;
-  box-shadow: none;
+  box-shadow: 0 0 0 4px rgba(120, 212, 223, 0.14);
 }
 
 :where(a, button) {
@@ -1536,6 +1543,36 @@ img, svg, iframe { max-width: 100%; }
   transform: none;
 }
 
+.projectActionCue {
+  position: absolute;
+  right: clamp(14px, 1.4vw, 20px);
+  bottom: clamp(14px, 1.4vw, 20px);
+  z-index: 8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 var(--space-3);
+  border: 1px solid rgba(120, 212, 223, 0.44);
+  border-radius: var(--radius-pill);
+  background: rgba(3, 4, 4, 0.76);
+  color: var(--teal-300);
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1;
+  pointer-events: none;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(8px);
+  transition: border-color var(--duration-fast) ease, background var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+.projectCard:hover .projectActionCue,
+.projectCard:focus-visible .projectActionCue {
+  border-color: rgba(255, 111, 157, 0.58);
+  background: rgba(3, 4, 4, 0.9);
+  color: var(--text-strong);
+}
+
 .projectGridRepeat .projectCard.visited {
   background:
     linear-gradient(145deg, color-mix(in srgb, var(--off-white) 5%, transparent), transparent 46%),
@@ -2381,6 +2418,13 @@ img, svg, iframe { max-width: 100%; }
     padding: 18px 16px;
     background: linear-gradient(180deg, rgba(7, 8, 8, 0.04), rgba(7, 8, 8, 0.72));
   }
+  .projectActionCue {
+    top: calc(clamp(208px, 58vw, 264px) - 48px);
+    right: 14px;
+    bottom: auto;
+    min-height: 30px;
+    font-size: 11px;
+  }
   .showcaseImageOverlay { padding: var(--space-2); }
   .projectCardChrome .projectType {
     margin: 0;
@@ -2740,9 +2784,9 @@ img, svg, iframe { max-width: 100%; }
 .mobileDemoButton:focus-visible,
 .scheduleButtons button:focus-visible,
 .choiceRow button:focus-visible {
-  outline: 1px solid rgba(120, 212, 223, 0.72);
+  outline: 2px solid rgba(120, 212, 223, 0.9);
   outline-offset: 3px;
-  box-shadow: none;
+  box-shadow: 0 0 0 4px rgba(120, 212, 223, 0.14);
 }
 
 .cloneLaunchButton {
@@ -3356,8 +3400,11 @@ a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300)
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 10px;
   width: 132px;
   height: 198px;
+  padding: var(--space-3);
   border: 1.5px dashed var(--line-soft, rgba(244,241,232,0.22));
   border-radius: 8px;
   background: rgba(244, 241, 232, 0.03);
@@ -3367,6 +3414,15 @@ a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300)
   line-height: 1;
   cursor: pointer;
   transition: border-color .2s ease, color .2s ease, background .2s ease;
+}
+.libraryAddBtn strong {
+  color: inherit;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.32;
+  text-align: center;
+  word-break: keep-all;
 }
 .libraryAddBtn:hover {
   border-color: var(--teal-400, #04A4BA);
@@ -3379,6 +3435,12 @@ a.showcaseContactLink:hover .showcaseContactText strong { color: var(--teal-300)
     width: clamp(58px, 17vw, 84px);
     height: clamp(88px, 25.5vw, 126px);
     font-size: clamp(28px, 7vw, 36px);
+    gap: 6px;
+    padding: 8px 6px;
+  }
+  .libraryAddBtn strong {
+    font-size: clamp(9px, 2.3vw, 10px);
+    line-height: 1.22;
   }
 }
 
