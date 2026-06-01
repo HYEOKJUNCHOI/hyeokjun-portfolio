@@ -6801,14 +6801,33 @@ ${value}`
         } catch (e) { /* no-op */ }
       })();
     </script>
-    <!-- 데모 가짜 플레이어: 영상이 없으니 파형/타임바/이미지 전환을 JS로 흉내 -->
+    <!-- 데모 플레이어: osaka.mp4 자동 로드 + JP/KO 자막 오버레이 -->
     <script>
       (function () {
         var DUR = 22, t = 0, dragging = false, paused = false;
         var shell = document.getElementById('videoShell');
         var ph = document.getElementById('playhead');
         var wrap = document.getElementById('waveWrap');
+        var videoEl = document.getElementById('video');
         if (!shell || !wrap) return;
+
+        // osaka.mp4 자동 로드
+        (function autoLoadVideo() {
+          try {
+            var url = '/clones/subtitle-fix-checker/demo/osaka.mp4';
+            videoEl.src = url;
+            videoEl.loop = true;
+            videoEl.muted = true;
+            videoEl.autoplay = true;
+            videoEl.load();
+            shell.classList.add('hasVideo');
+            shell.style.removeProperty('background-image');
+            shell.style.removeProperty('animation');
+            var badge = document.getElementById('videoBadge');
+            if (badge) { badge.classList.add('visible'); var sp=badge.querySelector('span'); if(sp) sp.textContent='osaka.mp4'; }
+          } catch(e) { /* no-op: 영상 로드 실패 시 이미지 폴백 */ }
+        })();
+
         var FRAMES = ['f1', 'f2', 'f3'].map(function (n) {
           return '/clones/subtitle-fix-checker/demo/' + n + '.jpg';
         });
@@ -6866,36 +6885,57 @@ ${value}`
           var r = shell.getBoundingClientRect();
           if (!r.width) return;
           subOverlay.style.left = (r.left + r.width / 2) + 'px';
-          subOverlay.style.top  = (r.bottom - 56) + 'px';
+          subOverlay.style.top  = (r.bottom - 90) + 'px';  // 더 위로
           subOverlay.style.transform = 'translateX(-50%)';
         }
         positionSubOverlay();
         window.addEventListener('resize', positionSubOverlay);
         window.addEventListener('scroll', positionSubOverlay, { passive: true });
 
-        function apply(tt) {
-          t = Math.max(0, Math.min(DUR, tt));
-          shell.style.setProperty('background-image', "url('" + frameFor(t) + "')", 'important');
-          var w = wrap.clientWidth || 0;
-          var x = Math.max(14, Math.min(Math.max(14, w - 14), (t / DUR) * w));
-          if (ph) ph.style.left = x + 'px';
+        function updateSub(sec) {
           positionSubOverlay();
-          // 화면 자막 갱신
-          var cur = cueAt(t);
+          var cur = cueAt(sec);
           subJP.textContent = cur ? cur.jp : '';
           subKO.textContent = cur ? cur.ko : '';
           subJP.style.display = (cur && cur.jp) ? 'inline-block' : 'none';
           subKO.style.display = (cur && cur.ko) ? 'inline-block' : 'none';
           subOverlay.style.opacity = cur ? '1' : '0';
         }
+
+        function apply(tt) {
+          t = Math.max(0, Math.min(DUR, tt));
+          // 영상 없을 때만 배경 이미지로 폴백
+          if (!videoEl.src || videoEl.readyState === 0) {
+            shell.style.setProperty('background-image', "url('" + frameFor(t) + "')", 'important');
+          }
+          var w = wrap.clientWidth || 0;
+          var x = Math.max(14, Math.min(Math.max(14, w - 14), (t / DUR) * w));
+          if (ph) ph.style.left = x + 'px';
+          updateSub(t);
+        }
         apply(0);
 
-        // 화면(영상) 클릭 = 재생/멈춤 토글 (기존 '클릭 시 파일선택' 대체).
-        // 등록은 미리보기 우측 MP4/SRT 배지 버튼으로만.
+        // video timeupdate → 자막 + playhead 동기화
+        videoEl.addEventListener('timeupdate', function () {
+          var vt = videoEl.currentTime;
+          t = vt;
+          var dur = videoEl.duration || DUR;
+          var w = wrap.clientWidth || 0;
+          var x = Math.max(14, Math.min(Math.max(14, w - 14), (vt / dur) * w));
+          if (ph) ph.style.left = x + 'px';
+          updateSub(vt);
+        });
+
+        // 화면(영상 외 영역) 클릭 = 재생/멈춤 토글
         shell.onclick = function (e) {
           if (e.target.closest('video')) return;
-          paused = !paused;
-          if (typeof toast === 'function') toast(paused ? '⏸ 일시정지' : '▶ 재생', 'toastReview');
+          if (videoEl.src && videoEl.readyState > 0) {
+            if (videoEl.paused) videoEl.play(); else videoEl.pause();
+            if (typeof toast === 'function') toast(videoEl.paused ? '⏸ 일시정지' : '▶ 재생', 'toastReview');
+          } else {
+            paused = !paused;
+            if (typeof toast === 'function') toast(paused ? '⏸ 일시정지' : '▶ 재생', 'toastReview');
+          }
         };
 
         // 모바일 게이트 — 데스크탑 전용 데모라 좁은 화면은 안내로 대체.
@@ -6920,21 +6960,27 @@ ${value}`
             e.preventDefault();
             e.stopPropagation();
             if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-            paused = !paused;
-            if (typeof toast === 'function') toast(paused ? '⏸ 일시정지' : '▶ 재생', 'toastReview');
+            if (videoEl.src && videoEl.readyState > 0) {
+              if (videoEl.paused) videoEl.play(); else videoEl.pause();
+              if (typeof toast === 'function') toast(videoEl.paused ? '⏸ 일시정지' : '▶ 재생', 'toastReview');
+            } else {
+              paused = !paused;
+              if (typeof toast === 'function') toast(paused ? '⏸ 일시정지' : '▶ 재생', 'toastReview');
+            }
             return;
           }
-          // Tab = 현재 위치에 큐 기록 + 일시정지. 카드 생성은 메인 newMark 가, 시간은 buildItem 오버라이드(t)가 처리 → 막지 않고 흘려보냄.
+          // Tab = 현재 위치에 큐 기록 + 일시정지.
           if (e.key === 'Tab') {
             paused = true;
+            if (videoEl.src && videoEl.readyState > 0) videoEl.pause();
           }
         }, true);
 
-        // Tab/큐 기록 시 시간 소스 = video.currentTime(0) 대신 가짜 플레이헤드 t.
+        // Tab/큐 기록 시 시간 소스: 영상 재생 중이면 video.currentTime, 아니면 t
         try {
           window.buildItem = function (type) {
             type = type || '초기록';
-            var sec = +(t || 0).toFixed(3);
+            var sec = +((videoEl.src && videoEl.readyState > 0 ? videoEl.currentTime : t) || 0).toFixed(3);
             var cue = (typeof cueAt === 'function') ? cueAt(sec) : null;
             var text = cue ? cue.text : '';
             var p = splitJP(text);
