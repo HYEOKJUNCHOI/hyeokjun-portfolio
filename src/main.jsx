@@ -547,18 +547,20 @@ function LibrarySection() {
 
 function BookAddModal({ books, onClose, onAdded, onChanged }) {
   useModalScrollLock();
-  // 2단계: ① PIN 게이트(/api/verify-pin) → ② 관리 메뉴(등록/삭제).
+  // 2단계: ① PIN 게이트(/api/verify-pin) → ② 관리 메뉴(등록/수정/삭제).
   // 서버리스(/api/*)라 로컬 vite dev 에선 동작 X, 배포(Vercel)에서 동작.
   const [step, setStep] = useState('pin'); // 'pin' | 'manage'
-  const [mode, setMode] = useState('register'); // 'register' | 'delete'
+  const [mode, setMode] = useState('register'); // 'register' | 'edit' | 'delete'
   const [pin, setPin] = useState('');
   const [isbn, setIsbn] = useState('');
   const [book, setBook] = useState(null);
+  const [editingBook, setEditingBook] = useState(null);
   const [status, setStatus] = useState({ kind: 'idle' });
   const [confirmDeleteIsbn, setConfirmDeleteIsbn] = useState('');
   const [scanning, setScanning] = useState(false);
   const videoRef = useRef(null);
   const controlsRef = useRef(null);
+  const pinKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'back', '0', 'submit'];
 
   const stopScan = () => {
     try { controlsRef.current?.stop(); } catch (e) { /* no-op */ }
@@ -582,6 +584,27 @@ function BookAddModal({ books, onClose, onAdded, onChanged }) {
     } catch (e) {
       setStatus({ kind: 'error', msg: 'PIN이 틀렸습니다.' });
     }
+  };
+
+  const pressPinKey = (key) => {
+    setStatus({ kind: 'idle' });
+    if (key === 'back') {
+      setPin((current) => current.slice(0, -1));
+      return;
+    }
+    if (key === 'submit') {
+      verifyPin();
+      return;
+    }
+    setPin((current) => (current.length >= 8 ? current : `${current}${key}`));
+  };
+
+  const chooseMode = (nextMode) => {
+    stopScan();
+    setMode(nextMode);
+    setStatus({ kind: 'idle' });
+    setConfirmDeleteIsbn('');
+    setEditingBook(null);
   };
 
   const startScan = async () => {
@@ -664,6 +687,57 @@ function BookAddModal({ books, onClose, onAdded, onChanged }) {
     }
   };
 
+  const beginEdit = (target) => {
+    setEditingBook({
+      isbn13: String(target?.isbn13 || ''),
+      title: String(target?.title || ''),
+      author: String(target?.author || ''),
+      publisher: String(target?.publisher || ''),
+      cover: String(target?.cover || ''),
+      category: String(target?.category || ''),
+    });
+    setStatus({ kind: 'idle' });
+  };
+
+  const updateEditingField = (field, value) => {
+    setEditingBook((current) => current ? { ...current, [field]: value } : current);
+  };
+
+  const updateBook = async () => {
+    if (!editingBook) return;
+    const targetIsbn = String(editingBook.isbn13 || '').replace(/\D/g, '');
+    if (targetIsbn.length !== 13 || !editingBook.title.trim()) {
+      setStatus({ kind: 'error', msg: 'ISBN과 제목을 확인하세요.' });
+      return;
+    }
+
+    setStatus({ kind: 'loading' });
+    try {
+      const r = await fetch('/api/book-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update',
+          pin,
+          isbn: targetIsbn,
+          title: editingBook.title,
+          author: editingBook.author,
+          publisher: editingBook.publisher,
+          cover: editingBook.cover,
+          category: editingBook.category,
+        }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'update');
+      setEditingBook(null);
+      setStatus({ kind: 'idle' });
+      onChanged?.();
+    } catch (e) {
+      const m = String(e.message || e);
+      setStatus({ kind: 'error', msg: m === 'bad_pin' ? 'PIN이 틀렸습니다.' : '수정 실패: ' + m });
+    }
+  };
+
   return (
     <div className="bookAddModal" role="dialog" aria-modal="true" aria-label="책 관리">
       <button className="bookAddBackdrop" type="button" onClick={onClose} aria-label="닫기" />
@@ -673,22 +747,38 @@ function BookAddModal({ books, onClose, onAdded, onChanged }) {
         {step === 'pin' ? (
           <>
             <h3 className="bookAddTitle">관리자 확인</h3>
-            <label className="bookAddField">
-              <span>PIN</span>
-              <input type="password" value={pin} inputMode="numeric" placeholder="••••" autoFocus
-                onChange={(e) => setPin(e.target.value)}
-                onKeyDown={(e) => { if (e.key === 'Enter') verifyPin(); }} />
-            </label>
-            <button type="button" className="bookAddSave" onClick={verifyPin}>확인</button>
+            <div className="bookPinBox" aria-label="PIN 입력">
+              <div className="bookPinDots" aria-live="polite">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <span className={pin.length > index ? 'filled' : ''} key={index} />
+                ))}
+              </div>
+              <div className="bookPinPad">
+                {pinKeys.map((key) => (
+                  <button
+                    type="button"
+                    className={key === 'submit' ? 'bookPinSubmit' : ''}
+                    key={key}
+                    onClick={() => pressPinKey(key)}
+                    aria-label={key === 'back' ? '지우기' : key === 'submit' ? '확인' : `${key} 입력`}
+                  >
+                    {key === 'back' ? '←' : key === 'submit' ? '확인' : key}
+                  </button>
+                ))}
+              </div>
+            </div>
           </>
         ) : (
           <>
             <h3 className="bookAddTitle">책 관리</h3>
             <div className="bookManageTabs" role="tablist" aria-label="책 관리 메뉴">
-              <button type="button" className={mode === 'register' ? 'active' : ''} onClick={() => setMode('register')}>
+              <button type="button" className={mode === 'register' ? 'active' : ''} onClick={() => chooseMode('register')}>
                 등록
               </button>
-              <button type="button" className={mode === 'delete' ? 'active' : ''} onClick={() => { stopScan(); setMode('delete'); }}>
+              <button type="button" className={mode === 'edit' ? 'active' : ''} onClick={() => chooseMode('edit')}>
+                수정
+              </button>
+              <button type="button" className={mode === 'delete' ? 'active' : ''} onClick={() => chooseMode('delete')}>
                 삭제
               </button>
             </div>
@@ -726,6 +816,64 @@ function BookAddModal({ books, onClose, onAdded, onChanged }) {
                     </div>
                   </div>
                 ) : null}
+              </>
+            ) : mode === 'edit' ? (
+              <>
+                {!editingBook ? (
+                  <div className="bookDeleteList" aria-label="등록된 책 수정">
+                    {books.length ? books.map((item) => {
+                      const itemIsbn = item.isbn13 || '';
+                      return (
+                        <div className="bookDeleteItem" key={itemIsbn || item.title}>
+                          <img src={item.cover} alt="" loading="lazy" />
+                          <span>
+                            <strong>{item.title}</strong>
+                            <em>{item.author || item.category || itemIsbn}</em>
+                          </span>
+                          <button type="button" className="edit" onClick={() => beginEdit(item)}>
+                            수정
+                          </button>
+                        </div>
+                      );
+                    }) : (
+                      <p className="bookAddMsg">등록된 책이 없습니다.</p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="bookEditForm">
+                    <div className="bookEditHeader">
+                      <img src={editingBook.cover} alt="" />
+                      <span>
+                        <strong>{editingBook.title || '제목 없음'}</strong>
+                        <em>{editingBook.isbn13}</em>
+                      </span>
+                    </div>
+                    <label className="bookAddField">
+                      <span>제목</span>
+                      <input value={editingBook.title} onChange={(e) => updateEditingField('title', e.target.value)} />
+                    </label>
+                    <label className="bookAddField">
+                      <span>저자</span>
+                      <input value={editingBook.author} onChange={(e) => updateEditingField('author', e.target.value)} />
+                    </label>
+                    <label className="bookAddField">
+                      <span>출판사</span>
+                      <input value={editingBook.publisher} onChange={(e) => updateEditingField('publisher', e.target.value)} />
+                    </label>
+                    <label className="bookAddField">
+                      <span>표지 URL</span>
+                      <input value={editingBook.cover} onChange={(e) => updateEditingField('cover', e.target.value)} />
+                    </label>
+                    <label className="bookAddField">
+                      <span>분류</span>
+                      <input value={editingBook.category} onChange={(e) => updateEditingField('category', e.target.value)} />
+                    </label>
+                    <div className="bookEditActions">
+                      <button type="button" onClick={() => setEditingBook(null)}>목록</button>
+                      <button type="button" className="primary" onClick={updateBook}>수정 저장</button>
+                    </div>
+                  </div>
+                )}
               </>
             ) : (
               <div className="bookDeleteList" aria-label="등록된 책 삭제">

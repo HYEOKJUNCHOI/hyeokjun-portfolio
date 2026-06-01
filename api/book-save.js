@@ -38,6 +38,25 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'invalid_input' });
   }
 
+  if (body.action === 'update') {
+    const doc = {
+      isbn13: isbn,
+      title,
+      author: String(body.author || '').trim(),
+      publisher: String(body.publisher || '').trim(),
+      cover: String(body.cover || '').trim(),
+      category: String(body.category || '').trim(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    try {
+      await getDb().collection('shelf').doc(isbn).set(doc, { merge: true });
+      return res.status(200).json({ ok: true, book: doc });
+    } catch (e) {
+      return res.status(500).json({ error: 'update_failed', detail: String(e.message || e) });
+    }
+  }
+
   const doc = {
     isbn13: isbn,
     title,
