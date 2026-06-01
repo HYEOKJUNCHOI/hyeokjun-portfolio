@@ -2412,7 +2412,8 @@ img, svg, iframe { max-width: 100%; }
     background: rgba(7, 8, 8, 0.48);
   }
   .projectVisualPane {
-    height: clamp(208px, 58vw, 264px);
+    aspect-ratio: 44 / 35;
+    height: auto;
     background: rgba(7, 8, 8, 0.72);
   }
   .projectVisualPane::before {
@@ -2430,16 +2431,16 @@ img, svg, iframe { max-width: 100%; }
   .projectCardChrome {
     top: 0;
     right: 0;
-    bottom: auto;
+    bottom: 0;
     left: 0;
-    min-height: clamp(208px, 58vw, 264px);
+    min-height: 0;
     align-content: end;
     gap: 6px;
     padding: 18px 16px;
     background: linear-gradient(180deg, rgba(7, 8, 8, 0.04), rgba(7, 8, 8, 0.72));
   }
   .projectActionCue {
-    top: calc(clamp(208px, 58vw, 264px) - 48px);
+    top: clamp(184px, calc(79.545vw - 70px), 326px);
     right: 14px;
     bottom: auto;
     min-height: 30px;
