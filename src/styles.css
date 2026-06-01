@@ -1578,6 +1578,56 @@ img, svg, iframe { max-width: 100%; }
   transform: none;
 }
 
+@media (hover: hover) and (pointer: fine) and (min-width: 1321px) {
+  .projectVisualPane {
+    border-bottom: 0;
+    border-radius: 17px;
+    clip-path: inset(0 round 17px);
+  }
+
+  .projectCardChrome {
+    transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease;
+  }
+
+  .projectExplanation {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    min-height: auto;
+    padding: 58px 22px 22px;
+    border-top: 0;
+    border-radius: 0 0 17px 17px;
+    background:
+      linear-gradient(180deg, rgba(7, 8, 8, 0), rgba(7, 8, 8, 0.9) 42%, rgba(7, 8, 8, 0.96)),
+      linear-gradient(145deg, rgba(40, 219, 195, 0.16), rgba(255, 111, 157, 0.1));
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease;
+    backdrop-filter: blur(8px);
+  }
+
+  .projectExplanation strong {
+    color: var(--text-strong);
+    font-size: clamp(13px, 0.95vw, 15px);
+    font-weight: 520;
+    line-height: 1.58;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.62);
+  }
+
+  .projectCard:hover .projectCardChrome,
+  .projectCard:focus-visible .projectCardChrome {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  .projectCard:hover .projectExplanation,
+  .projectCard:focus-visible .projectExplanation {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .projectGridRepeat .projectCard.visited {
   background:
     linear-gradient(145deg, color-mix(in srgb, var(--off-white) 5%, transparent), transparent 46%),
