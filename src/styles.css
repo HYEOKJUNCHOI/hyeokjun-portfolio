@@ -2402,7 +2402,7 @@ img, svg, iframe { max-width: 100%; }
     height: clamp(208px, 58vw, 264px);
   }
   .projectVisualPane > img {
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
     background: rgba(7, 8, 8, 0.4);
   }
@@ -2750,6 +2750,40 @@ img, svg, iframe { max-width: 100%; }
 }
 
 @media (hover: none), (pointer: coarse) {
+  .projectGrid .projectCard:hover {
+    z-index: auto;
+    transform: none;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(244, 241, 232, 0.08);
+  }
+
+  .projectCard:hover .projectVisualPane > img {
+    filter: none;
+  }
+
+  .projectCard:hover .projectExplanation {
+    background:
+      linear-gradient(135deg, rgba(40, 219, 195, 0.075), transparent 52%),
+      rgba(18, 22, 22, 0.9);
+  }
+
+  .projectCard:hover .projectActionCue {
+    border-color: rgba(120, 212, 223, 0.44);
+    background: rgba(3, 4, 4, 0.76);
+    color: var(--teal-300);
+  }
+
+  .projectGridRepeat .projectCard.visited:hover .projectVisitBadge {
+    opacity: 1;
+  }
+
+  .projectGridRepeat .projectCard.visited:hover .projectExplanation {
+    opacity: 1;
+  }
+
+  .projectGridRepeat .projectCard.visited:hover .projectStatusMessage {
+    opacity: 0;
+  }
+
   .showcaseImageCard:hover > img,
   .showcaseImageCard:focus-within > img {
     filter: none;
