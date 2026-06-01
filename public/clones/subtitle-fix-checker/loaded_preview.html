@@ -6915,6 +6915,66 @@ ${value}`
         window.addEventListener('resize', positionSubOverlay);
         window.addEventListener('scroll', positionSubOverlay, { passive: true });
 
+        // ── 튜토리얼 힌트 ─────────────────────────────────────────────────────────
+        var tutShown = false, tutDismissed = false;
+        var tutEl = document.createElement('div');
+        tutEl.style.cssText = [
+          'position:fixed','z-index:10000','pointer-events:none',
+          'display:flex','flex-direction:column','align-items:center','gap:6px',
+          'opacity:0','transition:opacity .4s',
+        ].join(';');
+
+        var tutBubble = document.createElement('div');
+        tutBubble.innerHTML = [
+          '<span style="font-size:13px;font-weight:700;color:#eaf2ff;line-height:1.5">',
+          '자막이 나올 때 <kbd style="background:#222f40;border:1px solid #4ec9b0;color:#4ec9b0;',
+          'padding:1px 7px;border-radius:4px;font-size:12px;font-family:monospace">Tab</kbd>',
+          ' 을 눌러보세요!</span>',
+          '<span style="font-size:11px;color:#8fa2ba">현재 자막을 검수 카드로 캡처합니다</span>',
+        ].join('');
+        tutBubble.style.cssText = [
+          'background:rgba(12,22,37,0.96)',
+          'border:1px solid rgba(78,201,176,0.45)',
+          'border-radius:10px',
+          'padding:10px 16px',
+          'text-align:center',
+          'box-shadow:0 8px 32px rgba(0,0,0,0.5)',
+        ].join(';');
+
+        // 아래 화살표
+        var tutArrow = document.createElement('div');
+        tutArrow.style.cssText = 'width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid rgba(78,201,176,0.45);';
+
+        tutEl.appendChild(tutBubble);
+        tutEl.appendChild(tutArrow);
+        document.body.appendChild(tutEl);
+
+        function positionTut() {
+          var r = shell.getBoundingClientRect();
+          if (!r.width) return;
+          tutEl.style.left = (r.left + r.width / 2) + 'px';
+          tutEl.style.top  = (r.bottom - 165) + 'px';
+          tutEl.style.transform = 'translateX(-50%)';
+        }
+        function showTut() {
+          if (tutDismissed) return;
+          tutShown = true;
+          positionTut();
+          tutEl.style.opacity = '1';
+          // 4초 후 자동 사라짐
+          setTimeout(function() { if (!tutDismissed) hideTut(); }, 4000);
+        }
+        function hideTut() {
+          tutDismissed = true;
+          tutEl.style.opacity = '0';
+        }
+        // Tab 누르면 힌트 사라짐
+        window.addEventListener('keydown', function(e) {
+          if (e.key === 'Tab' && tutShown) hideTut();
+        }, { capture: true, once: true });
+        window.addEventListener('resize', positionTut);
+        // ────────────────────────────────────────────────────────────────────────
+
         function updateSub(sec) {
           positionSubOverlay();
           var cur = cueAt(sec);
@@ -6923,6 +6983,8 @@ ${value}`
           subJP.style.display = (cur && cur.jp) ? 'inline-block' : 'none';
           subKO.style.display = (cur && cur.ko) ? 'inline-block' : 'none';
           subOverlay.style.opacity = cur ? '1' : '0';
+          // 첫 번째 자막 구간 진입 시 튜토리얼 힌트 1회 노출
+          if (!tutShown && !tutDismissed && cur && cur.cue_index === 1) showTut();
         }
 
         function apply(tt) {
