@@ -112,6 +112,66 @@ function useModalScrollLock() {
   }, []);
 }
 
+function useModalFocusTrap(containerRef) {
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined;
+
+    const container = containerRef.current;
+    if (!container) return undefined;
+
+    const previouslyFocused = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    const focusableSelector = [
+      'a[href]',
+      'button:not([disabled])',
+      'input:not([disabled])',
+      'select:not([disabled])',
+      'textarea:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])',
+    ].join(',');
+    const getFocusable = () => Array.from(container.querySelectorAll(focusableSelector))
+      .filter((element) => element instanceof HTMLElement && element.offsetParent !== null);
+
+    const focusInitialElement = () => {
+      const focusable = getFocusable();
+      (focusable[0] || container).focus({ preventScroll: true });
+    };
+
+    const frame = window.requestAnimationFrame(focusInitialElement);
+    const handleKeyDown = (event) => {
+      if (event.key !== 'Tab') return;
+
+      const focusable = getFocusable();
+      if (focusable.length === 0) {
+        event.preventDefault();
+        container.focus({ preventScroll: true });
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
+      }
+    };
+
+    container.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      container.removeEventListener('keydown', handleKeyDown);
+      if (previouslyFocused?.isConnected) {
+        previouslyFocused.focus({ preventScroll: true });
+      }
+    };
+  }, [containerRef]);
+}
+
 function App() {
   const [activeId, setActiveId] = useState(null);
   const [visitedProjectIds, setVisitedProjectIds] = useState(() => new Set());
@@ -1165,6 +1225,8 @@ function ShowcaseImageGrid({ activeShowcaseIndex, onSelectShowcase, viewedShowca
 
 function ShowcaseDetailModal({ item, onClose, onNext, onPrevious }) {
   useModalScrollLock();
+  const modalRef = useRef(null);
+  useModalFocusTrap(modalRef);
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'ArrowLeft') {
@@ -1190,8 +1252,8 @@ function ShowcaseDetailModal({ item, onClose, onNext, onPrevious }) {
   const paragraphs = item.detailBody.split('\n\n');
 
   return (
-    <div className="showcaseDetailModal" role="dialog" aria-modal="true" aria-label={`${item.title} 상세 보기`}>
-      <button className="showcaseDetailBackdrop" onClick={onClose} type="button" aria-label="닫기" />
+    <div className="showcaseDetailModal" role="dialog" aria-modal="true" aria-label={`${item.title} 상세 보기`} ref={modalRef} tabIndex={-1}>
+      <div className="showcaseDetailBackdrop" aria-hidden="true" />
       <div className="showcaseDetailModalStack">
         <div className="showcaseDetailModalShell">
           <button className="modalNav modalNavPrevious" onClick={onPrevious} type="button" aria-label="이전 Experience 보기">
@@ -1256,6 +1318,8 @@ function ShowcaseDetailModal({ item, onClose, onNext, onPrevious }) {
 
 function ProjectDetailModal({ children, onClose, project }) {
   useModalScrollLock();
+  const modalRef = useRef(null);
+  useModalFocusTrap(modalRef);
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key !== 'Escape') return;
@@ -1268,8 +1332,8 @@ function ProjectDetailModal({ children, onClose, project }) {
   }, [onClose]);
 
   return (
-    <div className="projectDetailModal" role="dialog" aria-modal="true" aria-label={`${project.label} 상세 보기`}>
-      <button className="projectDetailBackdrop" onClick={onClose} type="button" aria-label="닫기" />
+    <div className="projectDetailModal" role="dialog" aria-modal="true" aria-label={`${project.label} 상세 보기`} ref={modalRef} tabIndex={-1}>
+      <div className="projectDetailBackdrop" aria-hidden="true" />
       <div className="projectDetailModalStack">
         <div className="projectDetailModalShell">
           <button className="modalClose projectDetailModalClose" onClick={onClose} type="button">닫기</button>
@@ -1426,6 +1490,7 @@ function ProjectBrief({ project }) {
 
 function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onPrevious }) {
   useModalScrollLock();
+  const modalRef = useRef(null);
   const touchStartRef = useRef(null);
   const shouldFillFrame = screenshot.index > 0 && screenshot.index < 5;
   const isLegacyFrame = screenshot.index === 0 || screenshot.index === project.screenshots.length - 1;
@@ -1454,6 +1519,8 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose, onNext, onPrevious]);
+
+  useModalFocusTrap(modalRef);
 
   const handleMediaPointerDown = (event) => {
     if (event.pointerType !== 'touch' || !isMobileScreenshotViewport()) return;
@@ -1498,8 +1565,8 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
   };
 
   return (
-    <div className="screenshotModal" role="dialog" aria-modal="true" aria-label={`${screenshot.title} 크게 보기`}>
-      <button className="screenshotBackdrop" onClick={onClose} type="button" aria-label="닫기" />
+    <div className="screenshotModal" role="dialog" aria-modal="true" aria-label={`${screenshot.title} 크게 보기`} ref={modalRef} tabIndex={-1}>
+      <div className="screenshotBackdrop" aria-hidden="true" />
       <div className="screenshotRotateNotice">
         <button className="modalClose screenshotRotateClose" onClick={onClose} type="button">닫기</button>
         <p className="eyebrow">{project.label}</p>
