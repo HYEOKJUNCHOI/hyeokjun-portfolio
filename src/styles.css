@@ -2425,9 +2425,13 @@ img, svg, iframe { max-width: 100%; }
     border-radius: 17px 17px 0 0;
     border-bottom: 1px solid rgba(40, 219, 195, 0.16);
     background: rgba(7, 8, 8, 0.72);
+    clip-path: inset(0 round 17px 17px 0 0);
+    contain: paint;
+    isolation: isolate;
   }
   .projectVisualPane::before {
     display: block;
+    border-radius: inherit;
     filter: blur(16px) saturate(1.08);
     opacity: 0.52;
     transform: scale(1.12);
