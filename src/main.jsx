@@ -982,7 +982,6 @@ function ShowcaseDetailModal({ item, onClose, onNext, onPrevious }) {
               <p className="eyebrow">{item.detailLabel}</p>
               <h3>{item.detailTitle}</h3>
               <em>{item.period}</em>
-              <p className="showcaseHoverMessage">{item.hover}</p>
               {item.isContact ? (
                 <ul className="showcaseContactList">
                   {contactLinks.map((contact) => {
