@@ -463,9 +463,6 @@ function ProjectNavigator({ activeId, detailPanelId, isDetailOpen, onSelectProje
               teaser={project.teaser}
               type={project.type}
             />
-            {!isDisabled ? (
-              <span className="projectActionCue" aria-hidden="true">자세히 보기</span>
-            ) : null}
             {statusLabel ? (
               <>
                 <span className="projectVisitBadge" aria-hidden="true">{statusLabel}</span>

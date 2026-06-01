@@ -1556,36 +1556,6 @@ img, svg, iframe { max-width: 100%; }
   transform: none;
 }
 
-.projectActionCue {
-  position: absolute;
-  right: clamp(14px, 1.4vw, 20px);
-  bottom: clamp(14px, 1.4vw, 20px);
-  z-index: 8;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 32px;
-  padding: 0 var(--space-3);
-  border: 1px solid rgba(120, 212, 223, 0.44);
-  border-radius: var(--radius-pill);
-  background: rgba(3, 4, 4, 0.76);
-  color: var(--teal-300);
-  font-size: 12px;
-  font-weight: 950;
-  line-height: 1;
-  pointer-events: none;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.36);
-  backdrop-filter: blur(8px);
-  transition: border-color var(--duration-fast) ease, background var(--duration-fast) ease, color var(--duration-fast) ease;
-}
-
-.projectCard:hover .projectActionCue,
-.projectCard:focus-visible .projectActionCue {
-  border-color: rgba(255, 111, 157, 0.58);
-  background: rgba(3, 4, 4, 0.9);
-  color: var(--text-strong);
-}
-
 .projectGridRepeat .projectCard.visited {
   background:
     linear-gradient(145deg, color-mix(in srgb, var(--off-white) 5%, transparent), transparent 46%),
@@ -2453,13 +2423,6 @@ img, svg, iframe { max-width: 100%; }
     padding: 18px 16px 20px;
     background: linear-gradient(180deg, rgba(7, 8, 8, 0.02) 34%, rgba(7, 8, 8, 0.76));
   }
-  .projectActionCue {
-    top: clamp(184px, calc(79.545vw - 70px), 326px);
-    right: 14px;
-    bottom: auto;
-    min-height: 30px;
-    font-size: 11px;
-  }
   .showcaseImageOverlay { padding: var(--space-2); }
   .projectCardChrome .projectType {
     margin: 0;
@@ -2800,12 +2763,6 @@ img, svg, iframe { max-width: 100%; }
     background:
       linear-gradient(135deg, rgba(40, 219, 195, 0.075), transparent 52%),
       rgba(18, 22, 22, 0.9);
-  }
-
-  .projectCard:hover .projectActionCue {
-    border-color: rgba(120, 212, 223, 0.44);
-    background: rgba(3, 4, 4, 0.76);
-    color: var(--teal-300);
   }
 
   .projectGridRepeat .projectCard.visited:hover .projectVisitBadge {
