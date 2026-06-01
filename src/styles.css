@@ -2350,6 +2350,65 @@ img, svg, iframe { max-width: 100%; }
   .heroTechLayout .heroSection { padding: var(--space-6) var(--space-6) var(--space-5); }
   .experienceTimeline { grid-template-columns: 1fr; }
   .aboutGrid, .experienceGrid, .screenshotGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .projectGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(var(--space-3), 2.2vw, var(--space-5));
+  }
+  .projectTeaserVisual {
+    display: block;
+    min-height: 0;
+    border-radius: inherit;
+  }
+  .projectVisualPane {
+    aspect-ratio: 44 / 35;
+    height: auto;
+    border-bottom: 1px solid rgba(40, 219, 195, 0.16);
+    border-radius: 17px 17px 0 0;
+    clip-path: inset(0 round 17px 17px 0 0);
+  }
+  .projectVisualPane::before {
+    display: block;
+    border-radius: inherit;
+    filter: blur(16px) saturate(1.08);
+    opacity: 0.52;
+    transform: scale(1.12);
+  }
+  .projectVisualPane > img {
+    object-fit: contain;
+    object-position: center;
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.34));
+  }
+  .projectCardChrome {
+    align-content: end;
+    gap: 6px;
+    padding: 18px 16px 20px;
+    background: linear-gradient(180deg, rgba(7, 8, 8, 0.02) 34%, rgba(7, 8, 8, 0.76));
+  }
+  .projectCardChrome strong {
+    font-size: clamp(20px, 2.4vw, 25px);
+    line-height: 1.15;
+  }
+  .projectExplanation {
+    display: block;
+    min-height: 128px;
+    padding: 18px 18px 20px;
+    border-top: 1px solid rgba(244, 241, 232, 0.06);
+    background:
+      linear-gradient(135deg, rgba(40, 219, 195, 0.075), transparent 52%),
+      rgba(18, 22, 22, 0.9);
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+  .projectExplanation strong {
+    display: block;
+    color: var(--off-white-muted);
+    font-family: var(--font-body);
+    font-size: clamp(14px, 1.65vw, 16px);
+    font-weight: 420;
+    line-height: 1.64;
+    text-align: left;
+    white-space: normal;
+  }
   .projectBrief { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
   .projectBrief .briefCard { padding: var(--space-4); }
   .projectBrief .briefProse p { padding: 10px 11px; font-size: clamp(13.5px, 1.25vw, 15px); line-height: 1.62; }
@@ -2357,10 +2416,6 @@ img, svg, iframe { max-width: 100%; }
   .showcaseImageCard { width: 100%; max-width: 100%; min-width: 0; aspect-ratio: 44 / 35; }
   .showcaseImageCard:hover, .showcaseImageCard:focus-within { transform: none; }
   .showcaseImageOverlay strong { white-space: normal; overflow-wrap: anywhere; word-break: keep-all; }
-  .projectTeaserVisual {
-    min-height: clamp(228px, 24vw, 292px);
-  }
-  .projectExplanation { padding: clamp(var(--space-3), 1.6vw, var(--space-5)); }
 }
 
 @media (max-width: 760px) {
