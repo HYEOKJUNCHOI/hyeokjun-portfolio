@@ -962,7 +962,17 @@ img, svg, iframe { max-width: 100%; }
   padding: var(--space-5);
   border-radius: var(--radius-md);
 }
-.briefCard { display: grid; align-content: start; justify-items: stretch; text-align: left; transition: transform var(--duration-medium) ease, border-color var(--duration-fast) ease, box-shadow var(--duration-medium) ease, background var(--duration-fast) ease; }
+.briefCard {
+  display: grid;
+  align-content: start;
+  justify-items: stretch;
+  text-align: left;
+  border-color: rgba(244, 241, 232, 0.22);
+  background:
+    linear-gradient(145deg, rgba(244, 241, 232, 0.055), rgba(244, 241, 232, 0.018)),
+    rgba(7, 8, 8, 0.88);
+  box-shadow: 0 30px 78px rgba(0, 0, 0, 0.54), inset 0 1px 0 rgba(244, 241, 232, 0.1);
+}
 .infoCard { min-height: 180px; }
 .infoCard span, .timelineContent > span, .projectCard > .projectType { display: block; margin-bottom: var(--space-2); font-size: 12px; }
 .infoCard strong, .timelineContent > strong { display: block; margin-bottom: var(--space-3); color: var(--text-strong); font-size: 18px; line-height: 1.35; }
@@ -1753,9 +1763,8 @@ img, svg, iframe { max-width: 100%; }
 .detailBody, .projectBrief, .screenshotPanel, .playgroundPanel, .detailGrid, .caredocFramePanel { margin-top: var(--space-5); }
 .briefCard h4, .detailBody h4, .screenshotHead h4, .liveFrameHead h4, .playgroundHead h4, .mobileShowcaseHeader h4 { margin: 0 0 var(--space-3); font-size: 20px; }
 .briefCard h4 { display: flex; justify-content: center; width: 100%; text-align: center; }
-.briefTitleCapsule { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 var(--space-3); border: 1px solid rgba(244, 241, 232, 0.28); border-radius: var(--radius-sm); background: rgba(3, 4, 4, 0.84); color: var(--text-strong); -webkit-text-fill-color: var(--text-strong); font-family: var(--font-body); font-size: 14px; font-weight: 950; line-height: 1.22; letter-spacing: -0.02em; text-align: center; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.74); box-shadow: 0 14px 34px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(244, 241, 232, 0.1); }
+.briefTitleCapsule { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 var(--space-3); border: 1px solid rgba(244, 241, 232, 0.42); border-radius: var(--radius-sm); background: rgba(3, 4, 4, 0.9); color: var(--text-strong); -webkit-text-fill-color: var(--text-strong); font-family: var(--font-body); font-size: 14px; font-weight: 950; line-height: 1.22; letter-spacing: -0.02em; text-align: center; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.74); box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(244, 241, 232, 0.12); }
 .briefCard:hover, .briefCard:focus-visible, .briefCard:focus-within {
-  transform: translate3d(0, -6px, 0) rotateX(1deg);
   border-color: rgba(244, 241, 232, 0.22);
   background:
     linear-gradient(145deg, rgba(244, 241, 232, 0.055), rgba(244, 241, 232, 0.018)),
