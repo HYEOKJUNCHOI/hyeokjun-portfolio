@@ -1843,6 +1843,11 @@ img, svg, iframe { max-width: 100%; }
 .screenshotSlot.hasImage.cropLegacyFrame.legacyFrame img,
 .modalPreview.hasImage.cropLegacyFrame.legacyFrame img { object-fit: contain; background: var(--charcoal-900); }
 .modalPreview.hasImage.fillFrame img { object-fit: contain; background: var(--charcoal-900); }
+.screenshotSlot.hasImage.projectShot-caredoc img,
+.modalPreview.hasImage.projectShot-caredoc img {
+  object-fit: contain;
+  background: var(--charcoal-950);
+}
 .screenshotSlot strong {
   display: inline-grid;
   grid-template-columns: 3px minmax(0, 1fr);

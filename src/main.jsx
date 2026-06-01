@@ -1437,6 +1437,7 @@ function ScreenshotGallery({ project, setSelectedScreenshot }) {
             <button
               className={[
                 'screenshotSlot',
+                `projectShot-${project.id}`,
                 src ? 'hasImage' : '',
                 isLegacyFrame ? 'legacyFrame' : '',
                 ['fixchecker', 'lucid', 'reallife'].includes(project.id) ? 'cropLegacyFrame' : '',
@@ -1610,6 +1611,7 @@ function ScreenshotModal({ edgeNotice, project, screenshot, onClose, onNext, onP
             >
               <div className={[
                 'modalPreview',
+                `projectShot-${project.id}`,
                 screenshot.src ? 'hasImage' : '',
                 shouldFillFrame ? 'fillFrame' : '',
                 isLegacyFrame ? 'legacyFrame' : '',
